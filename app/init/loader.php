@@ -9,7 +9,8 @@ $loader->registerNamespaces(array(
     'UniqueLoneDog\Models' => $config->application->modelsDir,
     'UniqueLoneDog\Controllers' => $config->application->controllersDir,
     'UniqueLoneDog\Forms' => $config->application->formsDir,
-    'UniqueLoneDog' => $config->application->libraryDir
+    'UniqueLoneDog\Routes' => $config->application->routeDir,
+    'UniqueLoneDog' => $config->application->libraryDir,
 ));
 
 $loader->register();

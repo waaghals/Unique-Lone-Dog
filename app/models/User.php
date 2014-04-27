@@ -29,7 +29,13 @@ class User extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $password;
+    public $passhash;
+
+    /**
+     *
+     * @var string
+     */
+    public $salt;
 
     /**
      *

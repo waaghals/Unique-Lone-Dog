@@ -10,6 +10,9 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Mvc\Model\Metadata\Files as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Flash\Direct as Flash;
+use UniqueLoneDog\Authentification\Identity;
+use UniqueLoneDog\Authentification\RememberMe;
+use UniqueLoneDog\Authentification\Authentification;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -120,4 +123,16 @@ $di->set('flash', function () {
         'success' => 'alert alert-success',
         'notice' => 'alert alert-info'
     ));
+});
+
+$di->set("identity", function () {
+    return new Identity();
+});
+
+$di->set("remember", function() {
+    return new RememberMe();
+});
+
+$di->set("auth", function() {
+    return new Authentification();
 });

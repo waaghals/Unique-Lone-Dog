@@ -13,9 +13,9 @@ return new \Phalcon\Config(array(
         'modelsDir' => APP_DIR . '/models/',
         'formsDir' => APP_DIR . '/forms/',
         'viewsDir' => APP_DIR . '/views/',
-        'libraryDir' => APP_DIR . '/library/',
-        'pluginsDir' => APP_DIR . '/plugins/',
+        'libraryDir' => APP_DIR . '/libraries/',
         'cacheDir' => APP_DIR . '/cache/',
+        'routeDir' => APP_DIR . '/config/routes/',
         'baseUri' => '/uld/',
         'publicUrl' => 'localhost',
         'cryptSalt' => 'YKaCEjaODSyMawu-WggW/pvq1orBqYFNEYXUUlDR$B!)0cu@1d2o69)sv5F$l+Q+'
