@@ -10,3 +10,10 @@
 7. Selecteer de folder waarin je zojuist alle bestanden hebt gekopieerd.
 
 Denk er eventueel aan om de Devtools ook te [installeren](http://docs.phalconphp.com/en/latest/reference/wintools.html).
+
+## Stijl standaard
+Gebruik het bestand `Netbeans Settings.zip` om automatisch de [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) te volgen.
+
+1. Ga naar `Tools > Options`
+2. Klik links onderaan op `Import...`
+3. Kies `Netbeans Settings.zip` uit de folder `docs`.
