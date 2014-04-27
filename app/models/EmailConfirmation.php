@@ -55,8 +55,9 @@ class EmailConfirmation extends \Phalcon\Mvc\Model
         $this->createdAt = time();
 
         // Generate a random confirmation code
-        $c = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(24)));
-        $this->confirmationCode = $c;
+        $randomData = base64_encode(openssl_random_pseudo_bytes(24));
+        $code = preg_replace('/[^a-zA-Z0-9]/', '', $randomData);
+        $this->confirmationCode = $code;
 
         // Set status to non-confirmed
         $this->confirmed = 'N';
