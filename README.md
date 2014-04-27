@@ -10,6 +10,7 @@
 7. Selecteer de folder waarin je zojuist alle bestanden hebt gekopieerd.
 
 Denk er eventueel aan om de Devtools ook te [installeren](http://docs.phalconphp.com/en/latest/reference/wintools.html).
+_Tip:_ Plaats de folder structuur in `xampp/php` en voeg `xampp/php` toe aan de `PATH` variabele.
 
 ## Stijl standaard
 Gebruik het bestand `Netbeans Settings.zip` om automatisch de [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) te volgen.
