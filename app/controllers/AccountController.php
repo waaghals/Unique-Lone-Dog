@@ -20,7 +20,6 @@ class AccountController extends AbstractController
             return $this->auth->loginWithRememberMe();
         }
 
-        $this->view->pick("account/loginForm");
         $this->view->form = $this->loginForm;
     }
 
@@ -45,6 +44,11 @@ class AccountController extends AbstractController
 
         $this->view->pick("account/loginForm");
         $this->view->form = $this->loginForm;
+    }
+
+    public function signupAction()
+    {
+
     }
 
 }

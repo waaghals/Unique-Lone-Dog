@@ -21,6 +21,8 @@ class EmailField implements FormFieldInterface
             'placeholder' => 'Email'
         ));
 
+        $email->setLabel("Email");
+
         $email->addValidators(array(
             new PresenceOf(array(
                 'message' => 'The e-mail is required'

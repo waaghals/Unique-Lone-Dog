@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>{{ title }}</title>
+        <title>Title</title>
         {{ partial("partials/meta") }}
         {{ partial("partials/icons") }}
 

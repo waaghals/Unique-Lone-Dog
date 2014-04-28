@@ -7,7 +7,7 @@ namespace UniqueLoneDog\Controllers;
  *
  * @author Patrick
  */
-class AbstractController extends \Phalcon\Mvc\Controller
+abstract class AbstractController extends \Phalcon\Mvc\Controller
 {
 
     public function initialize()

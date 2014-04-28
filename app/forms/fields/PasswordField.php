@@ -14,17 +14,24 @@ use Phalcon\Validation\Validator\PresenceOf;
 class PasswordField implements FormFieldInterface
 {
 
-    public function getField()
+    protected $field;
+
+    public function __construct($name = 'password')
     {
-        $password = new Password('password', array(
+        $this->field = new Password($name, array(
             'placeholder' => 'Password'
         ));
 
-        $password->addValidator(new PresenceOf(array(
+        $this->field->setLabel("Password");
+
+        $this->field->addValidator(new PresenceOf(array(
             'message' => 'The password is required'
         )));
+    }
 
-        return $password;
+    public function getField()
+    {
+        return $this->field;
     }
 
 }
