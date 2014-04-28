@@ -20,7 +20,7 @@ class AccountRoutes extends \Phalcon\Mvc\Router\Group
 
         $this->addGet("/login", array(
             "action" => "loginForm"
-        ));
+        ))->setName("account-login");
 
         $this->addPost("/login", array(
             "action" => "performLogin"

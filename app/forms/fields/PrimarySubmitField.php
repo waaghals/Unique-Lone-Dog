@@ -16,7 +16,7 @@ class PrimarySubmitField implements FormFieldInterface
     public function getField()
     {
         return new Submit('go', array(
-            'class' => 'btn btn-success'
+            'class' => 'btn btn-blue'
         ));
     }
 

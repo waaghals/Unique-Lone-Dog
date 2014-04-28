@@ -2,10 +2,9 @@
 
 namespace UniqueLoneDog\Controllers;
 
-use Phalcon\Mvc\Controller;
 use UniqueLoneDog\Forms\LoginForm;
 
-class AccountController extends Controller
+class AccountController extends AbstractController
 {
 
     private $loginForm;
@@ -36,6 +35,7 @@ class AccountController extends Controller
                 $this->flash->error($message);
             }
         } elseif ($this->auth->isValidLogin($email, $pass)) {
+
             $this->identity->setByEmail($email);
             $this->flash->success("Login successfull");
             return $this->response->redirect();

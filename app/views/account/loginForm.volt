@@ -1,30 +1,33 @@
 {{ content() }}
-
-<div align="center" class="well">
-
-	{{ form('class': 'form-search') }}
-
-	<div align="left">
-		<h2>Log In</h2>
-	</div>
-
-		{{ form.render('email') }}
-		{{ form.render('password') }}
-		{{ form.render('go') }}
-
-		<div align="center" class="remember">
-			{{ form.render('remember') }}
-			{{ form.label('remember') }}
-		</div>
-
-		{{ form.render('csrf', ['value': security.getToken()]) }}
-
-		<hr>
-
-		<div class="forgot">
-			{{ link_to("session/forgotPassword", "Forgot my password") }}
-		</div>
-
-	</form>
-
+{{ form() }}
+<div class="row">
+    <div class="grid-fourth">
+        {{ form.label('email') }}
+    </div>
+    <div class="grid-three-fourths">
+        {{ form.render('email') }}
+    </div>
 </div>
+<div class="row">
+    <div class="grid-fourth">
+        {{ form.label('password') }}
+    </div>
+    <div class="grid-three-fourths">
+
+        {{ form.render('password') }}
+    </div>
+</div>
+<div class="row">
+    <div class="grid-fourth">
+        {{ form.render('remember') }}
+        {{ form.label('remember') }}
+    </div>
+</div>
+<div class="row">
+    <div class="grid-three-fourths offset-fourth">
+        {{ form.render('go') }}
+    </div>
+</div>
+{{ form.render('csrf', ['value': security.getToken()]) }}
+{{ link_to("account/forgotPassword", "Forgot my password") }}
+{{ end_form() }}
