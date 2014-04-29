@@ -47,11 +47,14 @@ $di->set('view', function () use ($config) {
 
     $volt = new VoltEngine($view, $di);
 
+
     $volt->setOptions(array(
-        'compiledPath' => $config->application->cacheDir . 'volt/',
+        'compiledPath'      => $config->application->cacheDir . 'volt/',
         'compiledSeparator' => '_'
     ));
 
+    $compiler = $volt->getCompiler();
+    $compiler->addFunction('get_class', 'get_class');
     return $volt;
 }
     ));
@@ -64,10 +67,10 @@ $di->set('view', function () use ($config) {
  */
 $di->set('db', function () use ($config) {
     return new DbAdapter(array(
-        'host' => $config->database->host,
+        'host'     => $config->database->host,
         'username' => $config->database->username,
         'password' => $config->database->password,
-        'dbname' => $config->database->dbname
+        'dbname'   => $config->database->dbname
     ));
 });
 
@@ -119,10 +122,10 @@ $di->set('router', function () {
  */
 $di->set('flash', function () {
     return new Flash(array(
-        'notice' => 'alert',
+        'notice'  => 'alert',
         'success' => 'alert alert-success',
         'warning' => 'alert alert-warning',
-        'error' => 'alert alert-danger'
+        'error'   => 'alert alert-danger'
     ));
 });
 

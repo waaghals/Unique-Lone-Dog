@@ -3,6 +3,8 @@
 namespace UniqueLoneDog\Forms\Fields;
 
 use UniqueLoneDog\Forms\FormFieldInterface;
+use Phalcon\Forms\Element\Check;
+use Phalcon\Validation\Validator\Identical;
 
 /**
  * Simple Terms of service checkbox
@@ -21,7 +23,7 @@ class TosField implements FormFieldInterface
         $terms->setLabel('Accept terms and conditions');
 
         $terms->addValidator(new Identical(array(
-            'value' => 'yes',
+            'value'   => 'yes',
             'message' => 'Terms and conditions must be accepted'
         )));
 

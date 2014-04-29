@@ -15,7 +15,7 @@ use UniqueLoneDog\Forms\Fields\CSRFField;
  *
  * @author Patrick
  */
-class SignUpForm extends Form
+class SignUpForm extends AbstractForm
 {
 
     public function initialize()
@@ -25,7 +25,7 @@ class SignUpForm extends Form
         $this->addField(new PasswordRegistrationField());
         $this->addField(new ConfirmPasswordField);
         $this->addField(new TosField());
-        $this->addField(new CSRFField());
+        $this->addField(new CSRFField($this->security->getSessionToken()));
         $this->addField(new ButtonField("Sign Up"));
     }
 

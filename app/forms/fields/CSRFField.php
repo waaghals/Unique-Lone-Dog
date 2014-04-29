@@ -26,7 +26,7 @@ class CSRFField implements FormFieldInterface
         $csrf = new Hidden('csrf');
 
         $csrf->addValidator(new Identical(array(
-            'value' => $this->token,
+            'value'   => $this->token,
             'message' => 'CSRF validation failed'
         )));
 

@@ -2,6 +2,9 @@
 
 namespace UniqueLoneDog\Forms\Fields;
 
+use Phalcon\Mvc\Model\Validator\StringLength;
+use Phalcon\Validation\Validator\Confirmation;
+
 /**
  * Password field with added validation for password strenght
  *
@@ -15,13 +18,9 @@ class PasswordRegistrationField extends PasswordField
         parent::__construct();
 
         $this->field->addValidators(array(
-            new StringLength(array(
-                'min' => 8,
-                'messageMinimum' => 'Password is too short. Minimum 8 characters'
-                    )),
             new Confirmation(array(
                 'message' => 'Password doesn\'t match confirmation',
-                'with' => 'confirmPassword'
+                'with'    => 'confirmPassword'
                     ))
         ));
     }
