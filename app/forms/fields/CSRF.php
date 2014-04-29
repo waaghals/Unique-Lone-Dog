@@ -2,7 +2,6 @@
 
 namespace UniqueLoneDog\Forms\Fields;
 
-use UniqueLoneDog\Forms\FormFieldInterface;
 use Phalcon\Forms\Element\Hidden;
 use Phalcon\Validation\Validator\Identical;
 
@@ -11,26 +10,21 @@ use Phalcon\Validation\Validator\Identical;
  *
  * @author Patrick
  */
-class CSRFField implements FormFieldInterface
+class CSRF extends Hidden
 {
 
     private $token;
 
     public function __construct($token)
     {
-        $this->token = $token;
-    }
+        $this->token  = $token;
+        $this->_value = $token;
+        parent::__construct('csrf');
 
-    public function getField()
-    {
-        $csrf = new Hidden('csrf');
-
-        $csrf->addValidator(new Identical(array(
+        $this->addValidator(new Identical(array(
             'value'   => $this->token,
             'message' => 'CSRF validation failed'
         )));
-
-        return $csrf;
     }
 
 }

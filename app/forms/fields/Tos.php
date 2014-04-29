@@ -2,7 +2,6 @@
 
 namespace UniqueLoneDog\Forms\Fields;
 
-use UniqueLoneDog\Forms\FormFieldInterface;
 use Phalcon\Forms\Element\Check;
 use Phalcon\Validation\Validator\Identical;
 
@@ -11,23 +10,21 @@ use Phalcon\Validation\Validator\Identical;
  *
  * @author Patrick
  */
-class TosField implements FormFieldInterface
+class Tos extends Check
 {
 
-    public function getField()
+    public function __construct()
     {
-        $terms = new Check('terms', array(
+        parent::__construct('terms', array(
             'value' => 'yes'
         ));
 
-        $terms->setLabel('Accept terms and conditions');
+        $this->setLabel('Accept terms and conditions');
 
-        $terms->addValidator(new Identical(array(
+        $this->addValidator(new Identical(array(
             'value'   => 'yes',
             'message' => 'Terms and conditions must be accepted'
         )));
-
-        return $terms;
     }
 
 }

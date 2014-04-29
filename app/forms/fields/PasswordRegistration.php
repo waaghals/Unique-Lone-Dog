@@ -2,7 +2,6 @@
 
 namespace UniqueLoneDog\Forms\Fields;
 
-use Phalcon\Mvc\Model\Validator\StringLength;
 use Phalcon\Validation\Validator\Confirmation;
 
 /**
@@ -10,14 +9,14 @@ use Phalcon\Validation\Validator\Confirmation;
  *
  * @author Patrick
  */
-class PasswordRegistrationField extends PasswordField
+class PasswordRegistration extends Password
 {
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->field->addValidators(array(
+        $this->addValidators(array(
             new Confirmation(array(
                 'message' => 'Password doesn\'t match confirmation',
                 'with'    => 'confirmPassword'

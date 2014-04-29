@@ -2,31 +2,26 @@
 
 namespace UniqueLoneDog\Forms;
 
-use UniqueLoneDog\Forms\Fields\NameField;
-use UniqueLoneDog\Forms\Fields\PasswordRegistrationField;
-use UniqueLoneDog\Forms\Fields\ConfirmPasswordField;
-use UniqueLoneDog\Forms\Fields\EmailField;
-use UniqueLoneDog\Forms\Fields\ButtonField;
-use UniqueLoneDog\Forms\Fields\TosField;
-use UniqueLoneDog\Forms\Fields\CSRFField;
+use UniqueLoneDog\Forms\Fields\PasswordRegistration;
+use Phalcon\Forms\Form;
 
 /**
  * Form fields for signup
  *
  * @author Patrick
  */
-class SignUpForm extends AbstractForm
+class SignUpForm extends Form
 {
 
     public function initialize()
     {
-        $this->addField(new NameField());
-        $this->addField(new EmailField());
-        $this->addField(new PasswordRegistrationField());
-        $this->addField(new ConfirmPasswordField);
-        $this->addField(new TosField());
-        $this->addField(new CSRFField($this->security->getSessionToken()));
-        $this->addField(new ButtonField("Sign Up"));
+        $this->add(new Fields\Name());
+        $this->add(new Fields\Email());
+        $this->add(new PasswordRegistration());
+        $this->add(new Fields\ConfirmPassword());
+        $this->add(new Fields\Tos());
+        $this->add(new Fields\CSRF($this->security->getSessionToken()));
+        $this->add(new Fields\Button("Sign Up"));
     }
 
 }

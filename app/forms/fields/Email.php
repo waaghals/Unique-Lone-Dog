@@ -2,37 +2,34 @@
 
 namespace UniqueLoneDog\Forms\Fields;
 
-use UniqueLoneDog\Forms\FormFieldInterface;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Email;
+use Phalcon\Validation\Validator\Email as EmailValidator;
 
 /**
  * A required email field
  *
  * @author Patrick
  */
-class EmailField implements FormFieldInterface
+class Email extends Text
 {
 
-    public function getField()
+    public function __construct()
     {
-        $email = new Text('email', array(
+        parent::__construct('email', array(
             'placeholder' => 'Email'
         ));
 
-        $email->setLabel("Email");
+        $this->setLabel("Email");
 
-        $email->addValidators(array(
+        $this->addValidators(array(
             new PresenceOf(array(
                 'message' => 'The e-mail is required'
                     )),
-            new Email(array(
+            new EmailValidator(array(
                 'message' => 'The e-mail is not valid'
                     ))
         ));
-
-        return $email;
     }
 
 }

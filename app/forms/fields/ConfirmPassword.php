@@ -7,13 +7,13 @@ namespace UniqueLoneDog\Forms\Fields;
  *
  * @author Patrick
  */
-class ConfirmPasswordField extends PasswordField
+class ConfirmPassword extends Password
 {
 
     public function __construct()
     {
         parent::__construct("confirmPassword");
-        $this->field->setLabel("Repeat password");
+        $this->setLabel("Repeat password");
     }
 
 }

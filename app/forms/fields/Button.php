@@ -2,7 +2,6 @@
 
 namespace UniqueLoneDog\Forms\Fields;
 
-use UniqueLoneDog\Forms\FormFieldInterface;
 use Phalcon\Forms\Element\Submit;
 
 /**
@@ -10,25 +9,20 @@ use Phalcon\Forms\Element\Submit;
  *
  * @author Patrick
  */
-class ButtonField implements FormFieldInterface
+class Button extends Submit
 {
 
     const SECONDARY = "btn-secondary ";
-    const DISABLED = "disabled ";
-    const ACTIVE = "active ";
+    const DISABLED  = "disabled ";
+    const ACTIVE    = "active ";
 
     protected $field;
 
     public function __construct($value, $classes = "")
     {
-        $this->field = new Submit($value, array(
+        parent::__construct($value, array(
             'class' => trim('btn ' . $classes)
         ));
-    }
-
-    public function getField()
-    {
-        return $this->field;
     }
 
 }
