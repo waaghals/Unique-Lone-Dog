@@ -15,6 +15,8 @@
         <section class="container">
             {{ partial("partials/nav") }}
 
+            {{ flashSession.output() }}
+
             {{ content() }}
 
         </section>

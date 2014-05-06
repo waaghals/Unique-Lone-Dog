@@ -16,7 +16,7 @@ namespace UniqueLoneDog\Random;
 class Generator implements RandomInterface
 {
 
-    public function renerate($bytes)
+    public function generate($bytes)
     {
         $randomBytes  = openssl_random_pseudo_bytes($bytes);
         $encodedBytes = base64_encode($randomBytes);

@@ -42,12 +42,6 @@ class User extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var string
-     */
-    public $mustChangePassword;
-
-    /**
-     *
      * @var integer
      */
     public $roleId;
@@ -57,12 +51,6 @@ class User extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $statusId;
-
-    /**
-     *
-     * @var string
-     */
-    public $password;
 
     /**
      *
@@ -83,30 +71,15 @@ class User extends \Phalcon\Mvc\Model
         return !$this->validationHasFailed();
     }
 
-    /**
-     * Before create the user assign a password
-     */
-    public function beforeValidationOnCreate()
-    {
-        $this->mustChangePassword = 'N';
-        $generator                = $this->getDI()->getRandom();
-        $hasher                   = $this->getDI()->getSecurity();
-        $this->salt               = $generator->generate(12);
-
-        if (empty($this->password)) {
-            $this->password = $generator->generate(12);
-            $this->passhash = $hasher->hash($this->salt + $$this->password);
-
-            // The user must change its password in first login
-            $this->mustChangePassword = 'Y';
-        }
-    }
-
     public function initialize()
     {
-        $this->skipAttributes(array('password'));
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id');
-        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id');
+        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
+            'alias' => 'role'
+        ));
+
+        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id', array(
+            'alias' => 'status'
+        ));
 
         $this->hasMany('id', 'UniqueLoneDog\Models\LoginSuccess', 'usersId', array(
             'foreignKey' => array(

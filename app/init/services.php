@@ -13,6 +13,8 @@ use Phalcon\Flash\Direct as Flash;
 use UniqueLoneDog\Authentification\Identity;
 use UniqueLoneDog\Authentification\RememberMe;
 use UniqueLoneDog\Authentification\Authentification;
+use UniqueLoneDog\Random\Generator;
+use UniqueLoneDog\Models\Factories\UserFactory;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -54,7 +56,10 @@ $di->set('view', function () use ($config) {
     ));
 
     $compiler = $volt->getCompiler();
-    $compiler->addFunction('get_class', 'get_class');
+    $compiler->addFunction('is_class', function($obj, $name) {
+        return is_subclass_of($obj, $name);
+    });
+
     return $volt;
 }
     ));
@@ -139,4 +144,14 @@ $di->set("remember", function() {
 
 $di->set("auth", function() {
     return new Authentification();
+});
+
+$di->set("random", function() {
+
+    return new Generator();
+});
+
+$di->set("userFactory", function() {
+
+    return new UserFactory();
 });

@@ -58,20 +58,33 @@ class AccountController extends AbstractController
                 $this->flash->error($message);
             }
         } else {
-            $m = "Account created. You'll need to verify your email before you'll be able to use your account.";
-            $this->flash->success($m);
+            $user = $this->getUserFromPost();
 
-            return $this->response->redirect();
+            if (!$user->save()) {
+                $this->flash->error($user->getMessages());
+            } else {
+                $this->flash->success("Account created.");
+                return $this->response->redirect();
+            }
         }
 
-        $this->view->pick("partials/genericForm");
-        $this->view->form = $this->signUpForm;
+        return $this->signUpFormAction();
     }
 
     public function signUpFormAction()
     {
         $this->view->pick("partials/genericForm");
         $this->view->form = $this->signUpForm;
+    }
+
+    private function getUserFromPost()
+    {
+        $factory = $this->userFactory;
+        $name    = $this->request->getPost('name', 'striptags');
+        $email   = $this->request->getPost('email', 'email');
+        $pass    = $this->request->getPost('password');
+
+        return $factory->create($name, $email, $pass);
     }
 
 }

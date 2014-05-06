@@ -5,5 +5,5 @@ namespace UniqueLoneDog\Random;
 interface RandomInterface
 {
 
-    function renerate($bytes);
+    function generate($bytes);
 }
