@@ -5,6 +5,10 @@ namespace UniqueLoneDog\Controllers;
 use UniqueLoneDog\Forms\LoginForm;
 use UniqueLoneDog\Forms\SignUpForm;
 
+/**
+ *
+ * @property Identity $identity Identity library
+ */
 class AccountController extends AbstractController
 {
 
@@ -85,6 +89,15 @@ class AccountController extends AbstractController
         $pass    = $this->request->getPost('password');
 
         return $factory->create($name, $email, $pass);
+    }
+
+    public function logoutAction()
+    {
+        $this->identity->remove();
+
+        $this->flash->success("Logged out");
+
+        return $this->response->redirect();
     }
 
 }

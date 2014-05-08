@@ -9,7 +9,7 @@ class IndexController extends Controller
 
     public function indexAction()
     {
-        $this->response->setContent("Hallo Wereld");
+        $this->response->setContent("Hallo Wereld, " . $this->identity->getName());
         $this->response->setStatusCode(501, "Not implemented");
         return $this->response;
     }

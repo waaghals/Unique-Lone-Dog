@@ -18,6 +18,9 @@ class AccountRoutes extends \Phalcon\Mvc\Router\Group
 
         $this->setPrefix('/account');
 
+        /**
+         * Login
+         */
         $this->addGet("/login", array(
             "action" => "loginForm"
         ))->setName("account-login");
@@ -26,6 +29,16 @@ class AccountRoutes extends \Phalcon\Mvc\Router\Group
             "action" => "performLogin"
         ));
 
+        /**
+         * Logout
+         */
+        $this->addGet("/logout", array(
+            "action" => "logout"
+        ))->setName("account-logout");
+
+        /**
+         * Signup
+         */
         $this->addGet("/signup", array(
             "action" => "signUpForm"
         ))->setName("account-signup");

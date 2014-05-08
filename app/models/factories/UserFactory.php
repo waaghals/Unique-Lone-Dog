@@ -19,7 +19,8 @@ class UserFactory extends Injectable
         $u->role   = Role::findFirstByName('Users');
         $u->salt   = $this->security->getSaltBytes();
 
-        $hash        = md5($u->salt + $password);
+
+        $hash        = $this->security->hash($u->salt + $password);
         $u->passhash = $hash;
 
         return $u;

@@ -3,6 +3,7 @@
 namespace UniqueLoneDog\Authentification;
 
 use Phalcon\Mvc\User\Component;
+use UniqueLoneDog\Models\User;
 
 /**
  * Methods for getting the current logged in identity
@@ -13,6 +14,11 @@ class Identity extends Component
 {
 
     const SESSION_NAME = "identity";
+
+    public function exists()
+    {
+        return $this->session->has(self::SESSION_NAME);
+    }
 
     /**
      * Returns the current identity
@@ -31,8 +37,7 @@ class Identity extends Component
      */
     public function getName()
     {
-        $identity = $this->session->get(self::SESSION_NAME);
-        return $identity['name'];
+        return $this->getIdentity()['name'];
     }
 
     /**
@@ -52,12 +57,12 @@ class Identity extends Component
      */
     public function setByUserId($id)
     {
-        $user = Users::findFirstById($id);
+        $user = User::findFirstById($id);
         if (!$user) {
             throw new Exception('The user does not exist');
         }
 
-        $this->setSession($user);
+        $this->setIdentity($user);
     }
 
     /**
@@ -67,12 +72,12 @@ class Identity extends Component
      */
     public function setByEmail($email)
     {
-        $user = Users::findFirstByEmail($email);
+        $user = User::findFirstByEmail($email);
         if (!$user) {
             throw new Exception('The user does not exist');
         }
 
-        $this->setSession($user);
+        $this->setIdentity($user);
     }
 
     /**
@@ -82,12 +87,12 @@ class Identity extends Component
      */
     public function setByName($name)
     {
-        $user = Users::findFirstByName($name);
+        $user = User::findFirstByName($name);
         if (!$user) {
             throw new Exception('The user does not exist');
         }
 
-        $this->setSession($user);
+        $this->setIdentity($user);
     }
 
     /**
@@ -111,10 +116,10 @@ class Identity extends Component
         return null;
     }
 
-    private function setSession(User $user)
+    private function setIdentity(User $user)
     {
         $this->session->set(self::SESSION_NAME, array(
-            'id' => $user->id,
+            'id'   => $user->id,
             'name' => $user->name,
             'role' => $user->role->name
         ));

@@ -15,7 +15,7 @@ class RememberMe extends Component
 {
 
     const TOKEN = "RMT";
-    const USER = "RMU";
+    const USER  = "RMU";
 
     /**
      * Set the rememberme token in the cookie
@@ -25,11 +25,11 @@ class RememberMe extends Component
     public function createRememberCookie(User $user)
     {
         $userAgent = $this->request->getUserAgent();
-        $token = sha1($user->email . $user->password . $userAgent);
+        $token     = sha1($user->email . $user->password . $userAgent);
 
-        $remember = new RememberToken();
-        $remember->usersId = $user->id;
-        $remember->token = $token;
+        $remember            = new RememberToken();
+        $remember->usersId   = $user->id;
+        $remember->token     = $token;
         $remember->userAgent = $userAgent;
 
         if ($remember->save() != false) {
@@ -56,7 +56,7 @@ class RememberMe extends Component
      */
     public function login()
     {
-        $userId = $this->cookies->get(self::USER)->getValue();
+        $userId      = $this->cookies->get(self::USER)->getValue();
         $cookieToken = $this->cookies->get(self::TOKEN)->getValue();
 
         $currentUserToken = $this->getToken($userId);
@@ -92,8 +92,8 @@ class RememberMe extends Component
         }
 
         $conditions = array(
-            "uid" => $userId,
-            "token" => $userToken,
+            "uid"    => $userId,
+            "token"  => $userToken,
             "expire" => time() - (86400 * 7) // A week
         );
 
@@ -112,11 +112,11 @@ class RememberMe extends Component
      */
     public function remove()
     {
-        if ($this->cookies->has(RememerMe::TOKEN)) {
-            $this->cookies->get(RememerMe::TOKEN)->delete();
+        if ($this->cookies->has(self::TOKEN)) {
+            $this->cookies->get(self::TOKEN)->delete();
         }
-        if ($this->cookies->has(RememerMe::USER)) {
-            $this->cookies->get(RememerMe::USER)->delete();
+        if ($this->cookies->has(self::USER)) {
+            $this->cookies->get(self::USER)->delete();
         }
     }
 
