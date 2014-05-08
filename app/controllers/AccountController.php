@@ -27,7 +27,6 @@ class AccountController extends AbstractController
             return $this->auth->loginWithRememberMe();
         }
 
-        $this->view->pick("partials/genericForm");
         $this->view->form = $this->loginForm;
     }
 
@@ -50,7 +49,7 @@ class AccountController extends AbstractController
             $this->flash->error("Email or password are incorrect.");
         }
 
-        $this->view->pick("partials/genericForm");
+        $this->view->pick("account/loginForm");
         $this->view->form = $this->loginForm;
     }
 

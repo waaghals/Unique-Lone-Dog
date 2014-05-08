@@ -10,5 +10,4 @@
     </div>
 </div>
 {% endfor %}
-{{ link_to("account/forgotPassword", "Forgot my password") }}
 {{ end_form() }}
