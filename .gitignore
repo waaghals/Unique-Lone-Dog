@@ -1,2 +1,33 @@
-/cache/
-/config/development/
+#### Generic
+*~
+
+*.lock
+
+*.DS_Store
+
+*.swp
+
+*.out
+
+
+#### Netbeans
+
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+#### Sublime
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+# *.sublime-project
+
+#sftp configuration file
+sftp-config.json
