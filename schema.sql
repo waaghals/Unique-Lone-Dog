@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.6
+-- version 4.0.9
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Gegenereerd op: 27 apr 2014 om 14:53
--- Serverversie: 5.6.16
--- PHP-versie: 5.5.9
+-- Genereertijd: 08 mei 2014 om 11:25
+-- Serverversie: 5.6.14
+-- PHP-versie: 5.5.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -197,9 +197,16 @@ INSERT INTO `role` (`id`, `name`, `active`) VALUES
 
 CREATE TABLE IF NOT EXISTS `status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `status`
+--
+
+INSERT INTO `status` (`id`, `name`) VALUES
+(2, 'non-confirmed');
 
 -- --------------------------------------------------------
 
