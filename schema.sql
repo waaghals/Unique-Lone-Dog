@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.6
+-- version 4.0.9
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Gegenereerd op: 08 mei 2014 om 14:35
--- Serverversie: 5.6.16
--- PHP-versie: 5.5.9
+-- Genereertijd: 15 mei 2014 om 10:25
+-- Serverversie: 5.6.14
+-- PHP-versie: 5.5.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,91 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Databank: `uld`
 --
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `email_confirmation`
---
-
-CREATE TABLE IF NOT EXISTS `email_confirmation` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userId` int(10) unsigned NOT NULL,
-  `confirmationCode` char(32) NOT NULL,
-  `createdAt` int(10) unsigned NOT NULL,
-  `modifiedAt` int(10) unsigned DEFAULT NULL,
-  `confirmed` char(1) DEFAULT 'N',
-  PRIMARY KEY (`id`),
-  KEY `userId` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `login_failed`
---
-
-CREATE TABLE IF NOT EXISTS `login_failed` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userId` int(10) unsigned DEFAULT NULL,
-  `ipAddress` varbinary(16) NOT NULL,
-  `attempted` smallint(5) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `usersId` (`userId`),
-  KEY `userId` (`userId`),
-  KEY `userId_2` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `login_success`
---
-
-CREATE TABLE IF NOT EXISTS `login_success` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userId` int(10) unsigned NOT NULL,
-  `ipAddress` varbinary(16) NOT NULL,
-  `userAgent` varchar(120) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `usersId` (`userId`),
-  KEY `userId` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `password_change`
---
-
-CREATE TABLE IF NOT EXISTS `password_change` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userId` int(10) unsigned NOT NULL,
-  `ipAddress` varbinary(16) NOT NULL,
-  `userAgent` varchar(48) NOT NULL,
-  `createdAt` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `usersId` (`userId`),
-  KEY `userId` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `password_reset`
---
-
-CREATE TABLE IF NOT EXISTS `password_reset` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userId` int(10) unsigned NOT NULL,
-  `code` varchar(48) NOT NULL,
-  `createdAt` int(10) unsigned NOT NULL,
-  `modifiedAt` int(10) unsigned DEFAULT NULL,
-  `reset` char(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `usersId` (`userId`),
-  KEY `userId` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -197,16 +112,16 @@ INSERT INTO `role` (`id`, `name`, `active`) VALUES
 
 CREATE TABLE IF NOT EXISTS `status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(15) NOT NULL,
+  `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `status`
 --
 
 INSERT INTO `status` (`id`, `name`) VALUES
-(1, 'non-confirmed');
+(2, 'non-confirmed');
 
 -- --------------------------------------------------------
 
@@ -219,55 +134,25 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `passhash` char(128) NOT NULL,
-  `salt` varchar(64) NOT NULL,
+  `mustChangePassword` char(1) DEFAULT NULL,
   `roleId` int(10) unsigned NOT NULL,
   `statusId` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `profilesId` (`roleId`),
   KEY `roleId` (`roleId`),
   KEY `statusId` (`statusId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `salt`, `roleId`, `statusId`) VALUES
-(15, 'test', 'test@test.nl', 'cfcd208495d565ef66e7dff9f98764da', 'YVLy9Q9JitJDBYbY', 2, 1);
+INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `mustChangePassword`, `roleId`, `statusId`) VALUES
+(3, 'test', 'test@test.nl', '$2a$08$gpKVXhOQpMLSJ6GsGKnhYuporEcetbd.6YTdYmf1SFkKa4t5IGg5W', NULL, 2, 2);
 
 --
 -- Beperkingen voor gedumpte tabellen
 --
-
---
--- Beperkingen voor tabel `email_confirmation`
---
-ALTER TABLE `email_confirmation`
-  ADD CONSTRAINT `email_confirmation_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
-
---
--- Beperkingen voor tabel `login_failed`
---
-ALTER TABLE `login_failed`
-  ADD CONSTRAINT `login_failed_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
-
---
--- Beperkingen voor tabel `login_success`
---
-ALTER TABLE `login_success`
-  ADD CONSTRAINT `login_success_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
-
---
--- Beperkingen voor tabel `password_change`
---
-ALTER TABLE `password_change`
-  ADD CONSTRAINT `password_change_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
-
---
--- Beperkingen voor tabel `password_reset`
---
-ALTER TABLE `password_reset`
-  ADD CONSTRAINT `password_reset_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 --
 -- Beperkingen voor tabel `permission`
