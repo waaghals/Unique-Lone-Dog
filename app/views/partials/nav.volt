@@ -7,6 +7,7 @@
 
             {% if identity.exists() %}
             <li>Welcome {{ identity.getName() }}</li>
+            <li><a href="{{ url.get({"for": "item-add"}) }}" >Items</a></li>
             <li><a href="{{ url.get({"for": "account-logout"}) }}" >Logout</a></li>
             {% else %}
             <li><a href="{{ url.get({"for": "account-login"}) }}" >Login</a></li>

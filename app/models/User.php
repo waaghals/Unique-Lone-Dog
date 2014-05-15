@@ -54,6 +54,12 @@ class User extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var integer
+     */
+    public $statusId;
+
+    /**
+     *
      * @return boolean False when validation failed.
      */
     public function validation()
@@ -63,7 +69,7 @@ class User extends \Phalcon\Mvc\Model
         )));
 
         $this->validate(new Uniqueness(array(
-            "field"    => "email",
+            "field" => "email",
             "required" => true,
         )));
 
@@ -96,6 +102,12 @@ class User extends \Phalcon\Mvc\Model
         $this->hasMany('id', 'UniqueLoneDog\Models\PasswordReset', 'usersId', array(
             'foreignKey' => array(
                 'message' => 'User cannot be deleted because it still has data in the PasswordReset table'
+            )
+        ));
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\Item', 'itemId', array(
+            'foreignKey' => array(
+                'message' => 'Item cannot be deleted because it\'s used on a User'
             )
         ));
     }
