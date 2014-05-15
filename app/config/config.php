@@ -20,5 +20,8 @@ return new \Phalcon\Config(array(
         'publicUrl'      => 'localhost',
         'cryptSalt'      => 'YKaCEjaODSyMawu-WggW/pvq1orBqYFNEYXUUlDR$B!)0cu@1d2o69)sv5F$l+Q+',
         'saltBytes'      => 12
+    ),
+    'environment' => array(
+        'development' => true
     )
         ));
