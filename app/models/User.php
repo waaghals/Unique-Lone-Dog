@@ -100,4 +100,25 @@ class User extends \Phalcon\Mvc\Model
         ));
     }
 
+    /**
+     * Set a new password, will regenerate a new salt.
+     *
+     * @param string $password The new password
+     */
+    public function setPassword($password, $security)
+    {
+        $this->salt     = $security->getSaltBytes();
+        $hash           = $security->hash($this->salt + $password);
+        $this->passhash = $hash;
+    }
+
+    /**
+     * Set the default role and status before creation
+     */
+    public function beforeValidationOnCreate()
+    {
+        $u->status = Status::findFirstByName('non-confirmed');
+        $u->role   = Role::findFirstByName('Users');
+    }
+
 }
