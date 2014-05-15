@@ -12,15 +12,15 @@ class UserFactory extends Injectable
 
     public function create($name, $email, $password)
     {
-        $u         = new User();
-        $u->email  = $email;
-        $u->name   = $name;
+        $u = new User();
+        $u->email = $email;
+        $u->name = $name;
         $u->status = Status::findFirstByName('non-confirmed');
-        $u->role   = Role::findFirstByName('Users');
-        $u->salt   = $this->security->getSaltBytes();
+        $u->role = Role::findFirstByName('Users');
+        $u->salt = $this->security->getSaltBytes();
 
 
-        $hash        = $this->security->hash($u->salt + $password);
+        $hash = $this->security->hash($u->salt + $password);
         $u->passhash = $hash;
 
         return $u;
