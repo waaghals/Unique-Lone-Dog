@@ -39,16 +39,6 @@ class URI extends Text
 
         $this->setLabel('URI');
 
-        $this->addValidator(new PresenceOf(array(
-            'message' => 'URI is required.'
-        )));
-
-        //$validation = new URIValidator();
-        //$message = $validation->validate(array($_POST['URI']));
-        //echo $message;
-
-
-
         $this->addValidator(new URIValidator(array(
             'message' => 'This URI is not valid.'
         )));
