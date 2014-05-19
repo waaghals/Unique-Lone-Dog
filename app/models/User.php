@@ -54,12 +54,6 @@ class User extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
-     */
-    public $statusId;
-
-    /**
-     *
      * @return boolean False when validation failed.
      */
     public function validation()

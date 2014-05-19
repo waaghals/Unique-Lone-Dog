@@ -3,6 +3,8 @@
 namespace UniqueLoneDog\Controllers;
 
 use UniqueLoneDog\Forms\ItemSubmitForm;
+use UniqueLoneDog\Models\Factories\ItemFactory;
+use UniqueLoneDog\Validator;
 
 /*
  * The MIT License
@@ -36,10 +38,12 @@ class ItemController extends AbstractController
 {
 
     private $itemSubmitForm;
+    private $itemFactory;
 
     public function initialize()
     {
         $this->itemSubmitForm = new ItemSubmitForm();
+        $this->itemFactory = new ItemFactory();
     }
 
     public function AddAction()
@@ -71,8 +75,16 @@ class ItemController extends AbstractController
                 return $this->response->redirect();
             }
         }
+    }
 
-        $this->response->redirect("/");
+    private function getItemFromPost()
+    {
+        $factory = $this->itemFactory;
+        $name = $this->request->getPost('name');
+        $URI = $this->request->getPost('URI');
+        $comment = $this->request->getPost('comment');
+
+        return $factory->create($name, $URI, $comment);
     }
 
 }

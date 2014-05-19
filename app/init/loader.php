@@ -10,6 +10,7 @@ $loader->registerNamespaces(array(
     'UniqueLoneDog\Controllers' => $config->application->controllersDir,
     'UniqueLoneDog\Forms' => $config->application->formsDir,
     'UniqueLoneDog\Routes' => $config->application->routeDir,
+    'UniqueLoneDog\Validators' => $config->application->validatorsDir,
     'UniqueLoneDog' => $config->application->libraryDir,
 ));
 

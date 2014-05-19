@@ -24,6 +24,8 @@
  * THE SOFTWARE.
  */
 
+namespace UniqueLoneDog\Models;
+
 class Item extends \Phalcon\Mvc\Model
 {
 
@@ -57,19 +59,13 @@ class Item extends \Phalcon\Mvc\Model
      */
     public $comment;
 
-    public function getSource()
-    {
-        return '';
-    }
-
     public function initialize()
     {
-        $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id');
-
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
-            'alias' => 'role'
+        $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id', array(
+            'alias' => 'user'
         ));
     }
 
 }
+
 ?>

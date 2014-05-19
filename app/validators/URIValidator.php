@@ -1,11 +1,5 @@
 <?php
 
-namespace UniqueLoneDog\Forms\Fields;
-
-use Phalcon\Forms\Element\Text;
-use Phalcon\Mvc\Model\Validator\PresenceOf;
-use UniqueLoneDog\validators\URIValidator;
-
 /*
  * The MIT License
  *
@@ -30,28 +24,39 @@ use UniqueLoneDog\validators\URIValidator;
  * THE SOFTWARE.
  */
 
-class URI extends Text
+use Phalcon\Validation\Validator;
+use Phalcon\Validation\ValidatorInterface;
+use Phalcon\Validation\Message;
+
+/**
+ * Description of URIValidator
+ *
+ * @author Tojba
+ */
+class URIValidator extends Validator implements ValidatorInterface
 {
 
-    public function __construct()
+    /**
+     *
+     * Executes the validation
+     *
+     * @param Phalcon\Validation $validator
+     * @param string $attribute
+     * @return boolean
+     */
+    public function validate($validator, $attribute)
     {
-        parent::__construct('URI');
+        $value = $validator->getValue($attribute);
 
-        $this->setLabel('URI');
-
-        $this->addValidator(new PresenceOf(array(
-            'message' => 'URI is required.'
-        )));
-
-        //$validation = new URIValidator();
-        //$message = $validation->validate(array($_POST['URI']));
-        //echo $message;
-
-
-
-        $this->addValidator(new URIValidator(array(
-            'message' => 'This URI is not valid.'
-        )));
+        if (!filter_var($value, FILTER_VALIDATE_URL)) {
+            $message = $this->getOption('message');
+            if (!$message) {
+                $message = 'This URI is not valid';
+            }
+            $validator->appendMessage(new Message($message, $attribute, 'URI'));
+            return false;
+        }
+        return true;
     }
 
 }
