@@ -24,6 +24,8 @@
  * THE SOFTWARE.
  */
 
+namespace UniqueLoneDog\Validators;
+
 use Phalcon\Validation\Validator;
 use Phalcon\Validation\ValidatorInterface;
 use Phalcon\Validation\Message;
