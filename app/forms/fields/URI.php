@@ -4,7 +4,7 @@ namespace UniqueLoneDog\Forms\Fields;
 
 use Phalcon\Forms\Element\Text;
 use Phalcon\Mvc\Model\Validator\PresenceOf;
-use UniqueLoneDog\validators\URIValidator;
+use UniqueLoneDog\Validators\URIValidator;
 
 /*
  * The MIT License
