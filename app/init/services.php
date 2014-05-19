@@ -150,8 +150,3 @@ $di->set("random", function() {
 
     return new Generator();
 });
-
-$di->set("userFactory", function() {
-
-    return new UserFactory();
-});

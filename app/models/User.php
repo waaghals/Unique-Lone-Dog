@@ -80,24 +80,6 @@ class User extends \Phalcon\Mvc\Model
         $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id', array(
             'alias' => 'status'
         ));
-
-        $this->hasMany('id', 'UniqueLoneDog\Models\LoginSuccess', 'usersId', array(
-            'foreignKey' => array(
-                'message' => 'User cannot be deleted because it still has data in LoginSuccess table'
-            )
-        ));
-
-        $this->hasMany('id', 'UniqueLoneDog\Models\PasswordChange', 'usersId', array(
-            'foreignKey' => array(
-                'message' => 'User cannot be deleted because it still has data in PasswordChange table'
-            )
-        ));
-
-        $this->hasMany('id', 'UniqueLoneDog\Models\PasswordReset', 'usersId', array(
-            'foreignKey' => array(
-                'message' => 'User cannot be deleted because it still has data in the PasswordReset table'
-            )
-        ));
     }
 
     /**
@@ -105,8 +87,9 @@ class User extends \Phalcon\Mvc\Model
      *
      * @param string $password The new password
      */
-    public function setPassword($password, $security)
+    public function setPassword($password)
     {
+        $security       = $this->getDI()->get("security");
         $this->salt     = $security->getSaltBytes();
         $hash           = $security->hash($this->salt + $password);
         $this->passhash = $hash;
@@ -115,10 +98,18 @@ class User extends \Phalcon\Mvc\Model
     /**
      * Set the default role and status before creation
      */
-    public function beforeValidationOnCreate()
+    public function beforeValidation()
     {
-        $u->status = Status::findFirstByName('non-confirmed');
-        $u->role   = Role::findFirstByName('Users');
+        echo "BEFORE VALIDATION \n";
+        if ($this->status == null) {
+            $this->status = Status::findFirstByName('non-confirmed');
+            echo "SETTING STATUS \n";
+        }
+
+        if ($this->role == null) {
+            $this->role = Role::findFirstByName('Users');
+            echo "SETTING ROLE \n";
+        }
     }
 
 }
