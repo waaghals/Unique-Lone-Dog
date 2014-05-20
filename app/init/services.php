@@ -14,7 +14,6 @@ use UniqueLoneDog\Authentification\Identity;
 use UniqueLoneDog\Authentification\RememberMe;
 use UniqueLoneDog\Authentification\Authentification;
 use UniqueLoneDog\Random\Generator;
-use UniqueLoneDog\Models\Factories\UserFactory;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
