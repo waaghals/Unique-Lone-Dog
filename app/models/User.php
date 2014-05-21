@@ -71,6 +71,12 @@ class User extends \Phalcon\Mvc\Model
         return !$this->validationHasFailed();
     }
 
+    public function deleteGroup($groupId)
+    {
+        $userGroup = UserGroup::find($groupId);
+        $userGroup->delete();
+    }
+
     public function initialize()
     {
         $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
@@ -81,23 +87,15 @@ class User extends \Phalcon\Mvc\Model
             'alias' => 'status'
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\LoginSuccess', 'usersId', array(
+        $this->hasMany('id', 'UniqueLoneDog\Models\Group', 'userId', array(
+            "alias"      => "userGroups",
             'foreignKey' => array(
-                'message' => 'User cannot be deleted because it still has data in LoginSuccess table'
+                'message' => 'User cannot be deleted because it still has data in Group table'
             )
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\PasswordChange', 'usersId', array(
-            'foreignKey' => array(
-                'message' => 'User cannot be deleted because it still has data in PasswordChange table'
-            )
-        ));
-
-        $this->hasMany('id', 'UniqueLoneDog\Models\PasswordReset', 'usersId', array(
-            'foreignKey' => array(
-                'message' => 'User cannot be deleted because it still has data in the PasswordReset table'
-            )
-        ));
+        $this->hasManyToMany(
+                "id", "UniqueLoneDog\Models\UserGroup", "userId", "groupId", "UniqueLoneDog\Models\Group", "id", array("alias" => "groups"));
     }
 
 }

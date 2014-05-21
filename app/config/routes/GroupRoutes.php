@@ -17,9 +17,21 @@ class GroupRoutes extends \Phalcon\Mvc\Router\Group
             'controller' => 'group'
         ));
 
-        $this->add("/group", array(
+        $this->addGet("/group", array(
             "action" => "index"
         ))->setName("group");
+
+        $this->add("/group/subscribe/{id}/", array(
+            "action" => "performSubscribeGroup"
+        ))->setName("group-subscribe");
+
+        $this->add("/group/unsubscribe/{id}/", array(
+            "action" => "performUnsubscribeGroup"
+        ))->setName("group-unsubscribe");
+
+        $this->add("/group/explore", array(
+            "action" => "exploreGroup"
+        ))->setName("group-explore");
 
         $this->addGet("/group/add", array(
             "action" => "AddGroupForm"

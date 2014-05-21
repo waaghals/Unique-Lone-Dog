@@ -38,7 +38,7 @@ class Group extends \Phalcon\Mvc\Model
     public function validation()
     {
         $this->validate(new Uniqueness(array(
-            "field" => "name",
+            "field"    => "name",
             "required" => true,
         )));
 
@@ -49,10 +49,14 @@ class Group extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->hasMany('id', 'UniqueLoneDog\Models\User', 'groupId', array(
+            "alias"      => "groupUsers",
             'foreignKey' => array(
                 'message' => 'Group cannot be deleted because it still has data in User table'
             )
         ));
+        $this->hasManyToMany(
+                "id", "UniqueLoneDog\Models\UserGroup", "groupId", "userId", "UniqueLoneDog\Models\User", "id", array("alias" => "users")
+        );
     }
 
 }
