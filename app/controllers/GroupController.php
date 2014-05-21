@@ -79,7 +79,7 @@ class GroupController extends AbstractController
     {
         $this->identity->getUser()->deleteGroup($groupId);
         $this->flashSession->success("Unsubscription complete.");
-        return $this->response->redirect('group');
+        return $this->response->redirect('group/explore');
     }
 
 }
