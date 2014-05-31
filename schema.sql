@@ -1,12 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.9
+-- version 4.1.6
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Genereertijd: 15 mei 2014 om 10:25
--- Serverversie: 5.6.14
--- PHP-versie: 5.5.6
+-- Gegenereerd op: 31 mei 2014 om 22:30
+-- Serverversie: 5.6.16
+-- PHP-versie: 5.5.9
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -23,46 +24,50 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Tabelstructuur voor tabel `password_change`
+--
+
+CREATE TABLE IF NOT EXISTS `password_change` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userId` int(10) unsigned NOT NULL,
+  `ipAddress` varbinary(16) NOT NULL,
+  `userAgent` varchar(48) NOT NULL,
+  `createdAt` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `usersId` (`userId`),
+  KEY `userId` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `password_reset`
+--
+
+CREATE TABLE IF NOT EXISTS `password_reset` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userId` int(10) unsigned NOT NULL,
+  `code` varchar(48) NOT NULL,
+  `createdAt` int(10) unsigned NOT NULL,
+  `modifiedAt` int(10) unsigned DEFAULT NULL,
+  `reset` char(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `usersId` (`userId`),
+  KEY `userId` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Tabelstructuur voor tabel `permission`
 --
 
 CREATE TABLE IF NOT EXISTS `permission` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `roleId` int(10) unsigned NOT NULL,
-  `resource` varchar(16) NOT NULL,
+  `roleName` varchar(64) NOT NULL,
+  `controller` varchar(16) NOT NULL,
   `action` varchar(16) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `profilesId` (`roleId`),
-  KEY `roleId` (`roleId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `permission`
---
-
-INSERT INTO `permission` (`id`, `roleId`, `resource`, `action`) VALUES
-(1, 3, 'users', 'index'),
-(2, 3, 'users', 'search'),
-(3, 3, 'profiles', 'index'),
-(4, 3, 'profiles', 'search'),
-(5, 1, 'users', 'index'),
-(6, 1, 'users', 'search'),
-(7, 1, 'users', 'edit'),
-(8, 1, 'users', 'create'),
-(9, 1, 'users', 'delete'),
-(10, 1, 'users', 'changePassword'),
-(11, 1, 'profiles', 'index'),
-(12, 1, 'profiles', 'search'),
-(13, 1, 'profiles', 'edit'),
-(14, 1, 'profiles', 'create'),
-(15, 1, 'profiles', 'delete'),
-(16, 1, 'permissions', 'index'),
-(17, 2, 'users', 'index'),
-(18, 2, 'users', 'search'),
-(19, 2, 'users', 'edit'),
-(20, 2, 'users', 'create'),
-(21, 2, 'profiles', 'index'),
-(22, 2, 'profiles', 'search');
+  PRIMARY KEY (`roleName`,`controller`,`action`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -88,21 +93,11 @@ CREATE TABLE IF NOT EXISTS `remember_token` (
 --
 
 CREATE TABLE IF NOT EXISTS `role` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
-  `active` char(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `active` (`active`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `role`
---
-
-INSERT INTO `role` (`id`, `name`, `active`) VALUES
-(1, 'Administrators', 'Y'),
-(2, 'Users', 'Y'),
-(3, 'Read-Only', 'Y');
+  `power` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `power` (`power`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -111,17 +106,9 @@ INSERT INTO `role` (`id`, `name`, `active`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `status` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `status`
---
-
-INSERT INTO `status` (`id`, `name`) VALUES
-(2, 'non-confirmed');
+  `name` varchar(15) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -134,31 +121,35 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `passhash` char(128) NOT NULL,
-  `mustChangePassword` char(1) DEFAULT NULL,
-  `roleId` int(10) unsigned NOT NULL,
-  `statusId` int(10) unsigned NOT NULL,
+  `salt` varchar(64) NOT NULL,
+  `roleName` varchar(64) NOT NULL,
+  `statusName` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `profilesId` (`roleId`),
-  KEY `roleId` (`roleId`),
-  KEY `statusId` (`statusId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `user`
---
-
-INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `mustChangePassword`, `roleId`, `statusId`) VALUES
-(3, 'test', 'test@test.nl', '$2a$08$gpKVXhOQpMLSJ6GsGKnhYuporEcetbd.6YTdYmf1SFkKa4t5IGg5W', NULL, 2, 2);
+  KEY `roleName` (`roleName`),
+  KEY `statusName` (`statusName`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Beperkingen voor gedumpte tabellen
 --
 
 --
+-- Beperkingen voor tabel `password_change`
+--
+ALTER TABLE `password_change`
+  ADD CONSTRAINT `password_change_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+--
+-- Beperkingen voor tabel `password_reset`
+--
+ALTER TABLE `password_reset`
+  ADD CONSTRAINT `password_reset_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+--
 -- Beperkingen voor tabel `permission`
 --
 ALTER TABLE `permission`
-  ADD CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`);
+  ADD CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`);
 
 --
 -- Beperkingen voor tabel `remember_token`
@@ -170,8 +161,9 @@ ALTER TABLE `remember_token`
 -- Beperkingen voor tabel `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`),
-  ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`statusId`) REFERENCES `status` (`id`);
+  ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`statusName`) REFERENCES `status` (`name`),
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`);
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
