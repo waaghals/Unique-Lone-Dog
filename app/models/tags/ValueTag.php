@@ -47,4 +47,19 @@ class ValueTag extends AbstractTag
         return "value_tag";
     }
 
+    /**
+     * Return a string representation of a machine tag/triple tag
+     * Format namepace:predicate=value
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $predicate = $this->predicate->part;
+        $namespace = $this->predicate->namespace->part;
+        $value     = $this->part;
+
+        return sprintf("%s:%s=%s", $namespace, $predicate, $value);
+    }
+
 }
