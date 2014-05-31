@@ -73,11 +73,11 @@ class User extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
+        $this->belongsTo('roleName', 'UniqueLoneDog\Models\Role', 'name', array(
             'alias' => 'role'
         ));
 
-        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id', array(
+        $this->belongsTo('statusName', 'UniqueLoneDog\Models\Status', 'name', array(
             'alias' => 'status'
         ));
 

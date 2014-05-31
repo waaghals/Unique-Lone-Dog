@@ -33,13 +33,15 @@ class Role extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany('id', 'UniqueLoneDog\Models\User', 'roleId', array(
+        $this->hasMany('name', 'UniqueLoneDog\Models\User', 'roleName', array(
             'foreignKey' => array(
                 'message' => 'Role cannot be deleted because it\'s used on a User'
             )
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\Permission', 'roleprofilesId');
+        $this->hasMany('name', 'UniqueLoneDog\Models\Permission', 'roleName', array(
+            'alias' => 'permissions'
+        ));
     }
 
 }

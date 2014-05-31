@@ -15,6 +15,7 @@ use UniqueLoneDog\Authentification\RememberMe;
 use UniqueLoneDog\Authentification\Authentification;
 use UniqueLoneDog\Random\Generator;
 use UniqueLoneDog\Models\Factories\UserFactory;
+use UniqueLoneDog\Authentification\AccessControl;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -110,9 +111,19 @@ $di->set('crypt', function () use ($config) {
 /**
  * Dispatcher use a default namespace
  */
-$di->set('dispatcher', function () {
+$di->set('dispatcher', function() use ($di) {
+
+    $eventsManager = $di->getShared('eventsManager');
+
+    //Attach a listener for type "dispatch"
+    $eventsManager->attach("dispatch", new AccessControl($di));
+
     $dispatcher = new Dispatcher();
     $dispatcher->setDefaultNamespace('UniqueLoneDog\Controllers');
+
+    //Bind the eventsManager to the view component
+    $dispatcher->setEventsManager($eventsManager);
+
     return $dispatcher;
 });
 
