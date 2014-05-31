@@ -49,43 +49,54 @@ class AccessControl extends Plugin
         $this->di = $di;
     }
 
-    public function getAcl()
+    /**
+     * Get the fully build access list
+     *
+     * @return \Phalcon\Acl\Adapter\Memory
+     */
+    private function getAccessList()
     {
-        $acl = new AclMemory();
-
-        $acl->setDefaultAction(Acl::DENY);
-
-        // Register roles
         $roles       = Role::find(array(
                     "order" => "power ASC"
         ));
         $permissions = Permission::find();
 
+        //TODO: Cache the result, and if it exists return that
+        return $this->buildAccessList($permissions, $roles);
+    }
+
+    /**
+     * Builds the access control list using the $permissions and $roles
+     *
+     * @param ResultSet<Permission> $permissions
+     * @param ResultSet<Role> $roles
+     * @return \Phalcon\Acl\Adapter\Memory
+     */
+    private function buildAccessList($permissions, $roles)
+    {
+        $acl = new AclMemory();
+        $acl->setDefaultAction(Acl::DENY);
         foreach ($permissions as $permission) {
             $acl->addResource(new AclResource($permission->controller), $permission->action);
-        }
-
-
-
-        // Grant permissions in "permissions" model
-        foreach ($permissions as $permission) {
-
-            $acl->addRole(new AclRole($permission->role->name));
-            $acl->allow($permission->role->name, $permission->controller, $permission->action);
 
             foreach ($roles as $role) {
 
-                if ($role->power > $permission->role->power) {
+                if ($role->power >= $permission->role->power) {
                     $acl->addRole(new AclRole($role->name));
                     $acl->allow($role->name, $permission->controller, $permission->action);
                 }
             }
         }
+
         return $acl;
     }
 
     /**
      * This action is executed before execute any action in the application
+     *
+     * @param \Phalcon\Events\Event $event
+     * @param \Phalcon\Mvc\Dispatcher $dispatcher
+     * @return boolean
      */
     public function beforeDispatch(Event $event, Dispatcher $dispatcher)
     {
@@ -98,7 +109,7 @@ class AccessControl extends Plugin
         $controller = $dispatcher->getControllerName();
         $action     = $dispatcher->getActionName();
 
-        $acl = $this->getAcl();
+        $acl = $this->getAccessList();
 
         $allowed = $acl->isAllowed($role, $controller, $action);
 
@@ -108,6 +119,11 @@ class AccessControl extends Plugin
         }
     }
 
+    /**
+     * Show an error and show the user the result of index/index
+     *
+     * @param \Phalcon\Mvc\Dispatcher $dispatcher
+     */
     private function forwardHome(Dispatcher $dispatcher)
     {
         $this->flashSession->error("You don't have access to this module");
