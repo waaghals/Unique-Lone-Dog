@@ -3,9 +3,9 @@
 namespace UniqueLoneDog\Routes;
 
 /**
- * Holds the routes for the index controller
+ * Holds the routes for the group controller
  *
- * @author Patrick
+ * @author Jelle
  */
 class GroupRoutes extends \Phalcon\Mvc\Router\Group
 {
@@ -17,27 +17,29 @@ class GroupRoutes extends \Phalcon\Mvc\Router\Group
             'controller' => 'group'
         ));
 
-        $this->addGet("/group", array(
+        $this->setPrefix('/group');
+
+        $this->addGet("/", array(
             "action" => "index"
         ))->setName("group");
 
-        $this->add("/group/subscribe/{id}/", array(
+        $this->add("/subscribe/{id}/", array(
             "action" => "performSubscribeGroup"
         ))->setName("group-subscribe");
 
-        $this->add("/group/unsubscribe/{id}/", array(
+        $this->add("/unsubscribe/{id}/", array(
             "action" => "performUnsubscribeGroup"
         ))->setName("group-unsubscribe");
 
-        $this->add("/group/explore", array(
+        $this->add("/explore", array(
             "action" => "exploreGroup"
         ))->setName("group-explore");
 
-        $this->addGet("/group/add", array(
+        $this->addGet("/add", array(
             "action" => "AddGroupForm"
         ))->setName("group-add");
 
-        $this->addPost("/group/add", array(
+        $this->addPost("/add", array(
             "action" => "performAddGroup"
         ));
     }
