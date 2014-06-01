@@ -2,12 +2,13 @@
 
 namespace UniqueLoneDog\Controllers;
 
-use UniqueLoneDog\Forms\LoginForm;
-use UniqueLoneDog\Forms\SignUpForm;
+use UniqueLoneDog\Forms\LoginForm,
+    UniqueLoneDog\Forms\SignUpForm,
+    UniqueLoneDog\Models\Reputation;
 
 /**
  *
- * @property Identity $identity Identity library
+ * @property UniqueLoneDog\Identity $identity Identity library
  */
 class AccountController extends AbstractController
 {
@@ -42,7 +43,7 @@ class AccountController extends AbstractController
             }
         } elseif ($this->auth->isValidLogin($email, $pass)) {
 
-            $this->identity->setByEmail($email);
+            $this->loginUser($email);
             $this->flash->success("Login successfull");
             return $this->response->redirect();
         } else {
@@ -51,6 +52,13 @@ class AccountController extends AbstractController
 
         $this->view->pick("account/loginForm");
         $this->view->form = $this->loginForm;
+    }
+
+    private function loginUser($email)
+    {
+        $this->identity->setByEmail($email);
+        $user = $this->identity->getUser();
+        $user->increaseReputation(Reputation::LOGIN);
     }
 
     public function performSignUpAction()
@@ -67,6 +75,7 @@ class AccountController extends AbstractController
                 $this->flash->error($user->getMessages());
             } else {
                 $this->flash->success("Account created.");
+                $user->increaseReputation(Reputation::REGISTRATION);
                 return $this->response->redirect();
             }
         }

@@ -159,7 +159,7 @@ class User extends \Phalcon\Mvc\Model
         $currRep  = $this->getReputation();
         $otherRep = $otherUser->getReputation();
         $delta    = \abs($otherRep - $currRep);
-        return \log($delta + 1, Reputation::STEEPNESS) + 1;
+        return \log($delta + 1, Reputation::ALGO_STEEPNESS) + 1;
     }
 
     /**
