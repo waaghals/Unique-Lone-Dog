@@ -52,7 +52,8 @@ $di->set('view', function () use ($config) {
 
     $volt->setOptions(array(
         'compiledPath'      => $config->application->cacheDir . 'volt/',
-        'compiledSeparator' => '_'
+        'compiledSeparator' => '_',
+        'compileAlways'     => $config->environment->development
     ));
 
     $compiler = $volt->getCompiler();
