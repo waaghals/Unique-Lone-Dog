@@ -71,7 +71,7 @@ class GroupController extends AbstractController
             $this->flash->error($u->getMessages());
         } else {
             $this->flashSession->success("Subscription complete.");
-            return $this->response->redirect('group');
+            return $this->response->redirect('group/explore');
         }
     }
 
