@@ -2,11 +2,12 @@
 
 namespace UniqueLoneDog\Controllers;
 
-use Phalcon\Mvc\Controller;
-use UniqueLoneDog\Models\Tags\NamespaceTag;
-use UniqueLoneDog\Models\Tags\PredicateTag;
-use UniqueLoneDog\Models\Tags\ValueTag;
-use Phalcon\Mvc\Model\Resultset;
+use Phalcon\Mvc\Controller,
+    Phalcon\Mvc\Model\Resultset;
+use UniqueLoneDog\Models\Tags\NamespaceTag,
+    UniqueLoneDog\Models\Tags\PredicateTag,
+    UniqueLoneDog\Models\Tags\ValueTag,
+    UniqueLoneDog\Models\User;
 
 /**
  * @property Phalcon\Mvc\Model\Manager $modelsManager Description
@@ -19,9 +20,8 @@ class IndexController extends Controller
 
     }
 
-    public function testAction()
+    public function tagQueryTestAction()
     {
-
         $tags    = $this->modelsManager->executeQuery("
             SELECT namespace.*, predicate.*, value.*
             FROM UniqueLoneDog\Models\Tags\NamespaceTag AS namespace
@@ -33,9 +33,10 @@ class IndexController extends Controller
         foreach ($results as $result) {
             var_dump($result->namespace->predicates);
         }
+    }
 
-
-        return;
+    public function tagCreateTestAction()
+    {
         $contentNamespace = new NamespaceTag();
         $contentNamespace->setPart("content");
         $authorNamespace  = new NamespaceTag();
@@ -75,6 +76,14 @@ class IndexController extends Controller
         $emailValue->predicate     = $emailPredicate;
         $emailPredicate->namespace = $authorNamespace;
         $emailValue->save();
+    }
+
+    public function reputationTestAction()
+    {
+        $user      = $this->identity->getUser();
+        $otherUser = User::findFirst(3);
+        var_dump($user->getReputation());
+        $user->increaseReputation(100, $otherUser);
     }
 
 }

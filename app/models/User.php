@@ -73,12 +73,29 @@ class User extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
+        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id',
+                         array(
             'alias' => 'role'
         ));
 
-        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id', array(
+        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id',
+                         array(
             'alias' => 'status'
+        ));
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\LoginSuccess', 'usersId',
+                       array(
+            'foreignKey' => array(
+                'message' => 'User cannot be deleted because it still has data in LoginSuccess table'
+            )
+        ));
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\Reputation', 'userId',
+                       array(
+            'alias'      => 'points',
+            'foreignKey' => array(
+                'message' => 'User cannot be deleted because it still has data in Reputation table'
+            )
         ));
     }
 
@@ -100,15 +117,102 @@ class User extends \Phalcon\Mvc\Model
      */
     public function beforeValidation()
     {
-        echo "BEFORE VALIDATION \n";
         if ($this->status == null) {
             $this->status = Status::findFirstByName('non-confirmed');
-            echo "SETTING STATUS \n";
         }
 
         if ($this->role == null) {
             $this->role = Role::findFirstByName('Users');
-            echo "SETTING ROLE \n";
+        }
+    }
+
+    /**
+     * Increase the users reputation
+     *
+     * @param int $points
+     * @param \UniqueLoneDog\Models\User $from
+     */
+    public function increaseReputation($points, User $from = null)
+    {
+        $multiplier = 1;
+        if ($from !== null) {
+            $multiplier = $this->reputationMultiplier($from);
+        }
+
+        $this->mutateReputation($points * $multiplier);
+    }
+
+    /**
+     * Decrease the users reputation
+     *
+     * @param int $points
+     * @param \UniqueLoneDog\Models\User $from
+     */
+    public function decreaseReputation($points, User $from = null)
+    {
+        $multiplier = 1;
+        if ($from !== null) {
+            $multiplier = $this->reputationMultiplier($from);
+        }
+
+        $negative = 0 - ($points * $multiplier);
+        $this->mutateReputation($negative);
+    }
+
+    /**
+     * Create a new reputation mutation row
+     *
+     * @param int $points
+     */
+    private function mutateReputation($points)
+    {
+        $reputation         = new Reputation();
+        $reputation->points = \intval($points);
+        $reputation->user   = $this;
+        $reputation->save();
+    }
+
+    /**
+     * Get the multiplier for the reputation change.
+     * f(x) = log100(|otherRep - userRep| + 1) + 1
+     *
+     * @param \UniqueLoneDog\Models\User $otherUser
+     * @return int
+     */
+    private function reputationMultiplier(User $otherUser)
+    {
+        $currRep  = $this->getReputation();
+        $otherRep = $otherUser->getReputation();
+        $delta    = \abs($otherRep - $currRep);
+        return \log($delta + 1, Reputation::ALGO_STEEPNESS) + 1;
+    }
+
+    /**
+     * Get the current reputation for this user
+     * @return int
+     */
+    public function getReputation()
+    {
+        $reputation = 0;
+        foreach ($this->points as $mutation) {
+            $reputation += $mutation->points;
+        }
+        return $reputation;
+    }
+
+    /**
+     * Get the reputation for a user in human readable format.
+     * Reputation above 2000 is shortend to 2.0k
+     *
+     * @return string
+     */
+    public function getHumanReputation()
+    {
+        $rep = $this->getReputation();
+        if ($rep >= 2000) {
+            return \sprintf("%.1f", $rep / 1000) . 'k';
+        } else {
+            return $rep;
         }
     }
 

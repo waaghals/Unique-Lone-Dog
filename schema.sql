@@ -3,10 +3,10 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Gegenereerd op: 20 mei 2014 om 23:31
 -- Serverversie: 5.6.16
 -- PHP-versie: 5.5.9
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -119,6 +119,80 @@ CREATE TABLE IF NOT EXISTS `remember_token` (
 -- --------------------------------------------------------
 
 --
+-- Tabelstructuur voor tabel `reputation`
+--
+
+CREATE TABLE IF NOT EXISTS `reputation` (
+  `points` tinyint(4) NOT NULL,
+  `userId` int(10) unsigned NOT NULL,
+  `createdAt` datetime NOT NULL,
+  KEY `userId` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `reputation`
+--
+
+INSERT INTO `reputation` (`points`, `userId`, `createdAt`) VALUES
+(100, 3, '2014-06-01 16:14:16'),
+(100, 3, '2014-06-01 16:14:17'),
+(100, 3, '2014-06-01 16:14:23'),
+(100, 3, '2014-06-01 16:14:57'),
+(100, 3, '2014-06-01 16:14:59'),
+(100, 3, '2014-06-01 16:15:00'),
+(100, 3, '2014-06-01 16:15:12'),
+(100, 4, '2014-06-01 16:18:45'),
+(100, 4, '2014-06-01 16:18:46'),
+(100, 4, '2014-06-01 16:20:16'),
+(100, 4, '2014-06-01 16:20:16'),
+(127, 4, '2014-06-01 16:21:03'),
+(127, 4, '2014-06-01 16:21:03'),
+(127, 4, '2014-06-01 16:21:04'),
+(127, 4, '2014-06-01 16:21:04'),
+(127, 4, '2014-06-01 16:21:05'),
+(127, 4, '2014-06-01 16:21:05'),
+(127, 4, '2014-06-01 16:21:05'),
+(127, 4, '2014-06-01 16:21:06'),
+(127, 4, '2014-06-01 16:21:06'),
+(127, 4, '2014-06-01 16:21:06'),
+(127, 4, '2014-06-01 16:21:06'),
+(127, 4, '2014-06-01 16:21:07'),
+(127, 4, '2014-06-01 16:21:07'),
+(127, 4, '2014-06-01 16:21:07'),
+(127, 4, '2014-06-01 16:21:07'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:10'),
+(127, 4, '2014-06-01 16:21:10'),
+(127, 4, '2014-06-01 16:21:10'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:12'),
+(127, 4, '2014-06-01 16:21:12'),
+(127, 4, '2014-06-01 16:21:12'),
+(127, 4, '2014-06-01 16:21:13'),
+(127, 4, '2014-06-01 16:21:13'),
+(127, 4, '2014-06-01 16:21:13'),
+(127, 4, '2014-06-01 16:21:13'),
+(100, 3, '2014-06-01 16:21:26'),
+(100, 3, '2014-06-01 16:21:26'),
+(100, 3, '2014-06-01 16:21:27'),
+(100, 3, '2014-06-01 16:21:27');
+
+-- --------------------------------------------------------
+
+--
 -- Tabelstructuur voor tabel `role`
 --
 
@@ -160,13 +234,19 @@ CREATE TABLE IF NOT EXISTS `user` (
   KEY `profilesId` (`roleId`),
   KEY `roleId` (`roleId`),
   KEY `statusId` (`statusId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+
+INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `salt`, `roleId`, `statusId`) VALUES
+(3, 'test', 'test@test.nl', '$2a$08$gpKVXhOQpMLSJ6GsGKnhYuporEcetbd.6YTdYmf1SFkKa4t5IGg5W', NULL, 2, 2),
+(4, 'test2', 'test2@test.nl', '$2a$08$HXl9dmvPXsgArl4Y9B86a.phoNn6XHxg009cjKdxBgUHRM6aa9r9a', 'Q4qCwHQ2AN13RYfxZ32X4w', 2, 2);
 
 -- --------------------------------------------------------
 
 --
 -- Tabelstructuur voor tabel `value_tag`
 --
+
 
 CREATE TABLE IF NOT EXISTS `value_tag` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -176,6 +256,7 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   UNIQUE KEY `part` (`part`),
   KEY `predicate_id` (`predicate_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
 
 --
 -- Beperkingen voor gedumpte tabellen
@@ -212,11 +293,18 @@ ALTER TABLE `remember_token`
   ADD CONSTRAINT `remember_token_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 --
+-- Beperkingen voor tabel `reputation`
+--
+ALTER TABLE `reputation`
+  ADD CONSTRAINT `reputation_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+--
 -- Beperkingen voor tabel `user`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`),
   ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`statusId`) REFERENCES `status` (`id`);
+SET FOREIGN_KEY_CHECKS=1;
 
 --
 -- Beperkingen voor tabel `value_tag`
