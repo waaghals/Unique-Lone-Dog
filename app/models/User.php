@@ -79,15 +79,19 @@ class User extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
+        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id',
+                         array(
             'alias' => 'role'
         ));
 
-        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id', array(
+        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id',
+                         array(
             'alias' => 'status'
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\Group', 'userId', array(
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\Group', 'userId',
+                       array(
             "alias"      => "userGroups",
             'foreignKey' => array(
                 'message' => 'User cannot be deleted because it still has data in Group table'
@@ -95,7 +99,38 @@ class User extends \Phalcon\Mvc\Model
         ));
 
         $this->hasManyToMany(
-                "id", "UniqueLoneDog\Models\UserGroup", "userId", "groupId", "UniqueLoneDog\Models\Group", "id", array("alias" => "groups"));
+                "id", "UniqueLoneDog\Models\UserGroup", "userId", "groupId",
+                "UniqueLoneDog\Models\Group", "id",
+                array(
+            "alias" => "groups"
+        ));
+    }
+
+    /**
+     * Set a new password, will regenerate a new salt.
+     *
+     * @param string $password The new password
+     */
+    public function setPassword($password)
+    {
+        $security       = $this->getDI()->get("security");
+        $this->salt     = $security->getSaltBytes();
+        $hash           = $security->hash($this->salt + $password);
+        $this->passhash = $hash;
+    }
+
+    /**
+     * Set the default role and status before creation
+     */
+    public function beforeValidation()
+    {
+        if ($this->status == null) {
+            $this->status = Status::findFirstByName('non-confirmed');
+        }
+
+        if ($this->role == null) {
+            $this->role = Role::findFirstByName('Users');
+        }
     }
 
 }
