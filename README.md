@@ -4,11 +4,11 @@
 
 ### Changes
 * 0.2.0
-* * Debugger toegevoegd
-* * Account creation
-* * Login/Logout
+  * Debugger toegevoegd
+  * Account creation
+  * Login/Logout
 * 0.1.0
-* * Basis project geinitialiseerd.
+  * Basis project geinitialiseerd.
 
 ## Phalcon en Netbeans
 
