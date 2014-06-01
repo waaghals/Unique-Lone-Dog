@@ -36,7 +36,9 @@ class NamespaceTag extends AbstractTag
 
     public function initialize()
     {
-        $this->hasMany("id", "PredicateTag", "namespace_id");
+        $this->hasMany("id", "PredicateTag", "namespace_id", array(
+            "alias" => "predicates"
+        ));
     }
 
     public function getSource()

@@ -40,7 +40,10 @@ class PredicateTag extends AbstractTag
         $this->belongsTo("namespace_id", "NamespaceTag", "id", array(
             "alias" => "namespace"
         ));
-        $this->hasMany("id", "ValueTag", "predicate_id");
+
+        $this->hasMany("id", "ValueTag", "predicate_id", array(
+            "alias" => "values"
+        ));
     }
 
     public function getSource()
