@@ -20,6 +20,18 @@ CREATE DATABASE IF NOT EXISTS `uld` DEFAULT CHARACTER SET latin1 COLLATE latin1_
 USE `uld`;
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `item`
+--
+
+CREATE TABLE IF NOT EXISTS `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `name` varchar(25) NOT NULL,
+  `URI` varchar(2048) NOT NULL,
+  `comment` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Tabelstructuur voor tabel `group`
@@ -34,21 +46,6 @@ CREATE TABLE IF NOT EXISTS `group` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `group`
---
-
-INSERT INTO `group` (`id`, `name`, `description`) VALUES
-(1, 'jelle', 'jelle'),
-(4, 'Sebas', 'Lalalala'),
-(5, 'Patrick', 'Sexy'),
-(6, 'Test', 'test123'),
-(7, '123', '123'),
-(8, 'JAikbenGEsscjdstgsd', '213'),
-(9, 'jajdifauingusauosfangfiaongdonfgoogfndoi', 'onofaONINEOFA');
-
--- --------------------------------------------------------
-
---
 -- Tabelstructuur voor tabel `permission`
 --
 
@@ -61,36 +58,6 @@ CREATE TABLE IF NOT EXISTS `permission` (
   KEY `profilesId` (`roleId`),
   KEY `roleId` (`roleId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `permission`
---
-
-INSERT INTO `permission` (`id`, `roleId`, `resource`, `action`) VALUES
-(1, 3, 'users', 'index'),
-(2, 3, 'users', 'search'),
-(3, 3, 'profiles', 'index'),
-(4, 3, 'profiles', 'search'),
-(5, 1, 'users', 'index'),
-(6, 1, 'users', 'search'),
-(7, 1, 'users', 'edit'),
-(8, 1, 'users', 'create'),
-(9, 1, 'users', 'delete'),
-(10, 1, 'users', 'changePassword'),
-(11, 1, 'profiles', 'index'),
-(12, 1, 'profiles', 'search'),
-(13, 1, 'profiles', 'edit'),
-(14, 1, 'profiles', 'create'),
-(15, 1, 'profiles', 'delete'),
-(16, 1, 'permissions', 'index'),
-(17, 2, 'users', 'index'),
-(18, 2, 'users', 'search'),
-(19, 2, 'users', 'edit'),
-(20, 2, 'users', 'create'),
-(21, 2, 'profiles', 'index'),
-(22, 2, 'profiles', 'search');
-
--- --------------------------------------------------------
 
 --
 -- Tabelstructuur voor tabel `remember_token`
@@ -119,69 +86,6 @@ CREATE TABLE IF NOT EXISTS `reputation` (
   `createdAt` datetime NOT NULL,
   KEY `userId` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Gegevens worden uitgevoerd voor tabel `reputation`
---
-
-INSERT INTO `reputation` (`points`, `userId`, `createdAt`) VALUES
-(100, 3, '2014-06-01 16:14:16'),
-(100, 3, '2014-06-01 16:14:17'),
-(100, 3, '2014-06-01 16:14:23'),
-(100, 3, '2014-06-01 16:14:57'),
-(100, 3, '2014-06-01 16:14:59'),
-(100, 3, '2014-06-01 16:15:00'),
-(100, 3, '2014-06-01 16:15:12'),
-(100, 4, '2014-06-01 16:18:45'),
-(100, 4, '2014-06-01 16:18:46'),
-(100, 4, '2014-06-01 16:20:16'),
-(100, 4, '2014-06-01 16:20:16'),
-(127, 4, '2014-06-01 16:21:03'),
-(127, 4, '2014-06-01 16:21:03'),
-(127, 4, '2014-06-01 16:21:04'),
-(127, 4, '2014-06-01 16:21:04'),
-(127, 4, '2014-06-01 16:21:05'),
-(127, 4, '2014-06-01 16:21:05'),
-(127, 4, '2014-06-01 16:21:05'),
-(127, 4, '2014-06-01 16:21:06'),
-(127, 4, '2014-06-01 16:21:06'),
-(127, 4, '2014-06-01 16:21:06'),
-(127, 4, '2014-06-01 16:21:06'),
-(127, 4, '2014-06-01 16:21:07'),
-(127, 4, '2014-06-01 16:21:07'),
-(127, 4, '2014-06-01 16:21:07'),
-(127, 4, '2014-06-01 16:21:07'),
-(127, 4, '2014-06-01 16:21:08'),
-(127, 4, '2014-06-01 16:21:08'),
-(127, 4, '2014-06-01 16:21:08'),
-(127, 4, '2014-06-01 16:21:08'),
-(127, 4, '2014-06-01 16:21:08'),
-(127, 4, '2014-06-01 16:21:09'),
-(127, 4, '2014-06-01 16:21:09'),
-(127, 4, '2014-06-01 16:21:09'),
-(127, 4, '2014-06-01 16:21:09'),
-(127, 4, '2014-06-01 16:21:09'),
-(127, 4, '2014-06-01 16:21:10'),
-(127, 4, '2014-06-01 16:21:10'),
-(127, 4, '2014-06-01 16:21:10'),
-(127, 4, '2014-06-01 16:21:11'),
-(127, 4, '2014-06-01 16:21:11'),
-(127, 4, '2014-06-01 16:21:11'),
-(127, 4, '2014-06-01 16:21:11'),
-(127, 4, '2014-06-01 16:21:11'),
-(127, 4, '2014-06-01 16:21:12'),
-(127, 4, '2014-06-01 16:21:12'),
-(127, 4, '2014-06-01 16:21:12'),
-(127, 4, '2014-06-01 16:21:13'),
-(127, 4, '2014-06-01 16:21:13'),
-(127, 4, '2014-06-01 16:21:13'),
-(127, 4, '2014-06-01 16:21:13'),
-(100, 3, '2014-06-01 16:21:26'),
-(100, 3, '2014-06-01 16:21:26'),
-(100, 3, '2014-06-01 16:21:27'),
-(100, 3, '2014-06-01 16:21:27');
-
--- --------------------------------------------------------
 
 --
 -- Tabelstructuur voor tabel `role`
@@ -243,14 +147,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   KEY `statusId` (`statusId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
-
-INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `salt`, `roleId`, `statusId`) VALUES
-(3, 'test', 'test@test.nl', '$2a$08$gpKVXhOQpMLSJ6GsGKnhYuporEcetbd.6YTdYmf1SFkKa4t5IGg5W', NULL, 2, 2),
-(4, 'test2', 'test2@test.nl', '$2a$08$HXl9dmvPXsgArl4Y9B86a.phoNn6XHxg009cjKdxBgUHRM6aa9r9a', 'Q4qCwHQ2AN13RYfxZ32X4w', 2, 2);
-
--- --------------------------------------------------------
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
 --
 -- Gegevens worden uitgevoerd voor tabel `user`
 --
@@ -263,11 +159,6 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   UNIQUE KEY `part` (`part`),
   KEY `predicate_id` (`predicate_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `salt`, `roleId`, `statusId`) VALUES
-(3, 'test', 'test@test.nl', '$2a$08$gpKVXhOQpMLSJ6GsGKnhYuporEcetbd.6YTdYmf1SFkKa4t5IGg5W', '', 2, 2),
-(4, 'jelle', 'jelle@jlle.nl', '$2a$08$ReTKErCMzkxeLOlopdDmOOYA6eTrOYAr/16DoNJqH6O45HblvRsVq', 'bLjdfcdLGuzaN4UAz6tc9Q', 2, 2),
-(5, 'jelle', 'jelle@jelle.nl', '$2a$08$7aycREu71fkLrnINNheuLu15rS4wx9NaEvNAqBZjwGZmm8/LaOTe2', 'km80S6SIRbCGIuekexJnBw', 2, 2);
-
 -- --------------------------------------------------------
 
 
@@ -281,14 +172,6 @@ CREATE TABLE IF NOT EXISTS `user_group` (
   PRIMARY KEY (`groupId`,`userId`),
   KEY `userId` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Gegevens worden uitgevoerd voor tabel `user_group`
---
-
-INSERT INTO `user_group` (`groupId`, `userId`) VALUES
-(1, 5),
-(4, 5);
 
 --
 -- Beperkingen voor gedumpte tabellen
