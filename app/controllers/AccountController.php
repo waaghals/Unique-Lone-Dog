@@ -49,7 +49,7 @@ class AccountController extends AbstractController
         } elseif ($this->auth->isValidLogin($user->email, $pass)) {
 
 
-            $this->loginUser($email);
+            $this->loginUser($user->email);
 
             $this->flash->success("Login successfull");
             return $this->response->redirect();
