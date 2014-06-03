@@ -67,35 +67,49 @@ class User extends \Phalcon\Mvc\Model
             "required" => true,
         )));
 
-        //If validation failed, return false.
+//If validation failed, return false.
         return !$this->validationHasFailed();
+    }
+
+    public function deleteGroup($groupId)
+    {
+        $userGroup = UserGroup::find($groupId);
+        $userGroup->delete();
     }
 
     public function initialize()
     {
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id',
-                         array(
+        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
             'alias' => 'role'
         ));
 
-        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id',
-                         array(
+        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id', array(
             'alias' => 'status'
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\LoginSuccess', 'usersId',
-                       array(
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\LoginSuccess', 'usersId', array(
             'foreignKey' => array(
                 'message' => 'User cannot be deleted because it still has data in LoginSuccess table'
             )
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\Reputation', 'userId',
-                       array(
+        $this->hasMany('id', 'UniqueLoneDog\Models\Reputation', 'userId', array(
             'alias'      => 'points',
             'foreignKey' => array(
                 'message' => 'User cannot be deleted because it still has data in Reputation table'
             )
+        ));
+        $this->hasMany('id', 'UniqueLoneDog\Models\Group', 'userId', array(
+            "alias"      => "userGroups",
+            'foreignKey' => array(
+                'message' => 'User cannot be deleted because it still has data in Group table'
+            )
+        ));
+
+        $this->hasManyToMany(
+                "id", "UniqueLoneDog\Models\UserGroup", "userId", "groupId", "UniqueLoneDog\Models\Group", "id", array(
+            "alias" => "groups"
         ));
     }
 
