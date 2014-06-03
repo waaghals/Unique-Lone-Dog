@@ -26,6 +26,13 @@ try {
     include APP_DIR . '/init/services.php';
 
     /**
+     * Initialize the debugger
+     */
+    if ($config->environment->debug === true) {
+        new \PDW\DebugWidget($di);
+    }
+
+    /**
      * Kickstart the process
      */
     $application = new \Phalcon\Mvc\Application($di);

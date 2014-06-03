@@ -12,6 +12,10 @@ $loader->registerNamespaces(array(
     'UniqueLoneDog\Routes' => $config->application->routeDir,
     'UniqueLoneDog\Validators' => $config->application->validatorsDir,
     'UniqueLoneDog' => $config->application->libraryDir,
+    'UniqueLoneDog\Forms' => $config->application->formsDir,
+    'UniqueLoneDog\Routes' => $config->application->routeDir,
+    'UniqueLoneDog' => $config->application->libraryDir,
+    'PDW' => $config->application->vendorDir . "pdw"
 ));
 
 $loader->register();

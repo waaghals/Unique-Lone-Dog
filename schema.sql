@@ -1,12 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.9
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
--- Machine: 127.0.0.1
--- Genereertijd: 15 mei 2014 om 10:25
--- Serverversie: 5.6.14
--- PHP-versie: 5.5.6
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -19,6 +16,35 @@ SET time_zone = "+00:00";
 --
 -- Databank: `uld`
 --
+CREATE DATABASE IF NOT EXISTS `uld` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `uld`;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `group`
+--
+
+CREATE TABLE IF NOT EXISTS `group` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `group`
+--
+
+INSERT INTO `group` (`id`, `name`, `description`) VALUES
+(1, 'jelle', 'jelle'),
+(4, 'Sebas', 'Lalalala'),
+(5, 'Patrick', 'Sexy'),
+(6, 'Test', 'test123'),
+(7, '123', '123'),
+(8, 'JAikbenGEsscjdstgsd', '213'),
+(9, 'jajdifauingusauosfangfiaongdonfgoogfndoi', 'onofaONINEOFA');
 
 -- --------------------------------------------------------
 
@@ -84,6 +110,80 @@ CREATE TABLE IF NOT EXISTS `remember_token` (
 -- --------------------------------------------------------
 
 --
+-- Tabelstructuur voor tabel `reputation`
+--
+
+CREATE TABLE IF NOT EXISTS `reputation` (
+  `points` tinyint(4) NOT NULL,
+  `userId` int(10) unsigned NOT NULL,
+  `createdAt` datetime NOT NULL,
+  KEY `userId` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `reputation`
+--
+
+INSERT INTO `reputation` (`points`, `userId`, `createdAt`) VALUES
+(100, 3, '2014-06-01 16:14:16'),
+(100, 3, '2014-06-01 16:14:17'),
+(100, 3, '2014-06-01 16:14:23'),
+(100, 3, '2014-06-01 16:14:57'),
+(100, 3, '2014-06-01 16:14:59'),
+(100, 3, '2014-06-01 16:15:00'),
+(100, 3, '2014-06-01 16:15:12'),
+(100, 4, '2014-06-01 16:18:45'),
+(100, 4, '2014-06-01 16:18:46'),
+(100, 4, '2014-06-01 16:20:16'),
+(100, 4, '2014-06-01 16:20:16'),
+(127, 4, '2014-06-01 16:21:03'),
+(127, 4, '2014-06-01 16:21:03'),
+(127, 4, '2014-06-01 16:21:04'),
+(127, 4, '2014-06-01 16:21:04'),
+(127, 4, '2014-06-01 16:21:05'),
+(127, 4, '2014-06-01 16:21:05'),
+(127, 4, '2014-06-01 16:21:05'),
+(127, 4, '2014-06-01 16:21:06'),
+(127, 4, '2014-06-01 16:21:06'),
+(127, 4, '2014-06-01 16:21:06'),
+(127, 4, '2014-06-01 16:21:06'),
+(127, 4, '2014-06-01 16:21:07'),
+(127, 4, '2014-06-01 16:21:07'),
+(127, 4, '2014-06-01 16:21:07'),
+(127, 4, '2014-06-01 16:21:07'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:08'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:09'),
+(127, 4, '2014-06-01 16:21:10'),
+(127, 4, '2014-06-01 16:21:10'),
+(127, 4, '2014-06-01 16:21:10'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:11'),
+(127, 4, '2014-06-01 16:21:12'),
+(127, 4, '2014-06-01 16:21:12'),
+(127, 4, '2014-06-01 16:21:12'),
+(127, 4, '2014-06-01 16:21:13'),
+(127, 4, '2014-06-01 16:21:13'),
+(127, 4, '2014-06-01 16:21:13'),
+(127, 4, '2014-06-01 16:21:13'),
+(100, 3, '2014-06-01 16:21:26'),
+(100, 3, '2014-06-01 16:21:26'),
+(100, 3, '2014-06-01 16:21:27'),
+(100, 3, '2014-06-01 16:21:27');
+
+-- --------------------------------------------------------
+
+--
 -- Tabelstructuur voor tabel `role`
 --
 
@@ -134,21 +234,61 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `passhash` char(128) NOT NULL,
-  `mustChangePassword` char(1) DEFAULT NULL,
+  `salt` varchar(64) NOT NULL,
   `roleId` int(10) unsigned NOT NULL,
   `statusId` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `profilesId` (`roleId`),
   KEY `roleId` (`roleId`),
   KEY `statusId` (`statusId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+
+INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `salt`, `roleId`, `statusId`) VALUES
+(3, 'test', 'test@test.nl', '$2a$08$gpKVXhOQpMLSJ6GsGKnhYuporEcetbd.6YTdYmf1SFkKa4t5IGg5W', NULL, 2, 2),
+(4, 'test2', 'test2@test.nl', '$2a$08$HXl9dmvPXsgArl4Y9B86a.phoNn6XHxg009cjKdxBgUHRM6aa9r9a', 'Q4qCwHQ2AN13RYfxZ32X4w', 2, 2);
+
+-- --------------------------------------------------------
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `mustChangePassword`, `roleId`, `statusId`) VALUES
-(3, 'test', 'test@test.nl', '$2a$08$gpKVXhOQpMLSJ6GsGKnhYuporEcetbd.6YTdYmf1SFkKa4t5IGg5W', NULL, 2, 2);
+CREATE TABLE IF NOT EXISTS `value_tag` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `predicate_id` int(10) unsigned NOT NULL,
+  `part` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `part` (`part`),
+  KEY `predicate_id` (`predicate_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+INSERT INTO `user` (`id`, `name`, `email`, `passhash`, `salt`, `roleId`, `statusId`) VALUES
+(3, 'test', 'test@test.nl', '$2a$08$gpKVXhOQpMLSJ6GsGKnhYuporEcetbd.6YTdYmf1SFkKa4t5IGg5W', '', 2, 2),
+(4, 'jelle', 'jelle@jlle.nl', '$2a$08$ReTKErCMzkxeLOlopdDmOOYA6eTrOYAr/16DoNJqH6O45HblvRsVq', 'bLjdfcdLGuzaN4UAz6tc9Q', 2, 2),
+(5, 'jelle', 'jelle@jelle.nl', '$2a$08$7aycREu71fkLrnINNheuLu15rS4wx9NaEvNAqBZjwGZmm8/LaOTe2', 'km80S6SIRbCGIuekexJnBw', 2, 2);
+
+-- --------------------------------------------------------
+
+
+--
+-- Tabelstructuur voor tabel `user_group`
+--
+
+CREATE TABLE IF NOT EXISTS `user_group` (
+  `groupId` int(11) unsigned NOT NULL,
+  `userId` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`groupId`,`userId`),
+  KEY `userId` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `user_group`
+--
+
+INSERT INTO `user_group` (`groupId`, `userId`) VALUES
+(1, 5),
+(4, 5);
 
 --
 -- Beperkingen voor gedumpte tabellen
@@ -167,11 +307,25 @@ ALTER TABLE `remember_token`
   ADD CONSTRAINT `remember_token_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 --
+-- Beperkingen voor tabel `reputation`
+--
+ALTER TABLE `reputation`
+  ADD CONSTRAINT `reputation_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+--
 -- Beperkingen voor tabel `user`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`),
   ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`statusId`) REFERENCES `status` (`id`);
+SET FOREIGN_KEY_CHECKS=1;
+
+--
+-- Beperkingen voor tabel `user_group`
+--
+ALTER TABLE `user_group`
+  ADD CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`),
+  ADD CONSTRAINT `user_group_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

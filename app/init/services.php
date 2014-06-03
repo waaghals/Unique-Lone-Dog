@@ -14,7 +14,6 @@ use UniqueLoneDog\Authentification\Identity;
 use UniqueLoneDog\Authentification\RememberMe;
 use UniqueLoneDog\Authentification\Authentification;
 use UniqueLoneDog\Random\Generator;
-use UniqueLoneDog\Models\Factories\UserFactory;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
@@ -152,7 +151,6 @@ $di->set("random", function() {
     return new Generator();
 });
 
-$di->set("userFactory", function() {
-
-    return new UserFactory();
+$di->set('modelsManager', function() {
+    return new Phalcon\Mvc\Model\Manager();
 });

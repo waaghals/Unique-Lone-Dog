@@ -51,6 +51,15 @@ class Identity extends Component
     }
 
     /**
+     * Set the ientity session by a user object
+     * @param \UniqueLoneDog\Models\User $user
+     */
+    public function set(User $user)
+    {
+        return $this->setByEmail($user->email);
+    }
+
+    /**
      * Set the identity session by the user id
      *
      * @param int $id
