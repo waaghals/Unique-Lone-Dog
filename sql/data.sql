@@ -9,7 +9,7 @@ INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Users', 'account', 'logout');
 
 INSERT INTO `role` (`name`, `power`) VALUES
-('Guest', 1),F
+('Guest', 1),
 ('Users', 10),
 ('Administrator', 255);
 

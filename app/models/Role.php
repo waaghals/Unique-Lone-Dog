@@ -7,12 +7,6 @@ class Role extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
-     */
-    public $id;
-
-    /**
-     *
      * @var string
      */
     public $name;
@@ -21,7 +15,7 @@ class Role extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $active;
+    public $power;
 
     public function getSource()
     {
