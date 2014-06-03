@@ -75,27 +75,22 @@ class AccountController extends AbstractController
 
         $this->signUpForm->bind($post, $user);
         if (!$this->signUpForm->isValid()) {
+            //Form not valid
             $messages   = $this->signUpForm->getMessages();
             $messages[] = $this->signUpForm->getEntity()->getMessages();
 
             foreach ($messages as $message) {
                 $this->flash->error($message);
             }
-        } else {
-
-
-            if (!$user->save()) {
-                $this->flash->error($user->getMessages());
-            } else {
-                $this->flash->success("Account created.");
-                $user->increaseReputation(Reputation::REGISTRATION);
-                return $this->response->redirect();
-            }
+        } elseif ($user->save()) {
             $this->flashSession->success("Account created.");
-
+            $user->increaseReputation(Reputation::REGISTRATION);
             return $this->response->redirect();
         }
-
+        $user->validation();
+        foreach ($user->getMessages() as $message) {
+            $this->flash->error($message);
+        }
         return $this->signUpFormAction();
     }
 

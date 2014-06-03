@@ -67,7 +67,7 @@ class User extends \Phalcon\Mvc\Model
             "required" => true,
         )));
 
-//If validation failed, return false.
+        //If validation failed, return false.
         return !$this->validationHasFailed();
     }
 
@@ -136,12 +136,14 @@ class User extends \Phalcon\Mvc\Model
      */
     public function beforeValidation()
     {
-        if ($this->status == null) {
-            $this->status = Status::findFirstByName('non-confirmed');
+        if ($this->statusId == null) {
+            $status         = Status::findFirstByName('non-confirmed');
+            $this->statusId = $status->id;
         }
 
-        if ($this->role == null) {
-            $this->role = Role::findFirstByName('Users');
+        if ($this->roleId == null) {
+            $role         = Role::findFirstByName('Users');
+            $this->roleId = $role->id;
         }
     }
 
