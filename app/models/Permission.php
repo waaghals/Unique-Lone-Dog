@@ -36,7 +36,9 @@ class Permission extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id');
+        $this->belongsTo('roleName', 'UniqueLoneDog\Models\Role', 'name', array(
+            'alias' => 'role'
+        ));
     }
 
 }

@@ -26,7 +26,7 @@ class Status extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->hasMany('id', 'UniqueLoneDog\Models\User', 'statusId', array(
+        $this->hasMany('name', 'UniqueLoneDog\Models\User', 'statusName', array(
             'foreignKey' => array(
                 'message' => 'Status cannot be deleted because it\'s used on a User'
             )
