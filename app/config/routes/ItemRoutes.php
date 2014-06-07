@@ -49,6 +49,15 @@ class ItemRoutes extends \Phalcon\Mvc\Router\Group
         $this->addPost("/add", array(
             "action" => "performAddItem"
         ));
+        
+        $this->addGet("/", array(
+            "action" => "overview"
+        ))->setName("item-overview");
+        
+        $this->add("/view/{id}/",
+                array(
+            "action" => "show"
+        ))->setName("item-show");
     }
 
 }
