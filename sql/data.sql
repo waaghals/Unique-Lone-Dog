@@ -6,7 +6,13 @@ INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Guest', 'account', 'performSignUp'),
 ('Guest', 'account', 'signUpForm'),
 ('Guest', 'index', 'index'),
-('Users', 'account', 'logout');
+('Users', 'account', 'logout'),
+('Users', 'group', 'index'),
+('Users', 'group', 'exploreGroup'),
+('Users', 'group', 'addGroupForm'),
+('Users', 'group', 'performAddGroup'),
+('Users', 'group', 'performSubscribeGroup'),
+('Users', 'group', 'performUnsubscribeGroup');
 
 INSERT INTO `role` (`name`, `power`) VALUES
 ('Guest', 1),

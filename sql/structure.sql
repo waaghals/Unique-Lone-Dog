@@ -59,6 +59,23 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   KEY `predicate_id` (`predicate_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
+CREATE TABLE IF NOT EXISTS `group` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+CREATE TABLE IF NOT EXISTS `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `name` varchar(25) NOT NULL,
+  `URI` varchar(2048) NOT NULL,
+  `comment` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
 CREATE TABLE IF NOT EXISTS `user_group` (
   `groupId` int(11) unsigned NOT NULL,
   `userId` int(11) unsigned NOT NULL,
