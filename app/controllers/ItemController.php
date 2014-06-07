@@ -4,7 +4,7 @@ namespace UniqueLoneDog\Controllers;
 
 use UniqueLoneDog\Forms\ItemSubmitForm;
 use UniqueLoneDog\Models\Factories\ItemFactory;
-use UniqueLoneDog\Validators;
+use UniqueLoneDog\Models\Item;
 
 /*
  * The MIT License
@@ -71,8 +71,77 @@ class ItemController extends AbstractController
         }
     }
     
-    public function overviewAction(){
-        
+    public function overviewAction()
+    {
+        $this->view->setVar("items", Item::find());
+        $this->view->pick("Item/overview");
+    }
+    
+    public function showAction($itemId)
+    {
+        $this->view->setVar("item", Item::findFirst(array($itemId)));
+        $this->view->setVar("itemId", $itemId);
+        $this->view->pick("Item/show");
+    }
+    
+    /*
+     * Check if the contentType is an image
+     */
+    private function isImage($contentType)
+    {
+        $imageTypes = ["image/gif", "image/jpeg", "image/pjpeg", "image/png"];
+        if(in_array($contentType, $imageTypes)){
+                return true;
+        } else {
+                return false;
+        }
+    }
+    
+    /*
+     * Get the header information for an url
+     * This way we can check if the url is a certain Internet media type
+     */
+    private function getRemoteHeader($url) {
+        $curl = curl_init($url);
+
+        // Only get the header
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        // Do request
+        $result = curl_exec($curl);
+
+        $ret = false;
+
+        // If request did not fail
+        if ($result !== false) {
+            // If request was ok, check response code
+            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);  
+
+            if ($statusCode == 200) {
+                $ret = true;   
+            }
+        }
+
+        curl_close($curl);
+
+        return $result;
+    }
+    
+    /*
+     * Get the Content type from the header information
+     */
+    private function getContentTypeFromHeader($header){
+        $results = split("\n", trim($header));
+        $contentType = "";
+        foreach($results as $line) {
+            if (strtok($line, ':') == 'Content-Type') {
+                $parts = explode(":", $line);
+                $contentType = trim($parts[1]);
+            }
+        }
+        return contentType;
     }
 
     private function getItemFromPost()
