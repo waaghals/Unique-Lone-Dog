@@ -43,11 +43,11 @@ class ItemRoutes extends \Phalcon\Mvc\Router\Group
         $this->setPrefix('/item');
 
         $this->addGet("/add", array(
-            "action" => "Add"
+            "action" => "add"
         ))->setName("item-add");
 
         $this->addPost("/add", array(
-            "action" => "performAddList"
+            "action" => "performAddItem"
         ));
     }
 

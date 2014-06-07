@@ -46,7 +46,7 @@ class ItemController extends AbstractController
         $this->itemFactory    = new ItemFactory();
     }
 
-    public function AddAction()
+    public function addAction()
     {
         if (!$this->identity->exists()) {
             $this->flash->error("You are not allowed here!");
@@ -58,7 +58,7 @@ class ItemController extends AbstractController
         $this->view->form = $this->itemSubmitForm;
     }
 
-    public function performAddListAction()
+    public function performAddItemAction()
     {
         if (!$this->itemSubmitForm->isValid($this->request->getPost())) {
 
