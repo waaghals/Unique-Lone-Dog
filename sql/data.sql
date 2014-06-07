@@ -12,7 +12,9 @@ INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Users', 'group', 'addGroupForm'),
 ('Users', 'group', 'performAddGroup'),
 ('Users', 'group', 'performSubscribeGroup'),
-('Users', 'group', 'performUnsubscribeGroup');
+('Users', 'group', 'performUnsubscribeGroup'),
+('Users', 'item', 'add'),
+('Users', 'item', 'performAddItem');
 
 INSERT INTO `role` (`name`, `power`) VALUES
 ('Guest', 1),
