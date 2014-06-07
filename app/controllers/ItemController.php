@@ -48,12 +48,6 @@ class ItemController extends AbstractController
 
     public function addAction()
     {
-        if (!$this->identity->exists()) {
-            $this->flash->error("You are not allowed here!");
-            $this->response->redirect();
-        }
-
-
         $this->view->pick('partials/genericForm');
         $this->view->form = $this->itemSubmitForm;
     }
@@ -75,6 +69,10 @@ class ItemController extends AbstractController
                 return $this->response->redirect();
             }
         }
+    }
+    
+    public function overviewAction(){
+        
     }
 
     private function getItemFromPost()
