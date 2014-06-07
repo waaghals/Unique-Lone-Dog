@@ -2,8 +2,8 @@ SET FOREIGN_KEY_CHECKS=0;
 
 CREATE TABLE IF NOT EXISTS `permission` (
   `roleName` varchar(64) NOT NULL,
-  `controller` varchar(16) NOT NULL,
-  `action` varchar(16) NOT NULL,
+  `controller` varchar(25) NOT NULL,
+  `action` varchar(25) NOT NULL,
   PRIMARY KEY (`roleName`,`controller`,`action`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
