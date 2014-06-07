@@ -44,13 +44,13 @@ class User extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $roleId;
+    public $roleName;
 
     /**
      *
      * @var integer
      */
-    public $statusId;
+    public $statusName;
 
     /**
      *
@@ -79,11 +79,11 @@ class User extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
+        $this->belongsTo('roleName', 'UniqueLoneDog\Models\Role', 'name', array(
             'alias' => 'role'
         ));
 
-        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id', array(
+        $this->belongsTo('statusName', 'UniqueLoneDog\Models\Status', 'name', array(
             'alias' => 'status'
         ));
 
@@ -136,14 +136,14 @@ class User extends \Phalcon\Mvc\Model
      */
     public function beforeValidation()
     {
-        if ($this->statusId == null) {
-            $status         = Status::findFirstByName('non-confirmed');
-            $this->statusId = $status->id;
+        if ($this->statusName == null) {
+            $status           = Status::findFirstByName('non-confirmed');
+            $this->statusName = $status->name;
         }
 
-        if ($this->roleId == null) {
-            $role         = Role::findFirstByName('Users');
-            $this->roleId = $role->id;
+        if ($this->roleName == null) {
+            $role           = Role::findFirstByName('Users');
+            $this->roleName = $role->name;
         }
     }
 
