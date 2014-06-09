@@ -72,9 +72,10 @@ CREATE TABLE IF NOT EXISTS `item` (
   `userId` int(11) NOT NULL,
   `name` varchar(25) NOT NULL,
   `URI` varchar(2048) NOT NULL,
-  `comment` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+  `comment` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 CREATE TABLE IF NOT EXISTS `user_group` (
   `groupId` int(11) unsigned NOT NULL,
@@ -82,6 +83,18 @@ CREATE TABLE IF NOT EXISTS `user_group` (
   PRIMARY KEY (`groupId`,`userId`),
   KEY `userId` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(10) unsigned NOT NULL,
+  `itemId` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `URI` text,
+  `comment` text NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `itemId` (`itemId`),
+  UNIQUE KEY `userId` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `permission`
   ADD CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`);
