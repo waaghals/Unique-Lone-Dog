@@ -16,6 +16,7 @@ abstract class AbstractController extends \Phalcon\Mvc\Controller
         $this->assets
                 ->addCss('css/kraken.css');
 
+
         $this->assets
                 ->addJs('js/feature-test.js')
                 ->addJs('js/kraken.js');

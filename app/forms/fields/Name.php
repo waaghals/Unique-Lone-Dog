@@ -15,7 +15,10 @@ class Name extends Text
 
     public function __construct()
     {
-        parent::__construct('name');
+        parent::__construct('name',
+                            array(
+            'required' => 'required'
+        ));
 
         $this->setLabel('Name');
 

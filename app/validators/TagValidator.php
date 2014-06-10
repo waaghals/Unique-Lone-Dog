@@ -51,7 +51,7 @@ class TagValidator extends Validator implements ValidatorInterface
     {
         $value = $validator->getValue($attribute);
 
-        if (!preg_match(REGEX, $value)) {
+        if (!preg_match("/" . self::REGEX . "/", $value)) {
 
             $message = $this->getOption('message');
             if (!$message) {

@@ -53,7 +53,7 @@ class ItemController extends AbstractController
             $this->response->redirect();
         }
 
-
+        $this->assets->addJs('js/addTagInput.js');
         $this->view->pick('partials/genericForm');
         $this->view->form = $this->itemSubmitForm;
     }

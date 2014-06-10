@@ -15,8 +15,10 @@ class Tag extends Text
 
     public function __construct()
     {
-        parent::__construct('tag', array(
-            'placeholder' => 'Tag',
+        parent::__construct('tag',
+                            array(
+            'placeholder' => 'namespace:predicate=value',
+            'class'       => 'tagInput',
             'pattern'     => TagValidator::REGEX
         ));
 
