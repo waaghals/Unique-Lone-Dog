@@ -45,11 +45,18 @@ class Comment extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
+    public $userId;
+
+    /**
+     *
+     * @var integer
+     */
     public $text;
 
     public function initialize()
     {
         $this->belongsTo('itemId', 'UniqueLoneDog\Models\Item', 'id', array('alias' => 'item'));
+        $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id', array('alias' => 'user'));
     }
 
 }

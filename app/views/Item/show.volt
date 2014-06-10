@@ -10,9 +10,10 @@
             Comments:
         </h3>
         {% for comment in item.comments %}
-            {{ comment.text }}
+            {{ comment.user.name }} :
+            {{ comment.text }} <br />
         {% endfor %}
-
+        <br />
         {{ partial('partials/genericForm') }}
     <p>
 </div>

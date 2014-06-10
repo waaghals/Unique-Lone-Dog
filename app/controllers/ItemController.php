@@ -96,6 +96,7 @@ class ItemController extends AbstractController
             }
         } else {
             $c = new Comment();
+            $c->userId = $this->identity->getUser()->id;
             $c->itemId = $itemId;
             $c->text = $this->request->getPost('comment', 'striptags');
             if (!$c->save()) {
