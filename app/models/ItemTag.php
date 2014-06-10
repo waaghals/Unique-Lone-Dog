@@ -3,7 +3,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 Tojba.
+ * Copyright 2014 Waaghals.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,57 +26,44 @@
 
 namespace UniqueLoneDog\Models;
 
-class Item extends \Phalcon\Mvc\Model
+/**
+ * Description of ItemTag
+ *
+ * @author Waaghals
+ */
+class ItemTag extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
      */
-    public $id;
-
-    /**
-     *
-     * @var integer
-     */
-    public $userId;
+    public $itemId;
 
     /**
      *
      * @var string
      */
-    public $name;
+    public $tagId;
 
     /**
      *
-     * @var string
+     * @return boolean False when validation failed.
      */
-    public $URI;
-
-    /**
-     *
-     * @var integer
-     */
-    public $comment;
-
     public function initialize()
     {
-        $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id',
-                         array(
-            'alias' => 'user'
-        ));
+        $this->belongsTo('itemId', 'UniqueLoneDog\Models\Item', 'id',
+                         array('alias' => 'item')
+        );
 
-        $this->hasManyToMany(
-                "id", "UniqueLoneDog\Models\ItemTag", "itemId", "tagId",
-                "UniqueLoneDog\Models\Tags\ValueTag", "id",
-                array(
-            "alias" => "tags"
-        ));
+        $this->belongsTo('tagId', 'UniqueLoneDog\Models\Tags\ValueTag', 'id',
+                         array('alias' => 'tag')
+        );
+    }
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\ItemTag', 'itemId',
-                       array(
-            'alias' => 'itemTags'
-        ));
+    public function getSource()
+    {
+        return "item_tag";
     }
 
 }

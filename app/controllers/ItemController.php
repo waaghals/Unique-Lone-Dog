@@ -4,7 +4,7 @@ namespace UniqueLoneDog\Controllers;
 
 use UniqueLoneDog\Forms\ItemSubmitForm;
 use UniqueLoneDog\Models\Factories\ItemFactory;
-use UniqueLoneDog\Validators;
+use UniqueLoneDog\Models\ItemTag;
 
 /*
  * The MIT License
@@ -60,6 +60,7 @@ class ItemController extends AbstractController
 
     public function performAddItemAction()
     {
+        var_dump($this->request->getPost());
         if (!$this->itemSubmitForm->isValid($this->request->getPost())) {
 
             foreach ($this->itemSubmitForm->getMessages() as $message) {
@@ -71,7 +72,7 @@ class ItemController extends AbstractController
             if (!$item->save()) {
                 $this->flash->error($item->getMessages());
             } else {
-                $this->flash->success("Item created.");
+                $this->flashSession->success("Item created.");
                 return $this->response->redirect();
             }
         }
@@ -79,12 +80,27 @@ class ItemController extends AbstractController
 
     private function getItemFromPost()
     {
-        $factory = $this->itemFactory;
-        $name    = $this->request->getPost('name');
-        $URI     = $this->request->getPost('URI');
-        $comment = $this->request->getPost('comment');
+        $factory     = $this->itemFactory;
+        $name        = $this->request->getPost('name');
+        $URI         = $this->request->getPost('URI');
+        $comment     = $this->request->getPost('comment');
+        $machineTags = $this->request->getPost('tag');
 
-        return $factory->create($name, $URI, $comment);
+        $item = $factory->create($name, $URI, $comment);
+
+        foreach ($machineTags as $machineTag) {
+            if (!empty($machineTag)) {
+                $tag = $this->tagFactory->create($machineTag);
+
+                $itemTag       = new ItemTag();
+                $itemTag->item = $item;
+                $itemTag->tag  = $tag;
+
+                $itemTag->save();
+            }
+        }
+
+        return $item;
     }
 
 }

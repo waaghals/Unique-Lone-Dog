@@ -41,28 +41,109 @@ class TagFactory
     /**
      * Create a machine tag/triple tag
      *
-     * @param type $namespace
-     * @param type $predicate
-     * @param type $value
+     * @param string $namespace
+     * @param string $predicate
+     * @param string $value
      * @return \UniqueLoneDog\Models\Tags\ValueTag
      */
-    public static function create($namespace, $predicate, $value)
+    public function build($namespace, $predicate, $value)
     {
-
-        $namespaceModel = new NamespaceTag();
-        $namespaceModel->setPart($namespace);
-
-        $predicateModel = new PredicateTag();
-        $predicateModel->setPart($predicate);
-
-        $valueModel = new ValueTag();
-        $valueModel->setPart($value);
+        $namespaceModel = $this->createNamespace($namespace);
+        $predicateModel = $this->createPredicate($predicate, $namespaceModel);
+        $valueModel     = $this->createValue($value, $predicateModel);
 
         //Join them together
         $valueModel->predicate     = $predicateModel;
         $predicateModel->namespace = $namespaceModel;
 
-        $valueModel->save();
+        if (!$valueModel->save()) {
+            $errors = "";
+            foreach ($valueModel->getMessages as $msg) {
+                $errors .= $msg;
+            }
+
+            throw new \Exception($errors);
+        }
+        return $valueModel;
+    }
+
+    /**
+     * Create a machine tag/triple tag from a string reprisentation
+     *
+     * @param string $machineTag
+     * @return \UniqueLoneDog\Models\Tags\ValueTag
+     */
+    public function create($machineTag)
+    {
+        if (empty($machineTag)) {
+            throw new \Exception("Can't create machinetag from nothing");
+        }
+        $regex = '/[:=]/';
+        list($namespace, $predicate, $value) = preg_split($regex, $machineTag);
+
+        return $this->build($namespace, $predicate, $value);
+    }
+
+    private function createNamespace($part)
+    {
+        $namespace = NamespaceTag::query()
+                ->where("part = :part:")
+                ->bind(array("part" => $part))
+                ->execute()
+                ->getFirst();
+
+        if (!$namespace) {
+            //Namespace does not exist, create one
+            $namespace = new NamespaceTag();
+            $namespace->setPart($part);
+        }
+
+        return $namespace;
+    }
+
+    private function createPredicate($part, $namespace)
+    {
+        if (!isset($namespace->id)) {
+            //The namespace is new, no need to search for correct predicate
+            $predicateModel = new PredicateTag();
+            $predicateModel->setPart($part);
+            return $predicateModel;
+        }
+
+        $predicateModel = PredicateTag::query()
+                        ->where("part = :part:")->andWhere("namespace_id = :id:")
+                        ->bind(array("part" => $part, "id" => $namespace->id))
+                        ->execute()->getFirst();
+
+        if (!$predicateModel) {
+            //Create a new predicateTag
+            $predicateModel = new PredicateTag();
+            $predicateModel->setPart($part);
+        }
+        return $predicateModel;
+    }
+
+    private function createValue($part, $predicate)
+    {
+        if (!isset($predicate->id)) {
+            //The predicate is new, no need to search for correct value
+            $valueModel = new ValueTag();
+            $valueModel->setPart($part);
+
+            return $valueModel;
+        }
+
+        $valueModel = ValueTag::query()
+                        ->where("part = :part:")->andWhere("predicate_id = :id:")
+                        ->bind(array("part" => $part, "id" => $predicate->id))
+                        ->execute()->getFirst();
+
+        if (!$valueModel) {
+            //Create a new predicateTag
+            $valueModel = new ValueTag();
+            $valueModel->setPart($part);
+        }
+
         return $valueModel;
     }
 

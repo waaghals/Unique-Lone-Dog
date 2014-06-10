@@ -13,9 +13,11 @@ use UniqueLoneDog\Validators\TagValidator;
 class Tag extends Text
 {
 
+    const NAME = "tag[]";
+
     public function __construct()
     {
-        parent::__construct('tag',
+        parent::__construct(self::NAME,
                             array(
             'placeholder' => 'namespace:predicate=value',
             'class'       => 'tagInput',

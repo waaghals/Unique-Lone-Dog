@@ -37,8 +37,21 @@ class ValueTag extends AbstractTag
 
     public function initialize()
     {
-        $this->belongsTo("predicate_id", "PredicateTag", "id", array(
+        $this->belongsTo("predicate_id", "PredicateTag", "id",
+                         array(
             "alias" => "predicate"
+        ));
+
+        $this->hasManyToMany(
+                "id", "UniqueLoneDog\Models\ItemTag", "tagId", "itemId",
+                "UniqueLoneDog\Models\Tags\Item", "id",
+                array(
+            "alias" => "items"
+        ));
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\ItemTag', 'tagId',
+                       array(
+            'alias' => 'itemTags'
         ));
     }
 
