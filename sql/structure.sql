@@ -2,8 +2,8 @@ SET FOREIGN_KEY_CHECKS=0;
 
 CREATE TABLE IF NOT EXISTS `permission` (
   `roleName` varchar(64) NOT NULL,
-  `controller` varchar(16) NOT NULL,
-  `action` varchar(16) NOT NULL,
+  `controller` varchar(25) NOT NULL,
+  `action` varchar(25) NOT NULL,
   PRIMARY KEY (`roleName`,`controller`,`action`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -58,6 +58,23 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   UNIQUE KEY `part` (`part`),
   KEY `predicate_id` (`predicate_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+CREATE TABLE IF NOT EXISTS `group` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+CREATE TABLE IF NOT EXISTS `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `name` varchar(25) NOT NULL,
+  `URI` varchar(2048) NOT NULL,
+  `comment` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 CREATE TABLE IF NOT EXISTS `user_group` (
   `groupId` int(11) unsigned NOT NULL,

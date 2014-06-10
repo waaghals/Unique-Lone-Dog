@@ -63,7 +63,7 @@ class User extends \Phalcon\Mvc\Model
         )));
 
         $this->validate(new Uniqueness(array(
-            "field"    => "email",
+            "field" => "email",
             "required" => true,
         )));
 
@@ -95,18 +95,23 @@ class User extends \Phalcon\Mvc\Model
         ));
 
         $this->hasMany('id', 'UniqueLoneDog\Models\Reputation', 'userId', array(
-            'alias'      => 'points',
+            'alias' => 'points',
             'foreignKey' => array(
                 'message' => 'User cannot be deleted because it still has data in Reputation table'
             )
         ));
         $this->hasMany('id', 'UniqueLoneDog\Models\Group', 'userId', array(
-            "alias"      => "userGroups",
+            "alias" => "userGroups",
             'foreignKey' => array(
                 'message' => 'User cannot be deleted because it still has data in Group table'
             )
         ));
 
+        $this->hasMany('id', 'UniqueLoneDog\Models\Item', 'itemId', array(
+            'foreignKey' => array(
+                'message' => 'Item cannot be deleted because it\'s used on a User'
+            )
+        ));
         $this->hasManyToMany(
                 "id", "UniqueLoneDog\Models\UserGroup", "userId", "groupId", "UniqueLoneDog\Models\Group", "id", array(
             "alias" => "groups"
@@ -120,9 +125,9 @@ class User extends \Phalcon\Mvc\Model
      */
     public function setPassword($password)
     {
-        $security       = $this->getDI()->get("security");
-        $this->salt     = $security->getSaltBytes();
-        $hash           = $security->hash($this->salt + $password);
+        $security = $this->getDI()->get("security");
+        $this->salt = $security->getSaltBytes();
+        $hash = $security->hash($this->salt + $password);
         $this->passhash = $hash;
     }
 
@@ -182,9 +187,9 @@ class User extends \Phalcon\Mvc\Model
      */
     private function mutateReputation($points)
     {
-        $reputation         = new Reputation();
+        $reputation = new Reputation();
         $reputation->points = \intval($points);
-        $reputation->user   = $this;
+        $reputation->user = $this;
         $reputation->save();
     }
 
@@ -197,9 +202,9 @@ class User extends \Phalcon\Mvc\Model
      */
     private function reputationMultiplier(User $otherUser)
     {
-        $currRep  = $this->getReputation();
+        $currRep = $this->getReputation();
         $otherRep = $otherUser->getReputation();
-        $delta    = \abs($otherRep - $currRep);
+        $delta = \abs($otherRep - $currRep);
         return \log($delta + 1, Reputation::ALGO_STEEPNESS) + 1;
     }
 

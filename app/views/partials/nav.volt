@@ -5,6 +5,7 @@
         <ul class="nav">
             {% if identity.exists() %}
             <li>Welcome {{ identity.getName() }}</li>
+            <li><a href="{{ url.get({"for": "item-add"}) }}" >Items</a></li>
             <li><a href="{{ url.get({"for": "group"}) }}" >Groups</a></li>
             <li><a href="{{ url.get({"for": "account-logout"}) }}" >Logout</a></li>
             {% else %}
