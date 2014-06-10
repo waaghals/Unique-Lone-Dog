@@ -72,10 +72,15 @@ CREATE TABLE IF NOT EXISTS `item` (
   `userId` int(11) NOT NULL,
   `name` varchar(25) NOT NULL,
   `URI` varchar(2048) NOT NULL,
-  `comment` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `itemId` int(11) NOT NULL,
+  `text` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 CREATE TABLE IF NOT EXISTS `user_group` (
   `groupId` int(11) unsigned NOT NULL,
