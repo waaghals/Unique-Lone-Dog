@@ -1,14 +1,18 @@
+{{ content() }}
 <div>
     <h2>
-        {% autoescape true %}
-            {{ item.name }}
-        {% endautoescape %}
+        {{ item.name }}
     </h2>
 
     {{ item.URI }}
     <p>
-        {% autoescape true %}
-            {{ item.comment }}
-        {% endautoescape %}
+        <h3>
+            Comments:
+        </h3>
+        {% for comment in item.comments %}
+            {{ comment.text }}
+        {% endfor %}
+
+        {{ partial('partials/genericForm') }}
     <p>
 </div>

@@ -53,14 +53,9 @@ class Item extends \Phalcon\Mvc\Model
      */
     public $URI;
 
-    /**
-     *
-     * @var integer
-     */
-    public $comment;
-
     public function initialize()
     {
+        $this->hasMany('id', 'UniqueLoneDog\Models\Comment', 'id', array('alias' => 'comments'));
         $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id', array(
             'alias' => 'user'
         ));
