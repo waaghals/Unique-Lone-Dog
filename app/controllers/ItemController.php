@@ -7,6 +7,7 @@ use UniqueLoneDog\Models\Factories\ItemFactory;
 use UniqueLoneDog\Models\Item;
 use UniqueLoneDog\Models\Comment;
 use UniqueLoneDog\Forms\AddCommentForm;
+use Phalcon\Mvc\View;
 
 /*
  * The MIT License
@@ -48,6 +49,7 @@ class ItemController extends AbstractController
         $this->itemSubmitForm = new ItemSubmitForm();
         $this->itemFactory = new ItemFactory();
         $this->addCommentForm = new AddCommentForm();
+        $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
 
     public function addAction()
@@ -83,8 +85,21 @@ class ItemController extends AbstractController
 
     public function showAction($itemId)
     {
+        $this->view->setTemplateAfter('Item');
         $this->view->setVar("item", Item::findFirst(array($itemId)));
         $this->view->form = $this->addCommentForm;
+        //switch(itemType)
+        //{
+        //case "image":
+        //    $this->view->pick("Item/showImage");
+        //    break;
+        //case "video":
+        //    $this->view->pick("Item/showVideo");
+        //    break;
+        //default:
+        //    $this->view->pick("Item/show");
+        //    break;
+        //}
         $this->view->pick("Item/show");
     }
 
