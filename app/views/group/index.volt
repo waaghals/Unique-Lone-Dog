@@ -1,13 +1,7 @@
-<h2>Groups</h2>
-{% for group in groups %}
+<h2>Your groups</h2>
 <ul>
-    <li>
-        <p>
-            Name: {{ group.name }} <br />
-            Description: {{ group.description }} <br />
-            <a href="{{ url.get({"for": "group-unsubscribe","id": group.id }) }}" >Unsubscribe</a> <br />
-        </p>
-    </li>
+    {% for group in groups %}
+    {{ partial('group/partials/listItem') }}
+    {% endfor  %}
 </ul>
-{% endfor  %}
 <a href="{{ url.get({"for": "group-explore"}) }}" >Explore Groups</a>

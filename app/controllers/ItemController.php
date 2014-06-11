@@ -4,7 +4,7 @@ namespace UniqueLoneDog\Controllers;
 
 use UniqueLoneDog\Forms\ItemSubmitForm;
 use UniqueLoneDog\Models\Factories\ItemFactory;
-use UniqueLoneDog\Validators;
+use Phalcon\Mvc\Model\Query;
 
 /*
  * The MIT License
@@ -46,14 +46,14 @@ class ItemController extends AbstractController
         $this->itemFactory    = new ItemFactory();
     }
 
+    public function exploreAction()
+    {
+        $query = $this->modelsManager->createQuery("SELECT * FROM UniqueLoneDog\Models\Item");
+        $items = $query->execute();
+    }
+
     public function addAction()
     {
-        if (!$this->identity->exists()) {
-            $this->flash->error("You are not allowed here!");
-            $this->response->redirect();
-        }
-
-
         $this->view->pick('partials/genericForm');
         $this->view->form = $this->itemSubmitForm;
     }
