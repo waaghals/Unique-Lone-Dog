@@ -1,5 +1,3 @@
-{{ stylesheet_link("css/itemOverview.css") }}
-
 <div class="text-center">
     {{ link_to("item/add", "Add new") }}
 </div>

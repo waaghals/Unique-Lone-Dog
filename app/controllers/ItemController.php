@@ -47,7 +47,7 @@ class ItemController extends AbstractController
     public function initialize()
     {
         $this->itemSubmitForm = new ItemSubmitForm();
-        $this->itemFactory = new ItemFactory();
+        $this->itemFactory    = new ItemFactory();
         $this->addCommentForm = new AddCommentForm();
         $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
@@ -79,6 +79,7 @@ class ItemController extends AbstractController
 
     public function overviewAction()
     {
+        $this->assets->addCss('css/itemOverview.css');
         $this->view->setVar("items", Item::find());
         $this->view->pick("Item/overview");
     }
@@ -110,10 +111,10 @@ class ItemController extends AbstractController
                 $this->flash->error($message);
             }
         } else {
-            $c = new Comment();
+            $c         = new Comment();
             $c->userId = $this->identity->getUser()->id;
             $c->itemId = $itemId;
-            $c->text = $this->request->getPost('comment', 'striptags');
+            $c->text   = $this->request->getPost('comment', 'striptags');
             if (!$c->save()) {
                 $this->flash->error($c->getMessages());
             } else {
@@ -178,11 +179,11 @@ class ItemController extends AbstractController
 
     private function getContentTypeFromHeader($header)
     {
-        $results = split("\n", trim($header));
+        $results     = split("\n", trim($header));
         $contentType = "";
         foreach ($results as $line) {
             if (strtok($line, ':') == 'Content-Type') {
-                $parts = explode(":", $line);
+                $parts       = explode(":", $line);
                 $contentType = trim($parts[1]);
             }
         }
@@ -192,8 +193,8 @@ class ItemController extends AbstractController
     private function getItemFromPost()
     {
         $factory = $this->itemFactory;
-        $name = $this->request->getPost('name');
-        $URI = $this->request->getPost('URI');
+        $name    = $this->request->getPost('name');
+        $URI     = $this->request->getPost('URI');
         $comment = $this->request->getPost('comment');
 
         return $factory->create($name, $URI, $comment);
