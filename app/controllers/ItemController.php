@@ -74,8 +74,8 @@ class ItemController extends AbstractController
             if (!$item->save()) {
                 $this->flash->error($item->getMessages());
             } else {
-                $this->flashSession->success("Item created.");
-                return $this->response->redirect();
+                $this->flashSession->success("Item posted.");
+                return $this->response->redirect('item/show/' . $item->id);
             }
         }
     }
@@ -89,22 +89,26 @@ class ItemController extends AbstractController
 
     public function showAction($itemId)
     {
+        $item = Item::findFirst(array($itemId));
+
         $this->view->setTemplateAfter('Item');
-        $this->view->setVar("item", Item::findFirst(array($itemId)));
+        $this->view->setVar("item", $item);
         $this->view->form = $this->addCommentForm;
-        //switch(itemType)
-        //{
-        //case "image":
-        //    $this->view->pick("Item/showImage");
-        //    break;
-        //case "video":
-        //    $this->view->pick("Item/showVideo");
-        //    break;
-        //default:
-        //    $this->view->pick("Item/show");
-        //    break;
-        //}
-        $this->view->pick("Item/show");
+
+        switch ($item->type) {
+            case "Image":
+                $this->view->pick("Item/showImage");
+                break;
+            case "Video":
+                $this->view->pick("Item/showVideo");
+                break;
+            case "Youtube":
+                $this->view->pick("Item/showYoutube");
+                break;
+            default:
+                $this->view->pick("Item/show");
+                break;
+        }
     }
 
     public function performAddCommentAction($itemId)
@@ -142,10 +146,24 @@ class ItemController extends AbstractController
         }
     }
 
-    /*
-     * Get the header information for an url
-     * This way we can check if the url is a certain Internet media type
-     */
+    private function isVideo($contentType)
+    {
+        $imageTypes = ["video/webm", "video/avi", "video/mpeg", "video/mp4", "video/x-flv"];
+        if (in_array($contentType, $imageTypes)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function isYoutube($url)
+    {
+        $res = parse_url($url);
+        if ($res['host'] === "www.youtube.com") {
+            return true;
+        }
+        return false;
+    }
 
     private function getRemoteHeader($url)
     {
@@ -182,7 +200,7 @@ class ItemController extends AbstractController
 
     private function getContentTypeFromHeader($header)
     {
-        $results     = split("\n", trim($header));
+        $results     = explode("\n", trim($header));
         $contentType = "";
         foreach ($results as $line) {
             if (strtok($line, ':') == 'Content-Type') {
@@ -190,19 +208,27 @@ class ItemController extends AbstractController
                 $contentType = trim($parts[1]);
             }
         }
-        return contentType;
+        return $contentType;
     }
 
     private function getItemFromPost()
     {
+        $URI  = $this->request->getPost('URI');
+        $type = $this->getType($URI);
+        if (!isset($type)) {
+            $type = "Site";
+        }
+        if ($type === "Youtube") {
+            $res = parse_url($URI);
+            $URI = "//" . $res['host'] . $res['path'] . $res['query'];
+            $URI = str_replace("watchv=", "embed/", $URI);
+        }
         $factory     = $this->itemFactory;
         $name        = $this->request->getPost('name');
-        $URI         = $this->request->getPost('URI');
-        $comment     = $this->request->getPost('comment');
+        $description = $this->request->getPost('description');
         $machineTags = $this->request->getPost('tag');
 
-        $item = $factory->create($name, $URI, $comment);
-
+        $item = $factory->create($name, $URI, $description, $type);
         foreach ($machineTags as $machineTag) {
             if (!empty($machineTag)) {
                 $tag = $this->tagFactory->create($machineTag);
@@ -214,8 +240,23 @@ class ItemController extends AbstractController
                 $itemTag->save();
             }
         }
-
         return $item;
+    }
+
+    private function getType($URI)
+    {
+        $header      = $this->getRemoteHeader($URI);
+        $contentType = $this->getContentTypeFromHeader($header);
+
+        if ($this->isYoutube($URI)) {
+            return "Youtube";
+        }
+        switch ($contentType) {
+            case $this->isImage($contentType):
+                return "Image";
+            case $this->isVideo($contentType):
+                return "Video";
+        }
     }
 
 }

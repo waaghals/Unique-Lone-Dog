@@ -1,1 +1,1 @@
-{{ item.URI }}
+<a href="{{ item.URI }}">{{ item.URI }}</a>

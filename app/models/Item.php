@@ -51,7 +51,19 @@ class Item extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $description;
+
+    /**
+     *
+     * @var string
+     */
     public $URI;
+
+    /**
+     *
+     * @var string
+     */
+    public $type;
 
     public function initialize()
     {
