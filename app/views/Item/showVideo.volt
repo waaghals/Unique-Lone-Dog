@@ -1,0 +1,1 @@
+<video src="{{ item.URI }}" autoplay controls></video>

@@ -1,13 +1,9 @@
 <?php
 
-namespace UniqueLoneDog\Forms;
-
-use Phalcon\Forms\Form;
-
 /*
  * The MIT License
  *
- * Copyright 2014 Tojba.
+ * Copyright 2014 Jelle.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,16 +24,41 @@ use Phalcon\Forms\Form;
  * THE SOFTWARE.
  */
 
-class ItemSubmitForm extends Form
+namespace UniqueLoneDog\Models;
+
+class Comment extends \Phalcon\Mvc\Model
 {
+
+    /**
+     *
+     * @var integer
+     */
+    public $id;
+
+    /**
+     *
+     * @var integer
+     */
+    public $itemId;
+
+    /**
+     *
+     * @var integer
+     */
+    public $userId;
+
+    /**
+     *
+     * @var integer
+     */
+    public $text;
 
     public function initialize()
     {
-        $this->add(new Fields\Name());
-        $this->add(new Fields\URI());
-        $this->add(new Fields\Comment());
-        $this->add(new Fields\Tag());
-        $this->add(new Fields\Button("Submit"));
+        $this->belongsTo('itemId', 'UniqueLoneDog\Models\Item', 'id', array('alias' => 'item'));
+        $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id', array('alias' => 'user'));
     }
 
 }
+
+?>

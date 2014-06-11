@@ -1,13 +1,7 @@
-<?php
-
-namespace UniqueLoneDog\Forms;
-
-use Phalcon\Forms\Form;
-
 /*
  * The MIT License
  *
- * Copyright 2014 Tojba.
+ * Copyright 2014 Waaghals.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,16 +22,24 @@ use Phalcon\Forms\Form;
  * THE SOFTWARE.
  */
 
-class ItemSubmitForm extends Form
-{
+$(document).ready(function() {
+    $(".tagInput").change(function() {
+        console.log("Tag field changed")
+        var inputCount = $(".tagInput").length;
+        var valueCount = 0;
+        $(".tagInput").each(function(index) {
+            if ($(this).val() !== "") {
+                valueCount++;
+            }
 
-    public function initialize()
-    {
-        $this->add(new Fields\Name());
-        $this->add(new Fields\URI());
-        $this->add(new Fields\Comment());
-        $this->add(new Fields\Tag());
-        $this->add(new Fields\Button("Submit"));
-    }
+        });
 
-}
+        console.log("Fields: " + inputCount + ", filled: " + valueCount);
+        if (valueCount === inputCount) {
+            console.log("Creating new tag input field");
+            var newInput = $(this).clone(true);
+            newInput.val("");
+            $(this).after(newInput);
+        }
+    });
+});

@@ -19,7 +19,7 @@ return new \Phalcon\Config(array(
         'validatorsDir'  => APP_DIR . '/validators/',
         'utilsDir'       => APP_DIR . '/utils/',
         'vendorDir'      => BASE_DIR . '/vendor/',
-        'baseUri'        => '/',
+        'baseUri'        => '/uld/public/',
         'publicUrl'      => 'localhost',
         'cryptSalt'      => 'YKaCEjaODSyMawu-WggW/pvq1orBqYFNEYXUUlDR$B!)0cu@1d2o69)sv5F$l+Q+',
         'saltBytes'      => 12

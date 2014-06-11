@@ -51,8 +51,14 @@ class TagValidator extends Validator implements ValidatorInterface
     {
         $value = $validator->getValue($attribute);
 
-        if (!preg_match(REGEX, $value)) {
+        if (empty($value)) {
+            //Allow empty values
+            return true;
+        }
 
+        if (!preg_match("/" . self::REGEX . "/", $value)) {
+
+            //Anything not empty should match the pattern
             $message = $this->getOption('message');
             if (!$message) {
                 $message = 'This is not a valid tag';

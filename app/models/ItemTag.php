@@ -1,13 +1,9 @@
 <?php
 
-namespace UniqueLoneDog\Forms;
-
-use Phalcon\Forms\Form;
-
 /*
  * The MIT License
  *
- * Copyright 2014 Tojba.
+ * Copyright 2014 Waaghals.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,16 +24,46 @@ use Phalcon\Forms\Form;
  * THE SOFTWARE.
  */
 
-class ItemSubmitForm extends Form
+namespace UniqueLoneDog\Models;
+
+/**
+ * Description of ItemTag
+ *
+ * @author Waaghals
+ */
+class ItemTag extends \Phalcon\Mvc\Model
 {
 
+    /**
+     *
+     * @var integer
+     */
+    public $itemId;
+
+    /**
+     *
+     * @var string
+     */
+    public $tagId;
+
+    /**
+     *
+     * @return boolean False when validation failed.
+     */
     public function initialize()
     {
-        $this->add(new Fields\Name());
-        $this->add(new Fields\URI());
-        $this->add(new Fields\Comment());
-        $this->add(new Fields\Tag());
-        $this->add(new Fields\Button("Submit"));
+        $this->belongsTo('itemId', 'UniqueLoneDog\Models\Item', 'id',
+                         array('alias' => 'item')
+        );
+
+        $this->belongsTo('tagId', 'UniqueLoneDog\Models\Tags\ValueTag', 'id',
+                         array('alias' => 'tag')
+        );
+    }
+
+    public function getSource()
+    {
+        return "item_tag";
     }
 
 }

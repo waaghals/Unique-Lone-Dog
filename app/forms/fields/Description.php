@@ -15,7 +15,10 @@ class Description extends Text
 
     public function __construct()
     {
-        parent::__construct('description');
+        parent::__construct('description',
+                            array(
+            'required' => 'required'
+        ));
 
         $this->setLabel('Description');
 

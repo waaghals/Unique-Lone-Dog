@@ -4,9 +4,9 @@
         <title>Title</title>
         {{ partial("partials/meta") }}
         {{ partial("partials/icons") }}
-
         {{ stylesheet_link("css/kraken.css") }}
         {{ stylesheet_link("css/astro.css") }}
+        {{ assets.outputCss() }}
         {{ javascript_include("js/feature-test.js") }}
     </head>
 
@@ -24,9 +24,9 @@
             astro.init();
         </script>
 
-        {{ javascript_include("js/kraken.js") }}
         {{ javascript_include("js/astro.js") }}
         {{ javascript_include("js/buoy.js") }}
+        {{ assets.outputJs() }}
         {{ partial("partials/analytics") }}
     </body>
 </html>

@@ -7,14 +7,19 @@ INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Guest', 'account', 'signUpForm'),
 ('Guest', 'index', 'index'),
 ('Users', 'account', 'logout'),
-('Users', 'group', 'index'),
-('Users', 'group', 'exploreGroup'),
 ('Users', 'group', 'addGroupForm'),
+('Users', 'group', 'exploreGroup'),
+('Users', 'group', 'index'),
 ('Users', 'group', 'performAddGroup'),
 ('Users', 'group', 'performSubscribeGroup'),
 ('Users', 'group', 'performUnsubscribeGroup'),
 ('Users', 'item', 'add'),
-('Users', 'item', 'performAddItem');
+('Users', 'item', 'addComment'),
+('Users', 'item', 'index'),
+('Users', 'item', 'overview'),
+('Users', 'item', 'performAddComment'),
+('Users', 'item', 'performAddItem'),
+('Users', 'item', 'show');
 
 INSERT INTO `role` (`name`, `power`) VALUES
 ('Guest', 1),
