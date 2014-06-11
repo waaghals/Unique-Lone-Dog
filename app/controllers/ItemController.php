@@ -48,11 +48,6 @@ class ItemController extends AbstractController
 
     public function addAction()
     {
-        if (!$this->identity->exists()) {
-            $this->flash->error("You are not allowed here!");
-            $this->response->redirect();
-        }
-
         $this->assets->addJs('js/addTagInput.js');
         $this->view->pick('partials/genericForm');
         $this->view->form = $this->itemSubmitForm;
@@ -60,7 +55,6 @@ class ItemController extends AbstractController
 
     public function performAddItemAction()
     {
-        var_dump($this->request->getPost());
         if (!$this->itemSubmitForm->isValid($this->request->getPost())) {
 
             foreach ($this->itemSubmitForm->getMessages() as $message) {
