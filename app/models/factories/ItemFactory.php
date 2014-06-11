@@ -10,13 +10,13 @@ class ItemFactory extends Injectable
 
     public function create($name, $URI, $comment)
     {
-        $u = new Item();
-        $u->URI = $URI;
-        $u->name = $name;
-        $u->comment = $comment;
-        $u->user = $this->identity->getUser();
+        $item          = new Item();
+        $item->URI     = $URI;
+        $item->name    = $name;
+        $item->comment = $comment;
+        $item->user    = $this->identity->getUser();
 
-        return $u;
+        return $item;
     }
 
 }

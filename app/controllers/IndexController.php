@@ -76,6 +76,13 @@ class IndexController extends Controller
         $emailValue->predicate     = $emailPredicate;
         $emailPredicate->namespace = $authorNamespace;
         $emailValue->save();
+
+        $test = $this->tagFactory->create("content:type=image/jpg");
+        if (!$test->save()) {
+            foreach ($test->getMessages() as $msg) {
+                echo $msg;
+            }
+        }
     }
 
     public function reputationTestAction()

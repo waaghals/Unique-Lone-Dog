@@ -3,7 +3,6 @@
 namespace UniqueLoneDog\Forms\Fields;
 
 use Phalcon\Forms\Element\Text;
-use Phalcon\Mvc\Model\Validator\PresenceOf;
 use UniqueLoneDog\Validators\URIValidator;
 
 /*
@@ -35,7 +34,11 @@ class URI extends Text
 
     public function __construct()
     {
-        parent::__construct('URI');
+        parent::__construct('URI',
+                            array(
+            'required'    => 'required',
+            'placeholder' => 'http://..'
+        ));
 
         $this->setLabel('URI');
 

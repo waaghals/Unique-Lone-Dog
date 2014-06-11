@@ -61,11 +61,22 @@ class Item extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id', array(
+        $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id',
+                         array(
             'alias' => 'user'
+        ));
+
+        $this->hasManyToMany(
+                "id", "UniqueLoneDog\Models\ItemTag", "itemId", "tagId",
+                "UniqueLoneDog\Models\Tags\ValueTag", "id",
+                array(
+            "alias" => "tags"
+        ));
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\ItemTag', 'itemId',
+                       array(
+            'alias' => 'itemTags'
         ));
     }
 
 }
-
-?>

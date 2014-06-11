@@ -34,8 +34,17 @@ namespace UniqueLoneDog\Models\Tags;
 abstract class AbstractTag extends \Phalcon\Mvc\Model
 {
 
-    protected $id;
-    protected $part;
+    /**
+     *
+     * @var int
+     */
+    public $id;
+
+    /**
+     *
+     * @var string
+     */
+    public $part;
 
     public function getId()
     {
