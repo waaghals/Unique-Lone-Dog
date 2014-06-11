@@ -44,13 +44,13 @@ class User extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $roleId;
+    public $roleName;
 
     /**
      *
      * @var integer
      */
-    public $statusId;
+    public $statusName;
 
     /**
      *
@@ -71,33 +71,179 @@ class User extends \Phalcon\Mvc\Model
         return !$this->validationHasFailed();
     }
 
+    public function deleteGroup($groupId)
+    {
+        $userGroup = UserGroup::find($groupId);
+        $userGroup->delete();
+    }
+
     public function initialize()
     {
-        $this->belongsTo('roleId', 'UniqueLoneDog\Models\Role', 'id', array(
+        $this->belongsTo('roleName', 'UniqueLoneDog\Models\Role', 'name',
+                         array(
             'alias' => 'role'
         ));
 
-        $this->belongsTo('statusId', 'UniqueLoneDog\Models\Status', 'id', array(
+        $this->belongsTo('statusName', 'UniqueLoneDog\Models\Status', 'name',
+                         array(
             'alias' => 'status'
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\LoginSuccess', 'usersId', array(
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\LoginSuccess', 'usersId',
+                       array(
             'foreignKey' => array(
                 'message' => 'User cannot be deleted because it still has data in LoginSuccess table'
             )
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\PasswordChange', 'usersId', array(
+        $this->hasMany('id', 'UniqueLoneDog\Models\Reputation', 'userId',
+                       array(
+            'alias'      => 'points',
             'foreignKey' => array(
-                'message' => 'User cannot be deleted because it still has data in PasswordChange table'
+                'message' => 'User cannot be deleted because it still has data in Reputation table'
+            )
+        ));
+        $this->hasMany('id', 'UniqueLoneDog\Models\Group', 'userId',
+                       array(
+            "alias"      => "userGroups",
+            'foreignKey' => array(
+                'message' => 'User cannot be deleted because it still has data in Group table'
             )
         ));
 
-        $this->hasMany('id', 'UniqueLoneDog\Models\PasswordReset', 'usersId', array(
+        $this->hasMany('id', 'UniqueLoneDog\Models\Item', 'itemId',
+                       array(
             'foreignKey' => array(
-                'message' => 'User cannot be deleted because it still has data in the PasswordReset table'
+                'message' => 'Item cannot be deleted because it\'s used on a User'
             )
         ));
+
+        $this->hasManyToMany(
+                "id", "UniqueLoneDog\Models\UserGroup", "userId", "groupId",
+                "UniqueLoneDog\Models\Group", "id",
+                array(
+            "alias" => "groups"
+        ));
+    }
+
+    /**
+     * Set a new password, will regenerate a new salt.
+     *
+     * @param string $password The new password
+     */
+    public function setPassword($password)
+    {
+        $security       = $this->getDI()->get("security");
+        $this->salt     = $security->getSaltBytes();
+        $hash           = $security->hash($this->salt + $password);
+        $this->passhash = $hash;
+    }
+
+    /**
+     * Set the default role and status before creation
+     */
+    public function beforeValidation()
+    {
+        if ($this->statusName == null) {
+            $status           = Status::findFirstByName('non-confirmed');
+            $this->statusName = $status->name;
+        }
+
+        if ($this->roleName == null) {
+            $role           = Role::findFirstByName('Users');
+            $this->roleName = $role->name;
+        }
+    }
+
+    /**
+     * Increase the users reputation
+     *
+     * @param int $points
+     * @param \UniqueLoneDog\Models\User $from
+     */
+    public function increaseReputation($points, User $from = null)
+    {
+        $multiplier = 1;
+        if ($from !== null) {
+            $multiplier = $this->reputationMultiplier($from);
+        }
+
+        $this->mutateReputation($points * $multiplier);
+    }
+
+    /**
+     * Decrease the users reputation
+     *
+     * @param int $points
+     * @param \UniqueLoneDog\Models\User $from
+     */
+    public function decreaseReputation($points, User $from = null)
+    {
+        $multiplier = 1;
+        if ($from !== null) {
+            $multiplier = $this->reputationMultiplier($from);
+        }
+
+        $negative = 0 - ($points * $multiplier);
+        $this->mutateReputation($negative);
+    }
+
+    /**
+     * Create a new reputation mutation row
+     *
+     * @param int $points
+     */
+    private function mutateReputation($points)
+    {
+        $reputation         = new Reputation();
+        $reputation->points = \intval($points);
+        $reputation->user   = $this;
+        $reputation->save();
+    }
+
+    /**
+     * Get the multiplier for the reputation change.
+     * f(x) = log100(|otherRep - userRep| + 1) + 1
+     *
+     * @param \UniqueLoneDog\Models\User $otherUser
+     * @return int
+     */
+    private function reputationMultiplier(User $otherUser)
+    {
+        $currRep  = $this->getReputation();
+        $otherRep = $otherUser->getReputation();
+        $delta    = \abs($otherRep - $currRep);
+        return \log($delta + 1, Reputation::ALGO_STEEPNESS) + 1;
+    }
+
+    /**
+     * Get the current reputation for this user
+     * @return int
+     */
+    public function getReputation()
+    {
+        $reputation = 0;
+        foreach ($this->points as $mutation) {
+            $reputation += $mutation->points;
+        }
+        return $reputation;
+    }
+
+    /**
+     * Get the reputation for a user in human readable format.
+     * Reputation above 2000 is shortend to 2.0k
+     *
+     * @return string
+     */
+    public function getHumanReputation()
+    {
+        $rep = $this->getReputation();
+        if ($rep >= 2000) {
+            return \sprintf("%.1f", $rep / 1000) . 'k';
+        } else {
+            return $rep;
+        }
     }
 
 }

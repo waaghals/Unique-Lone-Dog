@@ -15,6 +15,8 @@ try {
      */
     $config = include APP_DIR . '/config/config.php';
 
+
+
     /**
      * Setup the autoloader
      */
@@ -30,6 +32,9 @@ try {
      */
     if ($config->environment->debug === true) {
         new \PDW\DebugWidget($di);
+
+        $debug = new \Phalcon\Debug();
+        $debug->listen();
     }
 
     /**

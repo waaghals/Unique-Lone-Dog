@@ -10,21 +10,21 @@ use Phalcon\Validation\Validator\PresenceOf;
  *
  * @author Patrick
  */
-class Name extends Text
+class Description extends Text
 {
 
     public function __construct()
     {
-        parent::__construct('name',
+        parent::__construct('description',
                             array(
             'required' => 'required'
         ));
 
-        $this->setLabel('Name');
+        $this->setLabel('Description');
 
         $this->addValidators(array(
             new PresenceOf(array(
-                'message' => 'The name is required'
+                'message' => 'The description is required'
         ))));
     }
 

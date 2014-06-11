@@ -24,9 +24,9 @@
             astro.init();
         </script>
 
-        {{ javascript_include("js/kraken.js") }}
         {{ javascript_include("js/astro.js") }}
         {{ javascript_include("js/buoy.js") }}
+        {{ assets.outputJs() }}
         {{ partial("partials/analytics") }}
     </body>
 </html>

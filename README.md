@@ -1,8 +1,15 @@
 # Unique-Lone-Dog
 ## Version
-0.2.0
+0.3.0
 
 ### Changes
+* 0.3.0
+  * Taggen van items
+  * Lidworden van groepen
+  * Aanmaken van groepen
+  * Items toevoegen
+  * Authorizatie niveaus
+  * Gebruikers rollen
 * 0.2.0
   * Debugger toegevoegd
   * Account creation

@@ -31,3 +31,4 @@ nb-configuration.xml
 
 #sftp configuration file
 sftp-config.json
+nbproject/

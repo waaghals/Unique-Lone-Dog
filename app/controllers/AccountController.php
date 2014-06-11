@@ -2,12 +2,14 @@
 
 namespace UniqueLoneDog\Controllers;
 
-use UniqueLoneDog\Forms\LoginForm;
-use UniqueLoneDog\Forms\SignUpForm;
+use UniqueLoneDog\Models\User,
+    UniqueLoneDog\Forms\LoginForm,
+    UniqueLoneDog\Forms\SignUpForm,
+    UniqueLoneDog\Models\Reputation;
 
 /**
  *
- * @property Identity $identity Identity library
+ * @property UniqueLoneDog\Identity $identity Identity library
  */
 class AccountController extends AbstractController
 {
@@ -32,17 +34,23 @@ class AccountController extends AbstractController
 
     public function performLoginAction()
     {
-        $email = $this->request->getPost("email");
-        $pass  = $this->request->getPost("password");
+        //$email = $this->request->getPost("email");
+        $pass = $this->request->getPost("password");
 
-        if (!$this->loginForm->isValid($this->request->getPost())) {
+        $post = $this->request->getPost();
+        $user = new User();
+        $this->loginForm->bind($post, $user);
+
+        if (!$this->loginForm->isValid()) {
 
             foreach ($this->loginForm->getMessages() as $message) {
                 $this->flash->error($message);
             }
-        } elseif ($this->auth->isValidLogin($email, $pass)) {
+        } elseif ($this->auth->isValidLogin($user->email, $pass)) {
 
-            $this->identity->setByEmail($email);
+
+            $this->loginUser($user->email);
+
             $this->flash->success("Login successfull");
             return $this->response->redirect();
         } else {
@@ -53,24 +61,36 @@ class AccountController extends AbstractController
         $this->view->form = $this->loginForm;
     }
 
+    private function loginUser($email)
+    {
+        $this->identity->setByEmail($email);
+        $user = $this->identity->getUser();
+        $user->increaseReputation(Reputation::LOGIN);
+    }
+
     public function performSignUpAction()
     {
-        if (!$this->signUpForm->isValid($this->request->getPost())) {
+        $post = $this->request->getPost();
+        $user = new User();
 
-            foreach ($this->signUpForm->getMessages() as $message) {
+        $this->signUpForm->bind($post, $user);
+        if (!$this->signUpForm->isValid()) {
+            //Form not valid
+            $messages   = $this->signUpForm->getMessages();
+            $messages[] = $this->signUpForm->getEntity()->getMessages();
+
+            foreach ($messages as $message) {
                 $this->flash->error($message);
             }
-        } else {
-            $user = $this->getUserFromPost();
-
-            if (!$user->save()) {
-                $this->flash->error($user->getMessages());
-            } else {
-                $this->flash->success("Account created.");
-                return $this->response->redirect();
-            }
+        } elseif ($user->save()) {
+            $this->flashSession->success("Account created.");
+            $user->increaseReputation(Reputation::REGISTRATION);
+            return $this->response->redirect();
         }
-
+        $user->validation();
+        foreach ($user->getMessages() as $message) {
+            $this->flash->error($message);
+        }
         return $this->signUpFormAction();
     }
 
@@ -78,16 +98,6 @@ class AccountController extends AbstractController
     {
         $this->view->pick("partials/genericForm");
         $this->view->form = $this->signUpForm;
-    }
-
-    private function getUserFromPost()
-    {
-        $factory = $this->userFactory;
-        $name    = $this->request->getPost('name', 'striptags');
-        $email   = $this->request->getPost('email', 'email');
-        $pass    = $this->request->getPost('password');
-
-        return $factory->create($name, $email, $pass);
     }
 
     public function logoutAction()
