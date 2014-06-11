@@ -53,16 +53,13 @@ class Item extends \Phalcon\Mvc\Model
      */
     public $URI;
 
-    /**
-     *
-     * @var integer
-     */
-    public $comment;
-
     public function initialize()
     {
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\Comment', 'itemId',
+                array('alias' => 'comments'));
         $this->belongsTo('userId', 'UniqueLoneDog\Models\User', 'id',
-                         array(
+                array(
             'alias' => 'user'
         ));
 
@@ -74,7 +71,7 @@ class Item extends \Phalcon\Mvc\Model
         ));
 
         $this->hasMany('id', 'UniqueLoneDog\Models\ItemTag', 'itemId',
-                       array(
+                array(
             'alias' => 'itemTags'
         ));
     }

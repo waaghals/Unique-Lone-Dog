@@ -5,6 +5,10 @@ namespace UniqueLoneDog\Controllers;
 use UniqueLoneDog\Forms\ItemSubmitForm;
 use UniqueLoneDog\Models\Factories\ItemFactory;
 use UniqueLoneDog\Models\ItemTag;
+use UniqueLoneDog\Models\Item;
+use UniqueLoneDog\Models\Comment;
+use UniqueLoneDog\Forms\AddCommentForm;
+use Phalcon\Mvc\View;
 
 /*
  * The MIT License
@@ -39,15 +43,19 @@ class ItemController extends AbstractController
 
     private $itemSubmitForm;
     private $itemFactory;
+    private $addCommentForm;
 
     public function initialize()
     {
         $this->itemSubmitForm = new ItemSubmitForm();
         $this->itemFactory    = new ItemFactory();
+        $this->addCommentForm = new AddCommentForm();
+        $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
 
     public function addAction()
     {
+
         $this->assets->addJs('js/addTagInput.js');
         $this->view->pick('partials/genericForm');
         $this->view->form = $this->itemSubmitForm;
@@ -70,6 +78,119 @@ class ItemController extends AbstractController
                 return $this->response->redirect();
             }
         }
+    }
+
+    public function overviewAction()
+    {
+        $this->assets->addCss('css/itemOverview.css');
+        $this->view->setVar("items", Item::find());
+        $this->view->pick("Item/overview");
+    }
+
+    public function showAction($itemId)
+    {
+        $this->view->setTemplateAfter('Item');
+        $this->view->setVar("item", Item::findFirst(array($itemId)));
+        $this->view->form = $this->addCommentForm;
+        //switch(itemType)
+        //{
+        //case "image":
+        //    $this->view->pick("Item/showImage");
+        //    break;
+        //case "video":
+        //    $this->view->pick("Item/showVideo");
+        //    break;
+        //default:
+        //    $this->view->pick("Item/show");
+        //    break;
+        //}
+        $this->view->pick("Item/show");
+    }
+
+    public function performAddCommentAction($itemId)
+    {
+        if (!$this->addCommentForm->isValid($this->request->getPost())) {
+            foreach ($this->addCommentForm->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+        } else {
+            $c         = new Comment();
+            $c->userId = $this->identity->getUser()->id;
+            $c->itemId = $itemId;
+            $c->text   = $this->request->getPost('comment', 'striptags');
+            if (!$c->save()) {
+                $this->flash->error($c->getMessages());
+            } else {
+                $this->flashSession->success("Added comment.");
+                return $this->response->redirect('item/show/' . $itemId);
+            }
+        }
+        return $this->response->redirect('item/show/' . $itemId);
+    }
+
+    /*
+     * Check if the contentType is an image
+     */
+
+    private function isImage($contentType)
+    {
+        $imageTypes = ["image/gif", "image/jpeg", "image/pjpeg", "image/png"];
+        if (in_array($contentType, $imageTypes)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     * Get the header information for an url
+     * This way we can check if the url is a certain Internet media type
+     */
+
+    private function getRemoteHeader($url)
+    {
+        $curl = curl_init($url);
+
+        // Only get the header
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        // Do request
+        $result = curl_exec($curl);
+
+        $ret = false;
+
+        // If request did not fail
+        if ($result !== false) {
+            // If request was ok, check response code
+            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            if ($statusCode == 200) {
+                $ret = true;
+            }
+        }
+
+        curl_close($curl);
+
+        return $result;
+    }
+
+    /*
+     * Get the Content type from the header information
+     */
+
+    private function getContentTypeFromHeader($header)
+    {
+        $results     = split("\n", trim($header));
+        $contentType = "";
+        foreach ($results as $line) {
+            if (strtok($line, ':') == 'Content-Type') {
+                $parts       = explode(":", $line);
+                $contentType = trim($parts[1]);
+            }
+        }
+        return contentType;
     }
 
     private function getItemFromPost()

@@ -16,15 +16,6 @@ CREATE TABLE IF NOT EXISTS `group` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
-CREATE TABLE IF NOT EXISTS `item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` int(11) NOT NULL,
-  `name` varchar(25) NOT NULL,
-  `URI` varchar(2048) NOT NULL,
-  `comment` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
-
 CREATE TABLE IF NOT EXISTS `item_tag` (
   `itemId` int(10) unsigned NOT NULL,
   `tagId` int(10) unsigned NOT NULL,
@@ -112,6 +103,20 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   KEY `predicate_id` (`predicate_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
+CREATE TABLE IF NOT EXISTS `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `name` varchar(25) NOT NULL,
+  `URI` varchar(2048) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `itemId` int(11) NOT NULL,
+  `text` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 ALTER TABLE `permission`
   ADD CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`);
