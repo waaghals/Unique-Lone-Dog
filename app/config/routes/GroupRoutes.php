@@ -24,29 +24,34 @@ class GroupRoutes extends \Phalcon\Mvc\Router\Group
         ))->setName("group");
 
         $this->add("/subscribe/{id}/",
-                array(
+                   array(
             "action" => "performSubscribeGroup"
         ))->setName("group-subscribe");
 
         $this->add("/unsubscribe/{id}/",
-                array(
+                   array(
             "action" => "performUnsubscribeGroup"
         ))->setName("group-unsubscribe");
 
         $this->add("/explore",
-                array(
+                   array(
             "action" => "exploreGroup"
         ))->setName("group-explore");
 
         $this->addGet("/add",
-                array(
+                      array(
             "action" => "addGroupForm"
         ))->setName("group-add");
 
         $this->addPost("/add",
-                array(
+                       array(
             "action" => "performAddGroup"
         ));
+
+        $this->addGet("/show/{slug}",
+                      array(
+            "action" => "show"
+        ))->setName("group-show");
     }
 
 }

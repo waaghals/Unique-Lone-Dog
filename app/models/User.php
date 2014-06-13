@@ -119,6 +119,7 @@ class User extends \Phalcon\Mvc\Model
             )
         ));
 
+
         $this->hasManyToMany(
                 "id", "UniqueLoneDog\Models\UserGroup", "userId", "groupId",
                 "UniqueLoneDog\Models\Group", "id",

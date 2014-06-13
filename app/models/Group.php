@@ -3,6 +3,7 @@
 namespace UniqueLoneDog\Models;
 
 use Phalcon\Mvc\Model\Validator\Uniqueness;
+use UniqueLoneDog\Utils\Slug;
 
 class Group extends \Phalcon\Mvc\Model
 {
@@ -33,6 +34,12 @@ class Group extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $slug;
+
+    /**
+     *
      * @return boolean False when validation failed.
      */
     public function validation()
@@ -42,21 +49,34 @@ class Group extends \Phalcon\Mvc\Model
             "required" => true,
         )));
 
+        $this->validate(new Uniqueness(array(
+            "field"    => "slug",
+            "required" => true,
+        )));
+
         //If validation failed, return false.
         return !$this->validationHasFailed();
     }
 
     public function initialize()
     {
-        $this->hasMany('id', 'UniqueLoneDog\Models\User', 'groupId', array(
+        $this->hasMany('id', 'UniqueLoneDog\Models\User', 'groupId',
+                       array(
             "alias"      => "groupUsers",
             'foreignKey' => array(
                 'message' => 'Group cannot be deleted because it still has data in User table'
             )
         ));
+
         $this->hasManyToMany(
-                "id", "UniqueLoneDog\Models\UserGroup", "groupId", "userId", "UniqueLoneDog\Models\User", "id", array("alias" => "users")
+                "id", "UniqueLoneDog\Models\UserGroup", "groupId", "userId",
+                "UniqueLoneDog\Models\User", "id", array("alias" => "users")
         );
+    }
+
+    public function beforeValidation()
+    {
+        $this->slug = Slug::generate($this->name);
     }
 
 }

@@ -53,10 +53,19 @@ class ItemController extends AbstractController
         $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
 
+    public function exploreAction()
+    {
+        return;
+        $query = $this->modelsManager->createQuery("SELECT * FROM UniqueLoneDog\Models\Item");
+        $items = $query->execute();
+    }
+
     public function addAction()
     {
 
+
         $this->assets->addJs('js/addTagInput.js');
+
         $this->view->pick('partials/genericForm');
         $this->view->form = $this->itemSubmitForm;
     }

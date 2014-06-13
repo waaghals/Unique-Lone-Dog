@@ -26,6 +26,13 @@ class GroupController extends AbstractController
         $this->view->pick("group/index");
     }
 
+    public function showAction($slug)
+    {
+        $group = Group::findFirstBySlug($slug);
+        $this->view->setVar("group", $group);
+        $this->view->pick("group/single");
+    }
+
     public function exploreGroupAction()
     {
         $this->view->setVar("groups", Group::find());
