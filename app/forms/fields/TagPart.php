@@ -26,7 +26,7 @@
 
 namespace UniqueLoneDog\Forms\Fields;
 
-use Phalcon\Forms\Element\Select;
+use Phalcon\Forms\Element\Text;
 use UniqueLoneDog\Validators\TagPartValidator;
 
 /**
@@ -34,16 +34,15 @@ use UniqueLoneDog\Validators\TagPartValidator;
  *
  * @author Waaghals
  */
-class TagPart extends Select
+class TagPart extends Text
 {
 
-    const NAME = "tagType[]";
+    const NAME = "tagPart[]";
 
     public function __construct()
     {
         parent::__construct(self::NAME);
-        $this->setOptions(TagTypeValidator::$options);
-        $this->setLabel("Tag type");
+        $this->setLabel("Tag part");
 
         $this->addValidator(new TagPartValidator());
     }

@@ -72,6 +72,14 @@ class Group extends \Phalcon\Mvc\Model
                 "id", "UniqueLoneDog\Models\UserGroup", "groupId", "userId",
                 "UniqueLoneDog\Models\User", "id", array("alias" => "users")
         );
+
+        $this->hasMany('id', 'UniqueLoneDog\Models\Filter', 'groupId',
+                       array(
+            "alias"      => "filters",
+            'foreignKey' => array(
+                'message' => 'Group cannot be deleted because it still has data in the filter table'
+            )
+        ));
     }
 
     public function beforeValidation()

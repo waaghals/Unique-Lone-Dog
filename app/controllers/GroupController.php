@@ -2,9 +2,10 @@
 
 namespace UniqueLoneDog\Controllers;
 
-use UniqueLoneDog\Forms\AddGroupForm;
-use UniqueLoneDog\Models\Group;
-use UniqueLoneDog\Models\UserGroup;
+use UniqueLoneDog\Forms\AddGroupForm,
+    UniqueLoneDog\Models\Group,
+    UniqueLoneDog\Models\UserGroup,
+    UniqueLoneDog\Forms\FilterForm;
 
 class GroupController extends AbstractController
 {
@@ -40,10 +41,15 @@ class GroupController extends AbstractController
         $this->view->pick("group/explore");
     }
 
-    public function editAction()
+    public function addFilterAction()
     {
-        $this->view->form = $this->addGroupForm;
-        $this->view->pick("group/add");
+        $this->view->form = new FilterForm();
+        $this->view->pick("partials/genericForm");
+    }
+
+    private function showFilterForm()
+    {
+
     }
 
     public function addGroupFormAction()

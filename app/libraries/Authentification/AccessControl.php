@@ -77,13 +77,15 @@ class AccessControl extends Plugin
         $acl = new AclMemory();
         $acl->setDefaultAction(Acl::DENY);
         foreach ($permissions as $permission) {
-            $acl->addResource(new AclResource($permission->controller), $permission->action);
+            $acl->addResource(new AclResource($permission->controller),
+                                              $permission->action);
 
             foreach ($roles as $role) {
 
                 if ($role->power >= $permission->role->power) {
                     $acl->addRole(new AclRole($role->name));
-                    $acl->allow($role->name, $permission->controller, $permission->action);
+                    $acl->allow($role->name, $permission->controller,
+                                $permission->action);
                 }
             }
         }
@@ -114,6 +116,8 @@ class AccessControl extends Plugin
         $allowed = $acl->isAllowed($role, $controller, $action);
 
         if ($allowed != Acl::ALLOW) {
+            $this->flashSession->error(sprintf("You don't have access to %s::%s()",
+                                               $controller, $action));
             $this->forwardHome($dispatcher);
             return false;
         }
@@ -126,7 +130,7 @@ class AccessControl extends Plugin
      */
     private function forwardHome(Dispatcher $dispatcher)
     {
-        $this->flashSession->error("You don't have access to this module");
+
         $dispatcher->forward(
                 array(
                     'controller' => 'index',

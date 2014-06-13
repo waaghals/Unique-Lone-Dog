@@ -1,7 +1,13 @@
+<?php
+
+namespace UniqueLoneDog\Forms;
+
+use Phalcon\Forms\Form;
+
 /*
  * The MIT License
  *
- * Copyright 2014 Waaghals.
+ * Copyright 2014 Tojba.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +28,14 @@
  * THE SOFTWARE.
  */
 
-$(document).ready(function() {
-    $(".tagTypeInput").change(function() {
-        console.log("Tag filter changed");
-        var inputCount = $(".tagInput").length;
-        var valueCount = 0;
-        $(".tagTypeInput").each(function(index) {
-            if ($(this).val() !== "") {
-                valueCount++;
-            }
-        });
+class FilterForm extends Form
+{
 
-        console.log("Fields: " + inputCount + ", filled: " + valueCount);
-        if (valueCount === inputCount) {
-            console.log("Creating new tag input field");
-            var newInput = $(this).clone(true);
-            newInput.val("");
-            $(this).after(newInput);
-        }
-    });
-});
+    public function initialize()
+    {
+        $this->add(new Fields\TagType());
+        $this->add(new Fields\TagPart());
+        $this->add(new Fields\Button("Add filter"));
+    }
+
+}

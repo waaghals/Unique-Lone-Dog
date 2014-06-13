@@ -23,14 +23,15 @@
  */
 
 $(document).ready(function() {
-    $(".tagTypeInput").change(function() {
-        console.log("Tag filter changed");
+    $(".tagInput").change(function() {
+        console.log("Tag field changed")
         var inputCount = $(".tagInput").length;
         var valueCount = 0;
-        $(".tagTypeInput").each(function(index) {
+        $(".tagInput").each(function(index) {
             if ($(this).val() !== "") {
                 valueCount++;
             }
+
         });
 
         console.log("Fields: " + inputCount + ", filled: " + valueCount);

@@ -1,3 +1,5 @@
+<?php
+
 /*
  * The MIT License
  *
@@ -22,23 +24,55 @@
  * THE SOFTWARE.
  */
 
-$(document).ready(function() {
-    $(".tagTypeInput").change(function() {
-        console.log("Tag filter changed");
-        var inputCount = $(".tagInput").length;
-        var valueCount = 0;
-        $(".tagTypeInput").each(function(index) {
-            if ($(this).val() !== "") {
-                valueCount++;
-            }
-        });
+namespace UniqueLoneDog\Models;
 
-        console.log("Fields: " + inputCount + ", filled: " + valueCount);
-        if (valueCount === inputCount) {
-            console.log("Creating new tag input field");
-            var newInput = $(this).clone(true);
-            newInput.val("");
-            $(this).after(newInput);
-        }
-    });
-});
+/**
+ * A tag part and tag type to filter on the groups
+ *
+ * @author Waaghals
+ */
+class Filter extends \Phalcon\Mvc\Model
+{
+
+    public $groupId;
+    public $type;
+    public $part;
+
+    public function getGroupId()
+    {
+        return $this->groupId;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function getPart()
+    {
+        return $this->part;
+    }
+
+    public function setGroupId($groupId)
+    {
+        $this->groupId = $groupId;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    public function setPart($part)
+    {
+        $this->part = $part;
+    }
+
+    public function initialize()
+    {
+        $this->belongsTo('groupId', 'UniqueLoneDog\Models\Group', 'id',
+                         array('alias' => 'group')
+        );
+    }
+
+}
