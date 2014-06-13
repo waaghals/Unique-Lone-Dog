@@ -8,13 +8,39 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `itemId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `text` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `group` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+  UNIQUE KEY `id` (`id`),
+  KEY `slug` (`slug`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+
+CREATE TABLE IF NOT EXISTS `group_tag` (
+  `groupId` int(10) unsigned NOT NULL,
+  `type` enum('namespace','predicate','value','') NOT NULL,
+  `part` int(11) NOT NULL,
+  PRIMARY KEY (`groupId`,`type`,`part`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `name` varchar(25) NOT NULL,
+  `URI` varchar(2048) NOT NULL,
+  `comment` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
 
 CREATE TABLE IF NOT EXISTS `item_tag` (
   `itemId` int(10) unsigned NOT NULL,
@@ -27,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `namespace_tag` (
   `part` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `part` (`part`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=64 ;
 
 CREATE TABLE IF NOT EXISTS `permission` (
   `roleName` varchar(64) NOT NULL,
@@ -85,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   KEY `roleName` (`roleName`),
   KEY `statusName` (`statusName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 CREATE TABLE IF NOT EXISTS `user_group` (
   `groupId` int(11) unsigned NOT NULL,
@@ -103,23 +129,9 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   KEY `predicate_id` (`predicate_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
-CREATE TABLE IF NOT EXISTS `item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` int(11) NOT NULL,
-  `name` varchar(25) NOT NULL,
-  `description` text NOT NULL,
-  `URI` varchar(2048) NOT NULL,
-  `type` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
 
-CREATE TABLE IF NOT EXISTS `comment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` int(11) NOT NULL,
-  `itemId` int(11) NOT NULL,
-  `text` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+ALTER TABLE `group_tag`
+  ADD CONSTRAINT `group_tag_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`);
 
 ALTER TABLE `permission`
   ADD CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`);
