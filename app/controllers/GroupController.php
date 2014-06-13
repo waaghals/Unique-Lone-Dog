@@ -40,6 +40,12 @@ class GroupController extends AbstractController
         $this->view->pick("group/explore");
     }
 
+    public function editAction()
+    {
+        $this->view->form = $this->addGroupForm;
+        $this->view->pick("group/add");
+    }
+
     public function addGroupFormAction()
     {
 

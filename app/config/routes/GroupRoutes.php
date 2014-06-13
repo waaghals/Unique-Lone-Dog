@@ -52,6 +52,11 @@ class GroupRoutes extends \Phalcon\Mvc\Router\Group
                       array(
             "action" => "show"
         ))->setName("group-show");
+
+        $this->addGet("/edit/{slug}",
+                      array(
+            "action" => "edit"
+        ))->setName("group-edit");
     }
 
 }
