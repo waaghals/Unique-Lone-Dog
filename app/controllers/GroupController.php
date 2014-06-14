@@ -125,7 +125,7 @@ class GroupController extends AbstractController
 
                 $this->flashSession->success("Hub created.");
                 $this->performSubscribeGroupAction($g->id);
-                return $this->response->redirect('group');
+                return $this->response->redirect('/hubs/mine');
             }
         }
         return $this->addGroupFormAction();
