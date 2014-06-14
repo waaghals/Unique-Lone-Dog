@@ -1,6 +1,6 @@
 <?php
 
-namespace UniqueLoneDog\Random;
+namespace UniqueLoneDog\Breadcrumbs;
 
 /**
  * Breadcrumbs.php
@@ -29,7 +29,7 @@ class Breadcrumbs
     {
         $this->_elements[] = array(
             'active' => false,
-            'link'   => '',
+            'link'   => 'home',
             'text'   => 'Home',
         );
     }
@@ -44,7 +44,7 @@ class Breadcrumbs
     {
         $this->_elements[] = array(
             'active' => false,
-            'link'   => '' . $link,
+            'link'   => $link,
             'text'   => " > " . $caption,
         );
     }

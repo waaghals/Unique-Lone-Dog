@@ -8,7 +8,7 @@ use Phalcon\Mvc\Controller,
     UniqueLoneDog\Models\Tags\PredicateTag,
     UniqueLoneDog\Models\Tags\ValueTag,
     UniqueLoneDog\Models\User,
-    UniqueLoneDog\Random\Breadcrumbs;
+    UniqueLoneDog\Breadcrumbs\Breadcrumbs;
 
 /**
  * @property Phalcon\Mvc\Model\Manager $modelsManager Description
