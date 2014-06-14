@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `reputation` (
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE IF NOT EXISTS `role` (
   `name` varchar(64) NOT NULL,
-  `power` tinyint(3) unsigned NOT NULL,
+  `power` tinyint(3) NOT NULL,
   PRIMARY KEY (`name`),
   UNIQUE KEY `power` (`power`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `statusName` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `statusName` (`statusName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 DROP TABLE IF EXISTS `user_group`;
 CREATE TABLE IF NOT EXISTS `user_group` (
