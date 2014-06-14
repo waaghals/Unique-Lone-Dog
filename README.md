@@ -1,8 +1,16 @@
 # Unique-Lone-Dog
 ## Version
-0.3.0
+0.4.0
 
 ### Changes
+* 0.4.0
+  * Toevoegen en verwijderen van reputatie voor acties
+  * Reputatie tonen aan gebruiker
+  * Item overzicht in groep
+  * Vernieuwd groepen overzicht
+  * Slugs voor groepen
+  * Filters toevoegen aan groepen
+  * Verschillende post types
 * 0.3.0
   * Taggen van items
   * Lidworden van groepen
