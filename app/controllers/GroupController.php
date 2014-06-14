@@ -8,15 +8,21 @@ use UniqueLoneDog\Forms\AddGroupForm,
     UniqueLoneDog\Forms\FilterForm,
     UniqueLoneDog\Models\Filter,
     UniqueLoneDog\Models\Factories\FilterFactory,
-    UniqueLoneDog\Models\Reputation;
+    UniqueLoneDog\Models\Reputation,
+    UniqueLoneDog\Random\Breadcrumbs;
 
 class GroupController extends AbstractController
 {
 
     private $addGroupForm;
+    private $breadcrumbs;
 
     public function initialize()
     {
+        $this->breadcrumbs = new Breadcrumbs();
+        $this->breadcrumbs->add("group", "group");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+
         if ($this->identity->exists()) {
             $this->addGroupForm = new AddGroupForm();
         } else {
@@ -32,6 +38,8 @@ class GroupController extends AbstractController
 
     public function showAction($slug)
     {
+        $this->breadcrumbs->add("show", "group/show");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $group = Group::findFirstBySlug($slug);
         $this->view->setVar("group", $group);
         $this->view->pick("group/single");
@@ -39,6 +47,8 @@ class GroupController extends AbstractController
 
     public function exploreGroupAction()
     {
+        $this->breadcrumbs->add("explore", "group/explore");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->view->setVar("groups", Group::find());
         $this->view->setVar("user", $this->identity->getUser());
         $this->view->pick("group/explore");
@@ -88,6 +98,8 @@ class GroupController extends AbstractController
 
     public function addGroupFormAction()
     {
+        $this->breadcrumbs->add("Add", "group/add");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->view->pick("group/add");
         $this->view->form = $this->addGroupForm;
     }

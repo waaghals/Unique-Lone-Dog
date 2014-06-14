@@ -10,6 +10,7 @@ use UniqueLoneDog\Models\Comment;
 use UniqueLoneDog\Forms\AddCommentForm;
 use Phalcon\Mvc\View;
 use UniqueLoneDog\Models\Reputation;
+use UniqueLoneDog\Random\Breadcrumbs;
 
 /*
  * The MIT License
@@ -45,9 +46,12 @@ class ItemController extends AbstractController
     private $itemSubmitForm;
     private $itemFactory;
     private $addCommentForm;
+    private $breadcrumbs;
 
     public function initialize()
     {
+        $this->breadcrumbs    = new Breadcrumbs();
+        $this->breadcrumbs->add("item", "item/");
         $this->itemSubmitForm = new ItemSubmitForm();
         $this->itemFactory    = new ItemFactory();
         $this->addCommentForm = new AddCommentForm();
@@ -63,6 +67,8 @@ class ItemController extends AbstractController
 
     public function addAction()
     {
+        $this->breadcrumbs->add("add", "item/add/");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->assets->addJs('js/addTagInput.js');
 
         $this->view->pick('partials/genericForm');
@@ -94,6 +100,7 @@ class ItemController extends AbstractController
 
     public function overviewAction()
     {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->assets->addCss('css/itemOverview.css');
         $this->view->setVar("items", Item::find());
         $this->view->pick("Item/overview");
@@ -101,6 +108,8 @@ class ItemController extends AbstractController
 
     public function showAction($itemId)
     {
+        $this->breadcrumbs->add($itemId, "item/view/" . $itemId . "/");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $user = $this->identity->getUser();
         $user->increaseReputation(Reputation::ITEM_VIEW);
 
