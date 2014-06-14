@@ -18,20 +18,20 @@ use Phalcon\Mvc\Model\Behavior\Timestampable;
 class Reputation extends \Phalcon\Mvc\Model
 {
 
-    const ALGO_STEEPNESS    = 100; //Higher numbers, decrease slope
-    const ACCOUNT_REGISTER  = 50;
     const ACCOUNT_LOGIN     = 2;
-    const PAGE_VIEW         = 1;
-    const ITEM_ADD          = 50;
-    const TAG_ADD           = 25;
-    const GROUP_ADD         = 75;
-    const ITEM_DELETE       = 15;
-    const TAG_DELETE        = 20;
-    const ITEM_VIEW         = 1;
-    const GROUP_SUBSCRIBE   = 4;
-    const GROUP_UNSUBSCRIBE = 10;
+    const ACCOUNT_REGISTER  = 50;
+    const ALGO_STEEPNESS    = 100; //Higher numbers, decrease slope
     const COMMENT_ADD       = 10;
     const COMMENT_DELETE    = 15;
+    const GROUP_ADD         = 75;
+    const GROUP_SUBSCRIBE   = 4;
+    const GROUP_UNSUBSCRIBE = 10;
+    const ITEM_ADD          = 50;
+    const ITEM_DELETE       = 15;
+    const ITEM_VIEW         = 1;
+    const PAGE_VIEW         = 1;
+    const TAG_ADD           = 25;
+    const TAG_DELETE        = 20;
 
     /**
      *
