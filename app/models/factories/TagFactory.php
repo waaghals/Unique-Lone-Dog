@@ -28,7 +28,8 @@ namespace UniqueLoneDog\Models\Factories;
 
 use UniqueLoneDog\Models\Tags\NamespaceTag,
     UniqueLoneDog\Models\Tags\PredicateTag,
-    UniqueLoneDog\Models\Tags\ValueTag;
+    UniqueLoneDog\Models\Tags\ValueTag,
+    UniqueLoneDog\Validators\TagValidator as Tag;
 
 /**
  * Factory for quickly creating tag structures
@@ -78,7 +79,8 @@ class TagFactory
         if (empty($machineTag)) {
             throw new \Exception("Can't create machinetag from nothing");
         }
-        $regex = '/[:=]/';
+        $regex = sprintf('/[%s]/',
+                         Tag::PREDICATE_DELIMITER . Tag::VALUE_DELIMITER);
         list($namespace, $predicate, $value) = preg_split($regex, $machineTag);
 
         return $this->build($namespace, $predicate, $value);

@@ -1,13 +1,3 @@
-{%- macro printFilter(groupFilter) %}
-{% if groupFilter.type == "namespace" %}
-<strong>{{ groupFilter.part}}</strong>:<em>predicate</em>=<em>value</em>
-{% elseif groupFilter.type == "predicate" %}
-<em>namespace</em>:<strong>{{ groupFilter.part}}</strong>=<em>value</em>
-{% elseif groupFilter.type == "value" %}
-<em>namespace</em>:<em>predicate</em>=<strong>{{groupFilter.path}}</strong>
-{% endif %}
-{%- endmacro %}
-
 <div class="row">
     <h1>{{ group.name }}</h1>
 </div>
@@ -24,13 +14,27 @@
         </ul>
     </div>
     <div class="grid-third">
-        <h3>Group <small>descrition</small></h3>
+        <h3>Group description</h3>
         <p>{{ group.description }}</p>
         {{ partial('group/partials/subscribe') }}
 
+        <hr />
         <h3>Filters</h3>
+        {# TODO: Make sexy #}
         {% for groupFilter in group.filters %}
-            {{ printFilter(groupFilter) }}
+        {% if loop.first %}
+        <ul>
+        {% endif %}
+            <li>
+{% if groupFilter.namespace is empty %}<span class="text-muted">namespace</span>{% else %}<span class="text-tall">{{groupFilter.namespace }}</span>{% endif %}:
+{% if groupFilter.predicate is empty %}<span class="text-muted">predicate</span>{% else %}<span class="text-tall">{{groupFilter.predicate }}</span>{% endif %}=
+{% if groupFilter.value is empty %}<span class="text-muted">value</span>{% else %}<span class="text-tall">{{groupFilter.value }}</span>{% endif %}
+            </li>
+
+        {% if loop.last %}
+        </ul>
+        {% endif %}
         {% endfor %}
+        <a href="{{ url.get({"for": "group-addFilter","slug": group.slug }) }}" class="btn" >Add</a>
     </div>
 </div>

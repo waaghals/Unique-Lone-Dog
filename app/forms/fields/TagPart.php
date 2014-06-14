@@ -37,7 +37,7 @@ use UniqueLoneDog\Validators\TagPartValidator;
 class TagPart extends Text
 {
 
-    const NAME = "tagPart[]";
+    const NAME = "part";
 
     public function __construct()
     {

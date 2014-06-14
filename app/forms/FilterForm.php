@@ -2,7 +2,8 @@
 
 namespace UniqueLoneDog\Forms;
 
-use Phalcon\Forms\Form;
+use Phalcon\Forms\Form,
+    Phalcon\Forms\Element\Hidden;
 
 /*
  * The MIT License
@@ -33,8 +34,8 @@ class FilterForm extends Form
 
     public function initialize()
     {
-        $this->add(new Fields\TagType());
-        $this->add(new Fields\TagPart());
+        $this->add(new Hidden("groupId"));
+        $this->add(new Fields\Filter());
         $this->add(new Fields\Button("Add filter"));
     }
 

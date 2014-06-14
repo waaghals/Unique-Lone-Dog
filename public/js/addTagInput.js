@@ -23,11 +23,11 @@
  */
 
 $(document).ready(function() {
-    $(".tagTypeInput").change(function() {
+    $(".tagInput").keyup(function() {
         console.log("Tag filter changed");
         var inputCount = $(".tagInput").length;
         var valueCount = 0;
-        $(".tagTypeInput").each(function(index) {
+        $(".tagInput").each(function(index) {
             if ($(this).val() !== "") {
                 valueCount++;
             }

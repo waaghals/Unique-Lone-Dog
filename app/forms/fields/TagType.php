@@ -37,7 +37,7 @@ use UniqueLoneDog\Validators\TagTypeValidator;
 class TagType extends Select
 {
 
-    const NAME = "tagType[]";
+    const NAME = "type";
 
     public function __construct()
     {

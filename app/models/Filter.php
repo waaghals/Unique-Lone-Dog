@@ -35,22 +35,28 @@ class Filter extends \Phalcon\Mvc\Model
 {
 
     public $groupId;
-    public $type;
-    public $part;
+    public $namespace;
+    public $predicate;
+    public $value;
 
     public function getGroupId()
     {
         return $this->groupId;
     }
 
-    public function getType()
+    public function getNamespace()
     {
-        return $this->type;
+        return $this->namespace;
     }
 
-    public function getPart()
+    public function getPredicate()
     {
-        return $this->part;
+        return $this->predicate;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
     }
 
     public function setGroupId($groupId)
@@ -58,14 +64,19 @@ class Filter extends \Phalcon\Mvc\Model
         $this->groupId = $groupId;
     }
 
-    public function setType($type)
+    public function setNamespace($namespace)
     {
-        $this->type = $type;
+        $this->namespace = $namespace;
     }
 
-    public function setPart($part)
+    public function setPredicate($predicate)
     {
-        $this->part = $part;
+        $this->predicate = $predicate;
+    }
+
+    public function setValue($value)
+    {
+        $this->value = $value;
     }
 
     public function initialize()

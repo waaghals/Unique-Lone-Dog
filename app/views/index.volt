@@ -20,13 +20,12 @@
             {{ content() }}
 
         </section>
-        <script>
-            astro.init();
-        </script>
-
         {{ javascript_include("js/astro.js") }}
         {{ javascript_include("js/buoy.js") }}
         {{ assets.outputJs() }}
+        <script>
+            astro.init();
+        </script>
         {{ partial("partials/analytics") }}
     </body>
 </html>

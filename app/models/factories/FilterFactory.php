@@ -1,7 +1,9 @@
+<?php
+
 /*
  * The MIT License
  *
- * Copyright 2014 Waaghals.
+ * Copyright 2014 Patrick.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +24,41 @@
  * THE SOFTWARE.
  */
 
-$(document).ready(function() {
-    $(".tagInput").change(function() {
-        console.log("Tag field changed")
-        var inputCount = $(".tagInput").length;
-        var valueCount = 0;
-        $(".tagInput").each(function(index) {
-            if ($(this).val() !== "") {
-                valueCount++;
-            }
+namespace UniqueLoneDog\Models\Factories;
 
-        });
+use UniqueLoneDog\Validators\TagValidator,
+    UniqueLoneDog\Models\Filter;
 
-        console.log("Fields: " + inputCount + ", filled: " + valueCount);
-        if (valueCount === inputCount) {
-            console.log("Creating new tag input field");
-            var newInput = $(this).clone(true);
-            newInput.val("");
-            $(this).after(newInput);
+/**
+ * Factory for quickly creating filters
+ *
+ * @author Patrick
+ */
+class FilterFactory
+{
+
+    /**
+     * Create a filter from a string representation
+     *
+     * @param string $filter
+     * @return \UniqueLoneDog\Models\Tags\ValueTag
+     */
+    public function create($filter)
+    {
+        $f  = new Filter();
+        $re = sprintf('/[%s]/',
+                      TagValidator::PREDICATE_DELIMITER . TagValidator::VALUE_DELIMITER);
+        @list($f->namespace, $f->predicate, $f->value) = preg_split($re, $filter);
+
+        if (!isset($f->predicate)) {
+            $f->predicate = "";
         }
-    });
-});
+
+        if (!isset($f->value)) {
+            $f->value = "";
+        }
+
+        return $f;
+    }
+
+}

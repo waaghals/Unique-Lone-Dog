@@ -21,7 +21,7 @@ class Tag extends Text
                             array(
             'placeholder' => 'namespace:predicate=value',
             'class'       => 'tagInput',
-            'pattern'     => TagValidator::REGEX
+            'pattern'     => TagValidator::regex()
         ));
 
         $this->setLabel("Tag");

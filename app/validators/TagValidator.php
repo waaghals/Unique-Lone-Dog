@@ -31,14 +31,18 @@ use Phalcon\Validation\Validator,
     Phalcon\Validation\Message;
 
 /**
- * Description of TagValidator
+ * Validate if the tag matches a valid namespace regex
  *
  * @author Patrick
  */
 class TagValidator extends Validator implements ValidatorInterface
 {
 
-    const REGEX = "[a-z- ]{2,50}:[a-z- ]{2,50}=[-'.,&#@:?!()$\/\w]{2,50}$";
+    const REGEX_NAMESPACE     = "[a-z- ]{2,50}";
+    const REGEX_PREDICATE     = "[a-z- ]{2,50}";
+    const REGEX_VALUE         = "[-'.,&#@:?!()$\/\w]{2,50}$";
+    const PREDICATE_DELIMITER = ":";
+    const VALUE_DELIMITER     = "=";
 
     /**
      * Executes the validation
@@ -56,7 +60,7 @@ class TagValidator extends Validator implements ValidatorInterface
             return true;
         }
 
-        if (!preg_match("/" . self::REGEX . "/", $value)) {
+        if (!preg_match(sprintf("/%s/", self::regex()), $value)) {
 
             //Anything not empty should match the pattern
             $message = $this->getOption('message');
@@ -70,6 +74,11 @@ class TagValidator extends Validator implements ValidatorInterface
         }
 
         return true;
+    }
+
+    public static function regex()
+    {
+        return self::REGEX_NAMESPACE . self::PREDICATE_DELIMITER . self::REGEX_PREDICATE . self::VALUE_DELIMITER . self::REGEX_VALUE;
     }
 
 }
