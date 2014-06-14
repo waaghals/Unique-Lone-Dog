@@ -4,12 +4,10 @@
 <h2> Items </h2>
 
 {% for item in items %}
-    <div>
+    <div border="1px black">
     <h3>
         {{ link_to(['for': 'item-show', 'id': item.id], item.name) }}
     </h3>
-        <div class="ImageContainer">
-            <img src="{{ item.URI }}" id="Image">
-        </div>
+    Comment count: {{ item.comments|length }}
     </div>
 {% endfor %}

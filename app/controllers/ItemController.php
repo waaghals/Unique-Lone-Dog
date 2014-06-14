@@ -67,7 +67,7 @@ class ItemController extends AbstractController
 
     public function addAction()
     {
-        $this->breadcrumbs->add("add", "item/add/");
+        $this->breadcrumbs->add("add", "item-add");
         $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->assets->addJs('js/addTagInput.js');
 
