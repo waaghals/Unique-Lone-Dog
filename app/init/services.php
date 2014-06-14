@@ -61,10 +61,7 @@ $di->set('view',
     ));
 
     $compiler = $volt->getCompiler();
-    $compiler->addFunction('is_class',
-                           function($obj, $name) {
-        return is_subclass_of($obj, $name);
-    });
+    $compiler->addFunction('subclass', 'is_subclass_of');
 
     return $volt;
 }
