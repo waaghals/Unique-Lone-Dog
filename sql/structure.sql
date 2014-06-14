@@ -2,19 +2,21 @@ SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
-
 CREATE TABLE IF NOT EXISTS `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `itemId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `text` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+CREATE TABLE IF NOT EXISTS `filter` (
+  `groupId` int(10) unsigned NOT NULL,
+  `namespace` varchar(50) NOT NULL,
+  `predicate` varchar(50) DEFAULT NULL,
+  `value` varchar(50) DEFAULT NULL,
+  UNIQUE KEY `groupId` (`groupId`,`namespace`,`predicate`,`value`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `group` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -24,14 +26,7 @@ CREATE TABLE IF NOT EXISTS `group` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `slug` (`slug`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
-
-CREATE TABLE IF NOT EXISTS `group_tag` (
-  `groupId` int(10) unsigned NOT NULL,
-  `type` enum('namespace','predicate','value','') NOT NULL,
-  `part` int(11) NOT NULL,
-  PRIMARY KEY (`groupId`,`type`,`part`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 CREATE TABLE IF NOT EXISTS `item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -130,8 +125,8 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 
-ALTER TABLE `group_tag`
-  ADD CONSTRAINT `group_tag_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`);
+ALTER TABLE `filter`
+  ADD CONSTRAINT `filter_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`);
 
 ALTER TABLE `permission`
   ADD CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`);
@@ -150,7 +145,3 @@ ALTER TABLE `user_group`
   ADD CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`),
   ADD CONSTRAINT `user_group_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 SET FOREIGN_KEY_CHECKS=1;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
