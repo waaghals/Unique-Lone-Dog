@@ -4,14 +4,10 @@
 
 <div class="row">
     <div class="grid-two-thirds">
-        <h2>Latest items</h2>
-        <ul>
-            <li>Item</li>
-            <li>Item</li>
-            <li>Item</li>
-            <li>Item</li>
-            <li>Item</li>
-        </ul>
+        {% for groupItem in group.latest() %}
+        <h3>{{ groupItem.name }}</h3>
+        <p>{{ groupItem.description }}</p>
+        {% endfor %}
     </div>
     <div class="grid-third">
         <h3>Group description</h3>
@@ -26,9 +22,7 @@
         <ul>
         {% endif %}
             <li>
-{% if groupFilter.namespace is empty %}<span class="text-muted">namespace</span>{% else %}<span class="text-tall">{{groupFilter.namespace }}</span>{% endif %}:
-{% if groupFilter.predicate is empty %}<span class="text-muted">predicate</span>{% else %}<span class="text-tall">{{groupFilter.predicate }}</span>{% endif %}=
-{% if groupFilter.value is empty %}<span class="text-muted">value</span>{% else %}<span class="text-tall">{{groupFilter.value }}</span>{% endif %}
+                <span class="text-tall">{{groupFilter.namespace }}</span><span class="text-muted">:</span><span class="text-tall">{{groupFilter.predicate }}</span><span class="text-muted">=</span><span class="text-tall">{{groupFilter.value }}
             </li>
 
         {% if loop.last %}

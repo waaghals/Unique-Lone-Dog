@@ -3,7 +3,7 @@
 namespace UniqueLoneDog\Forms\Fields;
 
 use Phalcon\Forms\Element\Text;
-use UniqueLoneDog\Validators\FilterValidator;
+use UniqueLoneDog\Validators\TagValidator;
 
 /**
  * A special machine tag/triple tag input field for filtering
@@ -24,7 +24,7 @@ class Filter extends Text
 
         $this->setLabel("Filter");
 
-        $this->addValidator(new FilterValidator());
+        $this->addValidator(new TagValidator());
     }
 
 }
