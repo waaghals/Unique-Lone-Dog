@@ -10,6 +10,7 @@
                 </span>
                 <span class="text-muted">
                     Rep: {{ identity.get('reputation') }}
+                    Role: {{ identity.get('role') }}
                 </span>
             </li>
             <li><a href="{{ url.get({"for": "item-overview"}) }}" >Items</a></li>

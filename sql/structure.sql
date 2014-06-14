@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `URI` varchar(2048) NOT NULL,
   `comment` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
 
 CREATE TABLE IF NOT EXISTS `item_tag` (
   `itemId` int(10) unsigned NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `namespace_tag` (
   `part` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `part` (`part`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=64 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
 
 CREATE TABLE IF NOT EXISTS `permission` (
   `roleName` varchar(64) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `predicate_tag` (
   `part` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namespace_id` (`namespace_id`,`part`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 CREATE TABLE IF NOT EXISTS `remember_token` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -101,10 +101,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(255) NOT NULL,
   `passhash` char(128) NOT NULL,
   `salt` varchar(64) NOT NULL,
-  `roleName` varchar(64) NOT NULL,
   `statusName` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `roleName` (`roleName`),
   KEY `statusName` (`statusName`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
@@ -122,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `part` (`part`),
   KEY `predicate_id` (`predicate_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 
 ALTER TABLE `filter`
@@ -138,7 +136,6 @@ ALTER TABLE `reputation`
   ADD CONSTRAINT `reputation_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`),
   ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`statusName`) REFERENCES `status` (`name`);
 
 ALTER TABLE `user_group`

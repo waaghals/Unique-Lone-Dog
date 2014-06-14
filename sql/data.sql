@@ -31,7 +31,7 @@ INSERT IGNORE INTO `permission` (`roleName`, `controller`, `action`) VALUES
 INSERT IGNORE INTO `role` (`name`, `power`) VALUES
 ('Guest', 1),
 ('Users', 10),
-('Administrator', 255);
+('Administrator', 99);
 
 INSERT IGNORE INTO `status` (`name`) VALUES
 ('non-confirmed');

@@ -44,12 +44,6 @@ class User extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $roleName;
-
-    /**
-     *
-     * @var string
-     */
     public $statusName;
 
     /**
@@ -79,11 +73,6 @@ class User extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->belongsTo('roleName', 'UniqueLoneDog\Models\Role', 'name',
-                         array(
-            'alias' => 'role'
-        ));
-
         $this->belongsTo('statusName', 'UniqueLoneDog\Models\Status', 'name',
                          array(
             'alias' => 'status'
@@ -245,6 +234,54 @@ class User extends \Phalcon\Mvc\Model
         } else {
             return $rep;
         }
+    }
+
+    public function getRole()
+    {
+        $bind = array("rep" => $this->getReputation());
+
+        $manager     = $this->getDI()->get('modelsManager');
+        //Get the reputation for all users
+        $numberQuery = "SELECT "
+                . "COUNT(*) AS count "
+                . "FROM UniqueLoneDog\Models\User AS u ";
+        $lessQuery   = "SELECT "
+                . "SUM(r.points) as reputation "
+                . "FROM UniqueLoneDog\Models\Reputation AS r "
+                . "GROUP BY r.userId "
+                . "HAVING reputation < :rep:";
+        $sameQuery   = "SELECT "
+                . "SUM(r.points) as reputation "
+                . "FROM UniqueLoneDog\Models\Reputation AS r "
+                . "GROUP BY r.userId "
+                . "HAVING reputation = :rep:";
+
+        /**
+         * PR% = L + ( 0.5 x S ) / N
+         *
+         * Where,
+         * L = Number of below rank,
+         * S = Number of same rank,
+         * N = Total numbers.
+         */
+        $N        = $manager->executeQuery($numberQuery)->getFirst()['count'];
+        $lessRows = $manager->executeQuery($lessQuery, $bind);
+        $L        = count($lessRows);
+        $sameRows = $manager->executeQuery($sameQuery, $bind);
+        $S        = count($sameRows);
+
+        $pr = $L + ( 0.5 * $S ) / $N;
+
+        $roleQuery = "SELECT r.name AS role "
+                . "FROM UniqueLoneDog\Models\Role AS r "
+                . "WHERE r.power <= :pr: "
+                . "ORDER BY r.power DESC "
+                . "LIMIT 1";
+
+        $role = $manager
+                        ->executeQuery($roleQuery, array("pr" => $pr))
+                        ->getFirst()['role'];
+        return $role;
     }
 
 }

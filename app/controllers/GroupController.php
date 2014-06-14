@@ -20,7 +20,7 @@ class GroupController extends AbstractController
     public function initialize()
     {
         $this->breadcrumbs = new Breadcrumbs();
-        $this->breadcrumbs->add("group", "group");
+        $this->breadcrumbs->add("Hubs", "group");
         $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
 
         if ($this->identity->exists()) {
@@ -30,10 +30,12 @@ class GroupController extends AbstractController
         }
     }
 
-    public function indexAction()
+    public function mineAction()
     {
+        $this->breadcrumbs->add("Mine", "group");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->view->setVar("groups", $this->identity->getUser()->groups);
-        $this->view->pick("group/index");
+        $this->view->pick("group/mine");
     }
 
     public function showAction($slug)
@@ -46,11 +48,11 @@ class GroupController extends AbstractController
 
     public function exploreGroupAction()
     {
-        $this->breadcrumbs->add("explore", "group-explore");
+        $this->breadcrumbs->add("Explore", "group-explore");
         $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->view->setVar("groups", Group::find());
         $this->view->setVar("user", $this->identity->getUser());
-        $this->view->pick("group-explore");
+        $this->view->pick("group/explore");
     }
 
     public function addFilterAction()
@@ -121,7 +123,7 @@ class GroupController extends AbstractController
                 $user = $this->identity->getUser();
                 $user->increaseReputation(Reputation::GROUP_ADD);
 
-                $this->flashSession->success("Group created.");
+                $this->flashSession->success("Hub created.");
                 $this->performSubscribeGroupAction($g->id);
                 return $this->response->redirect('group');
             }

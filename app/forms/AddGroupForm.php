@@ -23,6 +23,7 @@ class AddGroupForm extends Form
     {
         $this->add(new Fields\Name());
         $this->add(new Fields\Description());
+        $this->add(new Fields\CSRF($this->security->getSessionToken()));
         $this->add(new Fields\Button("Create Group"));
     }
 

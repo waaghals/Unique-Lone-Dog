@@ -10,7 +10,7 @@
         {% endfor %}
     </div>
     <div class="grid-third">
-        <h3>Group description</h3>
+        <h3>Hub description</h3>
         <p>{{ group.description }}</p>
         {{ partial('group/partials/subscribe') }}
 
