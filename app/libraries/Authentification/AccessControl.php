@@ -104,7 +104,7 @@ class AccessControl extends Plugin
     {
         $role = 'Guest';
         if ($this->identity->exists()) {
-            $role = $this->identity->getUser()->getRole();
+            $role = $this->identity->get('role');
         }
 
         $controller = $dispatcher->getControllerName();
