@@ -14,7 +14,7 @@
                 </span>
             </li>
             <li><a href="{{ url.get({"for": "item-overview"}) }}" >Items</a></li>
-            <li><a href="{{ url.get({"for": "group"}) }}" >Groups</a></li>
+            <li><a href="{{ url.get({"for": "group"}) }}" >Hubs</a></li>
             <li><a href="{{ url.get({"for": "account-logout"}) }}" >Logout</a></li>
             {% else %}
             <li><a href="{{ url.get({"for": "account-login"}) }}" >Login</a></li>
