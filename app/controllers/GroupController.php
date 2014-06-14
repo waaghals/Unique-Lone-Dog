@@ -2,9 +2,12 @@
 
 namespace UniqueLoneDog\Controllers;
 
-use UniqueLoneDog\Forms\AddGroupForm;
-use UniqueLoneDog\Models\Group;
-use UniqueLoneDog\Models\UserGroup;
+use UniqueLoneDog\Forms\AddGroupForm,
+    UniqueLoneDog\Models\Group,
+    UniqueLoneDog\Models\UserGroup,
+    UniqueLoneDog\Forms\FilterForm,
+    UniqueLoneDog\Models\Filter,
+    UniqueLoneDog\Models\Factories\FilterFactory;
 
 class GroupController extends AbstractController
 {
@@ -38,6 +41,48 @@ class GroupController extends AbstractController
         $this->view->setVar("groups", Group::find());
         $this->view->setVar("user", $this->identity->getUser());
         $this->view->pick("group/explore");
+    }
+
+    public function addFilterAction()
+    {
+        $slug = $this->dispatcher->getParam("slug");
+
+        $group = Group::findFirstBySlug($slug);
+        if (!isset($group->id)) {
+            throw new \Exception(sprintf("No group found using slug: %s", $slug));
+        }
+        $filter          = new Filter();
+        $filter->groupId = $group->id;
+
+        $this->assets->addJs('js/addTagInput.js');
+        $this->view->form = new FilterForm($filter);
+        $this->view->pick("partials/genericForm");
+    }
+
+    public function performAddFilterAction()
+    {
+        $filter = new Filter();
+        $form   = new FilterForm();
+        if (!$form->isValid($this->request->getPost())) {
+            foreach ($form->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+        } else {
+            $factory         = new FilterFactory();
+            $filter          = $factory->create($this->request->getPost('filter'));
+            $filter->groupId = $this->request->getPost('groupId');
+            if (!$filter->save()) {
+                $this->flash->error($filter->getMessages());
+                return $this->addFilterAction();
+            }
+        }
+
+        $group = Group::findFirst($this->request->getPost('groupId'));
+        $this->flashSession->success("Filter(s) added.");
+        return $this->response->redirect(array(
+                    "for"  => "group-show",
+                    "slug" => $group->slug
+        ));
     }
 
     public function addGroupFormAction()

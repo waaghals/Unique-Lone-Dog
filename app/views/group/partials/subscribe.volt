@@ -8,7 +8,7 @@
 {% endfor %}
 
 {% if hasGroup %}
-<a href="{{ url.get({"for": "group-unsubscribe","id": group.id }) }}" >Unsubscribe</a>
+<a href="{{ url.get({"for": "group-unsubscribe","id": group.id }) }}" class="btn btn-secondary">Unsubscribe</a>
 {% else %}
-<a href="{{ url.get({"for": "group-subscribe","id": group.id }) }}" >Subscribe</a>
+<a href="{{ url.get({"for": "group-subscribe","id": group.id }) }}" class="btn" >Subscribe</a>
 {% endif %}

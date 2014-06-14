@@ -1,7 +1,9 @@
+<?php
+
 /*
  * The MIT License
  *
- * Copyright 2014 Waaghals.
+ * Copyright 2014 Patrick.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +24,48 @@
  * THE SOFTWARE.
  */
 
-$(document).ready(function() {
-    $(".tagInput").keyup(function() {
-        console.log("Tag filter changed");
-        var inputCount = $(".tagInput").length;
-        var valueCount = 0;
-        $(".tagInput").each(function(index) {
-            if ($(this).val() !== "") {
-                valueCount++;
-            }
-        });
+namespace UniqueLoneDog\Validators;
 
-        console.log("Fields: " + inputCount + ", filled: " + valueCount);
-        if (valueCount === inputCount) {
-            console.log("Creating new tag input field");
-            var newInput = $(this).clone(true);
-            newInput.val("");
-            $(this).after(newInput);
+use Phalcon\Validation\Validator,
+    Phalcon\Validation\ValidatorInterface,
+    Phalcon\Validation\Message;
+
+/**
+ * Description of TagValidator
+ *
+ * @author Patrick
+ */
+class TagPartValidator extends Validator implements ValidatorInterface
+{
+
+    const REGEX = "[-'.,&#@:?!()$\/\w]{2,50}$";
+
+    /**
+     * Executes the validation
+     *
+     * @param Phalcon\Validation $validator
+     * @param string $attribute
+     * @return boolean true if tag is valid
+     */
+    public function validate($validator, $attribute)
+    {
+        $value = $validator->getValue($attribute);
+
+        if (!preg_match("/" . self::REGEX . "/", $value)) {
+
+            //Anything not empty should match the pattern
+            $message = $this->getOption('message');
+            if (!$message) {
+                $message = 'This is not a valid tag part';
+            }
+
+            $validator->appendMessage(
+                    new Message($message, $attribute, 'Tag Part'));
+
+            return false;
         }
-    });
-});
+
+        return true;
+    }
+
+}

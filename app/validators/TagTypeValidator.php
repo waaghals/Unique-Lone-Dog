@@ -1,3 +1,5 @@
+<?php
+
 /*
  * The MIT License
  *
@@ -22,23 +24,26 @@
  * THE SOFTWARE.
  */
 
-$(document).ready(function() {
-    $(".tagInput").keyup(function() {
-        console.log("Tag filter changed");
-        var inputCount = $(".tagInput").length;
-        var valueCount = 0;
-        $(".tagInput").each(function(index) {
-            if ($(this).val() !== "") {
-                valueCount++;
-            }
-        });
+namespace UniqueLoneDog\Validators;
 
-        console.log("Fields: " + inputCount + ", filled: " + valueCount);
-        if (valueCount === inputCount) {
-            console.log("Creating new tag input field");
-            var newInput = $(this).clone(true);
-            newInput.val("");
-            $(this).after(newInput);
-        }
-    });
-});
+use Phalcon\Validation\Validator,
+    Phalcon\Validation\ValidatorInterface;
+
+/**
+ * Validate if the value is either namespace, predicate or value
+ *
+ * @author Waaghals
+ */
+class TagTypeValidator extends Validator implements ValidatorInterface
+{
+
+    public static $options = array("namespace", "predicate", "value");
+
+    public function validate($validator, $attribute)
+    {
+        $value = $validator->getValue($attribute);
+
+        return \in_array($value, self::$options);
+    }
+
+}

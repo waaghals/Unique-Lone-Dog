@@ -1,3 +1,5 @@
+<?php
+
 /*
  * The MIT License
  *
@@ -22,23 +24,66 @@
  * THE SOFTWARE.
  */
 
-$(document).ready(function() {
-    $(".tagInput").keyup(function() {
-        console.log("Tag filter changed");
-        var inputCount = $(".tagInput").length;
-        var valueCount = 0;
-        $(".tagInput").each(function(index) {
-            if ($(this).val() !== "") {
-                valueCount++;
-            }
-        });
+namespace UniqueLoneDog\Models;
 
-        console.log("Fields: " + inputCount + ", filled: " + valueCount);
-        if (valueCount === inputCount) {
-            console.log("Creating new tag input field");
-            var newInput = $(this).clone(true);
-            newInput.val("");
-            $(this).after(newInput);
-        }
-    });
-});
+/**
+ * A tag part and tag type to filter on the groups
+ *
+ * @author Waaghals
+ */
+class Filter extends \Phalcon\Mvc\Model
+{
+
+    public $groupId;
+    public $namespace;
+    public $predicate;
+    public $value;
+
+    public function getGroupId()
+    {
+        return $this->groupId;
+    }
+
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    public function getPredicate()
+    {
+        return $this->predicate;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function setGroupId($groupId)
+    {
+        $this->groupId = $groupId;
+    }
+
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+    }
+
+    public function setPredicate($predicate)
+    {
+        $this->predicate = $predicate;
+    }
+
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+    public function initialize()
+    {
+        $this->belongsTo('groupId', 'UniqueLoneDog\Models\Group', 'id',
+                         array('alias' => 'group')
+        );
+    }
+
+}

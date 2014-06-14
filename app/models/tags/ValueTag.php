@@ -68,6 +68,11 @@ class ValueTag extends AbstractTag
      */
     public function __toString()
     {
+        return $this->stringValue();
+    }
+
+    public function stringValue()
+    {
         $predicate = $this->predicate->part;
         $namespace = $this->predicate->namespace->part;
         $value     = $this->part;
