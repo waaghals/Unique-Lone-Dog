@@ -17,10 +17,10 @@ class GroupRoutes extends \Phalcon\Mvc\Router\Group
             'controller' => 'group'
         ));
 
-        $this->setPrefix('/group');
+        $this->setPrefix('/hubs');
 
-        $this->addGet("/", array(
-            "action" => "index"
+        $this->addGet("/mine", array(
+            "action" => "mine"
         ))->setName("group");
 
         $this->add("/subscribe/{id}/",
@@ -48,7 +48,7 @@ class GroupRoutes extends \Phalcon\Mvc\Router\Group
             "action" => "performAddGroup"
         ));
 
-        $this->addGet("/{slug:.+}",
+        $this->addGet("/show/{slug:.+}",
                       array(
             "action" => "show"
         ))->setName("group-show");
