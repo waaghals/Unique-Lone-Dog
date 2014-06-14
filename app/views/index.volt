@@ -11,12 +11,12 @@
     </head>
 
     <body>
-
         <section class="container">
             {{ partial("partials/nav") }}
-
+                {% for bc in breadcrumbs %}
+                 {{ link_to(['for': bc['link']], bc['text']) }}
+                 {% endfor %}
             {{ flashSession.output() }}
-
             {{ content() }}
 
         </section>

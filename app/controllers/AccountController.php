@@ -5,7 +5,8 @@ namespace UniqueLoneDog\Controllers;
 use UniqueLoneDog\Models\User,
     UniqueLoneDog\Forms\LoginForm,
     UniqueLoneDog\Forms\SignUpForm,
-    UniqueLoneDog\Models\Reputation;
+    UniqueLoneDog\Models\Reputation,
+    UniqueLoneDog\Breadcrumbs\Breadcrumbs;
 
 /**
  *
@@ -16,15 +17,20 @@ class AccountController extends AbstractController
 
     private $loginForm;
     private $signUpForm;
+    private $breadcrumbs;
 
     public function initialize()
     {
+        $this->breadcrumbs = new Breadcrumbs();
+
         $this->loginForm  = new LoginForm();
         $this->signUpForm = new SignUpForm();
     }
 
     public function loginFormAction()
     {
+        $this->breadcrumbs->add("Login", "account-login");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         if ($this->remember->exists()) {
             return $this->auth->loginWithRememberMe();
         }
@@ -96,6 +102,8 @@ class AccountController extends AbstractController
 
     public function signUpFormAction()
     {
+        $this->breadcrumbs->add("Signup", "account-signup");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->view->pick("partials/genericForm");
         $this->view->form = $this->signUpForm;
     }
