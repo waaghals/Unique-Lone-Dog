@@ -21,6 +21,7 @@ class AddCommentForm extends Form
     public function initialize()
     {
         $this->add(new Fields\Comment());
+        $this->add(new Fields\CSRF($this->security->getSessionToken()));
         $this->add(new Fields\Button("Add comment"));
     }
 
