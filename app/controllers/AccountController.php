@@ -40,6 +40,8 @@ class AccountController extends AbstractController
 
     public function performLoginAction()
     {
+        $this->breadcrumbs->add("Login", "account-login");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         //$email = $this->request->getPost("email");
         $pass = $this->request->getPost("password");
 
@@ -83,7 +85,8 @@ class AccountController extends AbstractController
         if (!$this->signUpForm->isValid()) {
             //Form not valid
             $messages   = $this->signUpForm->getMessages();
-            $messages[] = $this->signUpForm->getEntity()->getMessages();
+            if ($this->signUpForm->getEntity() != null)
+                $messages[] = $this->signUpForm->getEntity()->getMessages();
 
             foreach ($messages as $message) {
                 $this->flash->error($message);
@@ -94,9 +97,10 @@ class AccountController extends AbstractController
             return $this->response->redirect();
         }
         $user->validation();
-        foreach ($user->getMessages() as $message) {
-            $this->flash->error($message);
-        }
+        if ($user->getMessages() != null)
+            foreach ($user->getMessages() as $message) {
+                $this->flash->error($message);
+            }
         return $this->signUpFormAction();
     }
 
