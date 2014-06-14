@@ -1,7 +1,6 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 INSERT IGNORE INTO `permission` (`roleName`, `controller`, `action`) VALUES
-(INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Administrator', 'item', 'deleteComment'),
 ('Administrator', 'item', 'deleteItem'),
 ('Guest', 'account', 'loginForm'),
