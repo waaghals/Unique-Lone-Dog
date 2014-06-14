@@ -1,5 +1,5 @@
 <nav class="nav-wrap">
-    <h1><a class="logo" href="{{ url.get({"for": "home"}) }}">Unique</a></h1>
+    <h1><a class="logo" href="{{ url.get({"for": "home"}) }}">undefined</a></h1>
     <a class="nav-toggle" data-nav-toggle="#nav-menu" href="#">Menu</a>
     <div class="nav-collapse" id="nav-menu">
         <ul class="nav">
