@@ -1,6 +1,9 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 INSERT IGNORE INTO `permission` (`roleName`, `controller`, `action`) VALUES
+(INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
+('Administrator', 'item', 'deleteComment'),
+('Administrator', 'item', 'deleteItem'),
 ('Guest', 'account', 'loginForm'),
 ('Guest', 'account', 'performLogin'),
 ('Guest', 'account', 'performSignUp'),
@@ -21,7 +24,9 @@ INSERT IGNORE INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Users', 'index', 'tagCreateTest'),
 ('Users', 'item', 'add'),
 ('Users', 'item', 'performAddComment'),
-('Users', 'item', 'performAddItem');
+('Users', 'item', 'performAddItem'),
+('Users', 'item', 'view');
+
 
 INSERT IGNORE INTO `role` (`name`, `power`) VALUES
 ('Guest', 1),
