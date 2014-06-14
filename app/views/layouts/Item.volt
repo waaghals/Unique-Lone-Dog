@@ -1,7 +1,7 @@
 <div>
     <h2>
         {{ item.name }}
-            {% if user.roleName == "Administrator" %}
+            {% if identity.get('role') == "Administrator" %}
                 {{ link_to(['for': 'delete-item', 'itemId': item.id], 'Delete item.') }}
             {% endif %}
     </h2>
@@ -11,21 +11,21 @@
     </p>
         {{ content() }}
     <p>
-        <h3>
-            Comments:
-        </h3>
-        <table class="commenttable">
+    <h3>
+        Comments:
+    </h3>
+    <table class="commenttable">
         {% for comment in item.comments %}
-            <tr>
-                <td>{{ comment.user.name }} : </td>
-                <td>{{ comment.text }} </td>
-                    {% if user.roleName == "Administrator" %}
-                        <td>{{ link_to(['for': 'delete-comment', 'commentId': comment.id], 'Delete comment.') }}</td>
+        <tr>
+            <td>{{ comment.user.name }} : </td>
+            <td>{{ comment.text }} </td>
+                    {% if identity.get('role') == "Administrator" %}
+            <td>{{ link_to(['for': 'delete-comment', 'commentId': comment.id], 'Delete comment.') }}</td>
                     {% endif %}
-            </tr>
+        </tr>
         {% endfor %}
-        </table>
-        <br />
+    </table>
+    <br />
         {{ partial('partials/commentForm') }}
-    </p>
+</p>
 </div>

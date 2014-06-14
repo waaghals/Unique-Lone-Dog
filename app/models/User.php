@@ -139,11 +139,6 @@ class User extends \Phalcon\Mvc\Model
             $status           = Status::findFirstByName('non-confirmed');
             $this->statusName = $status->name;
         }
-
-        if ($this->roleName == null) {
-            $role           = Role::findFirstByName('Users');
-            $this->roleName = $role->name;
-        }
     }
 
     /**
