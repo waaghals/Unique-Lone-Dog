@@ -1,7 +1,5 @@
 <h2>Your Hubs</h2>
-<ul>
-    {% for group in groups %}
-    {{ partial('group/partials/listItem') }}
-    {% endfor  %}
-</ul>
+<p>The following hubs are yours.</p>
+<hr />
+{{ partial('group/partials/groupLoop') }}
 <a href="{{ url.get({"for": "group-explore"}) }}" >Explore Hubs</a>
