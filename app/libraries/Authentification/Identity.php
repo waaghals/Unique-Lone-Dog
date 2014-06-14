@@ -15,6 +15,8 @@ class Identity extends Component
 
     const SESSION_NAME = "identity";
 
+    private $user;
+
     public function exists()
     {
         return $this->session->has(self::SESSION_NAME);
@@ -31,22 +33,13 @@ class Identity extends Component
     }
 
     /**
-     * Returns the name of the current identity
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getIdentity()['name'];
-    }
-
-    /**
      * Removes the user identity information from session and destroy remember me cookies
      */
     public function remove()
     {
         $this->remember->remove();
 
+        $this->user = null;
         $this->session->remove(self::SESSION_NAME);
     }
 
@@ -111,27 +104,45 @@ class Identity extends Component
      */
     public function getUser()
     {
-        $identity = $this->session->get(self::SESSION_NAME);
-        if (isset($identity['id'])) {
-
-            $user = User::findFirstById($identity['id']);
-            if (!$user) {
-                throw new Exception('The user does not exist');
+        if (is_null($this->user)) {
+            if (!$this->exists()) {
+                return null;
             }
 
-            return $user;
+            $identity = $this->session->get(self::SESSION_NAME);
+            $user     = User::findFirstById($identity['id']);
         }
-
-        return null;
+        return $user;
     }
 
     private function setIdentity(User $user)
     {
-        $this->session->set(self::SESSION_NAME, array(
+        $this->session->set(self::SESSION_NAME,
+                            array(
             'id'   => $user->id,
             'name' => $user->name,
             'role' => $user->role->name
         ));
+    }
+
+    public function get($name)
+    {
+        $user = $this->getUser();
+        if (!is_null($user)) {
+            switch ($name) {
+                case "reputation":
+                    return $user->getHumanReputation();
+                case "name":
+                    return $user->name;
+                case "email":
+                    return $user->email;
+                case "role":
+                    return $user->roleName;
+                case "status":
+                    return $user->statusName;
+            }
+        }
+        return "";
     }
 
 }

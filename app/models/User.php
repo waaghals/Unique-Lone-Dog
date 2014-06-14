@@ -42,13 +42,13 @@ class User extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
+     * @var string
      */
     public $roleName;
 
     /**
      *
-     * @var integer
+     * @var string
      */
     public $statusName;
 

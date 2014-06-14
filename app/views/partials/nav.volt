@@ -4,7 +4,14 @@
     <div class="nav-collapse" id="nav-menu">
         <ul class="nav">
             {% if identity.exists() %}
-            <li>Welcome {{ identity.getName() }}</li>
+            <li>
+                <span class="text-tall">
+                    Welcome {{ identity.get('name')|capitalize }}
+                </span>
+                <span class="text-muted">
+                    Rep: {{ identity.get('reputation') }}
+                </span>
+            </li>
             <li><a href="{{ url.get({"for": "item-overview"}) }}" >Items</a></li>
             <li><a href="{{ url.get({"for": "group"}) }}" >Groups</a></li>
             <li><a href="{{ url.get({"for": "account-logout"}) }}" >Logout</a></li>
