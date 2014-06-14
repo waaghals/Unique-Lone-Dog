@@ -2,6 +2,8 @@
 
 namespace UniqueLoneDog\Controllers;
 
+use UniqueLoneDog\Models\Reputation;
+
 /**
  * Set the stuff like css and js which is the same across all controllers
  *
@@ -20,6 +22,12 @@ abstract class AbstractController extends \Phalcon\Mvc\Controller
         $this->assets
                 ->addJs('js/feature-test.js')
                 ->addJs('js/kraken.js');
+
+
+        $user = $this->identity->getUser();
+        if (!is_null($user)) {
+            $user->increaseReputation(Reputation::PAGE_VIEW);
+        }
     }
 
 }

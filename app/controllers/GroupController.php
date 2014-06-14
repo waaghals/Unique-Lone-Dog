@@ -7,7 +7,8 @@ use UniqueLoneDog\Forms\AddGroupForm,
     UniqueLoneDog\Models\UserGroup,
     UniqueLoneDog\Forms\FilterForm,
     UniqueLoneDog\Models\Filter,
-    UniqueLoneDog\Models\Factories\FilterFactory;
+    UniqueLoneDog\Models\Factories\FilterFactory,
+    UniqueLoneDog\Models\Reputation;
 
 class GroupController extends AbstractController
 {
@@ -87,14 +88,12 @@ class GroupController extends AbstractController
 
     public function addGroupFormAction()
     {
-
         $this->view->pick("group/add");
         $this->view->form = $this->addGroupForm;
     }
 
     public function performAddGroupAction()
     {
-
         if (!$this->addGroupForm->isValid($this->request->getPost())) {
             foreach ($this->addGroupForm->getMessages() as $message) {
                 $this->flash->error($message);
@@ -106,6 +105,11 @@ class GroupController extends AbstractController
             if (!$g->save()) {
                 $this->flash->error($g->getMessages());
             } else {
+
+                //Add reputation
+                $user = $this->identity->getUser();
+                $user->increaseReputation(Reputation::GROUP_ADD);
+
                 $this->flashSession->success("Group created.");
                 $this->performSubscribeGroupAction($g->id);
                 return $this->response->redirect('group');
@@ -122,6 +126,10 @@ class GroupController extends AbstractController
         if (!$u->save()) {
             $this->flash->error($u->getMessages());
         } else {
+            //Add reputation
+            $user = $this->identity->getUser();
+            $user->increaseReputation(Reputation::GROUP_SUBSCRIBE);
+
             $this->flashSession->success("Subscription complete.");
             return $this->response->redirect('group/explore');
         }
@@ -129,7 +137,11 @@ class GroupController extends AbstractController
 
     public function performUnsubscribeGroupAction($groupId)
     {
-        $this->identity->getUser()->deleteGroup($groupId);
+        //Add reputation
+        $user = $this->identity->getUser();
+        $user->decreaseReputation(Reputation::GROUP_UNSUBSCRIBE);
+
+        $user->deleteGroup($groupId);
         $this->flashSession->success("Unsubscription complete.");
         return $this->response->redirect('group/explore');
     }

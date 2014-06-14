@@ -9,6 +9,7 @@ use UniqueLoneDog\Models\Item;
 use UniqueLoneDog\Models\Comment;
 use UniqueLoneDog\Forms\AddCommentForm;
 use Phalcon\Mvc\View;
+use UniqueLoneDog\Models\Reputation;
 
 /*
  * The MIT License
@@ -62,8 +63,6 @@ class ItemController extends AbstractController
 
     public function addAction()
     {
-
-
         $this->assets->addJs('js/addTagInput.js');
 
         $this->view->pick('partials/genericForm');
@@ -83,6 +82,10 @@ class ItemController extends AbstractController
             if (!$item->save()) {
                 $this->flash->error($item->getMessages());
             } else {
+                //Add reputation
+                $user = $this->identity->getUser();
+                $user->increaseReputation(Reputation::ITEM_ADD);
+
                 $this->flashSession->success("Item posted.");
                 return $this->response->redirect('item/show/' . $item->id);
             }
@@ -98,7 +101,10 @@ class ItemController extends AbstractController
 
     public function showAction($itemId)
     {
-        $item = Item::findFirst(array($itemId));
+        $user = $this->identity->getUser();
+        $user->increaseReputation(Reputation::ITEM_VIEW);
+
+        $item = Item::findFirst($itemId);
 
         $this->view->setTemplateAfter('Item');
         $this->view->setVar("item", $item);
@@ -127,13 +133,16 @@ class ItemController extends AbstractController
                 $this->flash->error($message);
             }
         } else {
+            $user = $this->identity->getUser();
+
             $c         = new Comment();
-            $c->userId = $this->identity->getUser()->id;
+            $c->userId = $user->id;
             $c->itemId = $itemId;
             $c->text   = $this->request->getPost('comment', 'striptags');
             if (!$c->save()) {
                 $this->flash->error($c->getMessages());
             } else {
+                $user->increaseReputation(Reputation::COMMENT_ADD);
                 $this->flashSession->success("Added comment.");
                 return $this->response->redirect('item/show/' . $itemId);
             }

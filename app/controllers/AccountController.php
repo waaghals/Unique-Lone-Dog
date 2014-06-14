@@ -65,7 +65,7 @@ class AccountController extends AbstractController
     {
         $this->identity->setByEmail($email);
         $user = $this->identity->getUser();
-        $user->increaseReputation(Reputation::LOGIN);
+        $user->increaseReputation(Reputation::ACCOUNT_LOGIN);
     }
 
     public function performSignUpAction()
@@ -84,7 +84,7 @@ class AccountController extends AbstractController
             }
         } elseif ($user->save()) {
             $this->flashSession->success("Account created.");
-            $user->increaseReputation(Reputation::REGISTRATION);
+            $user->increaseReputation(Reputation::ACCOUNT_REGISTER);
             return $this->response->redirect();
         }
         $user->validation();
