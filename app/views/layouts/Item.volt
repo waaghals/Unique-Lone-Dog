@@ -1,6 +1,9 @@
 <div>
     <h2>
-        {{ item.name }} <br />
+        {{ item.name }}
+            {% if user.roleName == "Administrator" %}
+                {{ link_to(['for': 'delete-item', 'itemId': item.id], 'Delete item.') }}
+            {% endif %}
     </h2>
     <p>
         Description: <br />
@@ -11,10 +14,17 @@
         <h3>
             Comments:
         </h3>
+        <table class="commenttable">
         {% for comment in item.comments %}
-            {{ comment.user.name }} :
-            {{ comment.text }} <br />
+            <tr>
+                <td>{{ comment.user.name }} : </td>
+                <td>{{ comment.text }} </td>
+                    {% if user.roleName == "Administrator" %}
+                        <td>{{ link_to(['for': 'delete-comment', 'commentId': comment.id], 'Delete comment.') }}</td>
+                    {% endif %}
+            </tr>
         {% endfor %}
+        </table>
         <br />
         {{ partial('partials/commentForm') }}
     </p>

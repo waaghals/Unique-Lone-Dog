@@ -75,6 +75,58 @@ class ItemController extends AbstractController
         $this->view->form = $this->itemSubmitForm;
     }
 
+    public function deleteCommentAction($commentId)
+    {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $comment = Comment::findFirstById($commentId);
+        $item    = $comment->item;
+        if ($comment != null) {
+            if ($comment->delete() == false) {
+                $this->flash->error("Error deleting comment.");
+
+                foreach ($comment->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+            } else {
+                $this->flashSession->success("Succesfully deleted comment.");
+            }
+        }
+        return $this->response->redirect('item/show/' . $item->id);
+    }
+
+    public function deleteItemAction($itemId)
+    {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $item = Item::findFirstById($itemId);
+        $this->deleteAllComments($item->comments);
+        if ($item != null) {
+            if ($item->delete() == false) {
+                $this->flash->error("Error deleting comment.");
+
+                foreach ($item->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+            } else {
+                $this->flashSession->success("Succesfully deleted item.");
+            }
+        }
+        return $this->response->redirect('item/overview');
+    }
+
+    private function deleteAllComments($comments)
+    {
+        if ($comments != null) {
+            foreach ($comments as $comment) {
+                if ($comment->delete() == false) {
+                    $this->flash->error("Error deleting comment.");
+                    foreach ($comment->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+                }
+            }
+        }
+    }
+
     public function performAddItemAction()
     {
         if (!$this->itemSubmitForm->isValid($this->request->getPost())) {
@@ -116,6 +168,7 @@ class ItemController extends AbstractController
 
         $this->view->setTemplateAfter('Item');
         $this->view->setVar("item", $item);
+        $this->view->setVar("user", $user);
         $this->view->form = $this->addCommentForm;
 
         switch ($item->type) {

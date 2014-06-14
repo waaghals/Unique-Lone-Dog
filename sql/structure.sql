@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `userId` int(11) NOT NULL,
   `text` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 CREATE TABLE IF NOT EXISTS `filter` (
   `groupId` int(10) unsigned NOT NULL,
