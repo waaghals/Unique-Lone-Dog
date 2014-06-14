@@ -144,7 +144,7 @@ class GroupController extends AbstractController
             $user->increaseReputation(Reputation::GROUP_SUBSCRIBE);
 
             $this->flashSession->success("Subscription complete.");
-            return $this->response->redirect('group-explore');
+            return $this->response->redirect('hubs/mine');
         }
     }
 
@@ -156,7 +156,7 @@ class GroupController extends AbstractController
 
         $user->deleteGroup($groupId);
         $this->flashSession->success("Unsubscription complete.");
-        return $this->response->redirect('group-explore');
+        return $this->response->redirect('hubs/mine');
     }
 
 }
