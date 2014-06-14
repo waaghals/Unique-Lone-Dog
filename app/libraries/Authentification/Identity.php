@@ -137,7 +137,7 @@ class Identity extends Component
                 case "email":
                     return $user->email;
                 case "role":
-                    return $user->roleName;
+                    return $user->getRole();
                 case "status":
                     return $user->statusName;
             }
