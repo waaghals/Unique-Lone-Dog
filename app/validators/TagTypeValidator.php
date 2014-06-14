@@ -1,11 +1,9 @@
 <?php
 
-namespace UniqueLoneDog\Routes;
-
 /*
  * The MIT License
  *
- * Copyright 2014 Tojba.
+ * Copyright 2014 Waaghals.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,41 +24,26 @@ namespace UniqueLoneDog\Routes;
  * THE SOFTWARE.
  */
 
+namespace UniqueLoneDog\Validators;
+
+use Phalcon\Validation\Validator,
+    Phalcon\Validation\ValidatorInterface;
+
 /**
- * Description of ItemRoutes
+ * Validate if the value is either namespace, predicate or value
  *
- * @author Tojba
+ * @author Waaghals
  */
-class ItemRoutes extends \Phalcon\Mvc\Router\Group
+class TagTypeValidator extends Validator implements ValidatorInterface
 {
 
-    public function initialize()
+    public static $options = array("namespace", "predicate", "value");
+
+    public function validate($validator, $attribute)
     {
-        $this->setPaths(array(
-            'controller' => 'item'
-        ));
+        $value = $validator->getValue($attribute);
 
-        $this->setPrefix('/item');
-
-        $this->addGet("/add", array(
-            "action" => "add"
-        ))->setName("item-add");
-
-        $this->addPost("/add", array(
-            "action" => "performAddItem"
-        ));
-
-        $this->addPost("/view/{id}/", array(
-            "action" => "performAddComment"
-        ))->setName("add-comment");
-
-        $this->addGet("/", array(
-            "action" => "overview"
-        ))->setName("item-overview");
-
-        $this->addGet("/view/{id}/", array(
-            "action" => "show"
-        ))->setName("item-show");
+        return \in_array($value, self::$options);
     }
 
 }

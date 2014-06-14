@@ -6,25 +6,23 @@ use Phalcon\Forms\Element\Text;
 use UniqueLoneDog\Validators\TagValidator;
 
 /**
- * A machine tag/triple tag input field
+ * A special machine tag/triple tag input field for filtering
  *
  * @author Patrick
  */
-class Tag extends Text
+class Filter extends Text
 {
 
-    const NAME = "tag[]";
+    const NAME = "filter";
 
     public function __construct()
     {
         parent::__construct(self::NAME,
                             array(
-            'placeholder' => 'namespace:predicate=value',
-            'class'       => 'tagInput',
-            'pattern'     => TagValidator::regex()
+            'placeholder' => 'namespace:predicate=value'
         ));
 
-        $this->setLabel("Tag");
+        $this->setLabel("Filter");
 
         $this->addValidator(new TagValidator());
     }

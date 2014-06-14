@@ -1,11 +1,9 @@
 <?php
 
-namespace UniqueLoneDog\Routes;
-
 /*
  * The MIT License
  *
- * Copyright 2014 Tojba.
+ * Copyright 2014 Waaghals.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,41 +24,66 @@ namespace UniqueLoneDog\Routes;
  * THE SOFTWARE.
  */
 
+namespace UniqueLoneDog\Models;
+
 /**
- * Description of ItemRoutes
+ * A tag part and tag type to filter on the groups
  *
- * @author Tojba
+ * @author Waaghals
  */
-class ItemRoutes extends \Phalcon\Mvc\Router\Group
+class Filter extends \Phalcon\Mvc\Model
 {
+
+    public $groupId;
+    public $namespace;
+    public $predicate;
+    public $value;
+
+    public function getGroupId()
+    {
+        return $this->groupId;
+    }
+
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    public function getPredicate()
+    {
+        return $this->predicate;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function setGroupId($groupId)
+    {
+        $this->groupId = $groupId;
+    }
+
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+    }
+
+    public function setPredicate($predicate)
+    {
+        $this->predicate = $predicate;
+    }
+
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
 
     public function initialize()
     {
-        $this->setPaths(array(
-            'controller' => 'item'
-        ));
-
-        $this->setPrefix('/item');
-
-        $this->addGet("/add", array(
-            "action" => "add"
-        ))->setName("item-add");
-
-        $this->addPost("/add", array(
-            "action" => "performAddItem"
-        ));
-
-        $this->addPost("/view/{id}/", array(
-            "action" => "performAddComment"
-        ))->setName("add-comment");
-
-        $this->addGet("/", array(
-            "action" => "overview"
-        ))->setName("item-overview");
-
-        $this->addGet("/view/{id}/", array(
-            "action" => "show"
-        ))->setName("item-show");
+        $this->belongsTo('groupId', 'UniqueLoneDog\Models\Group', 'id',
+                         array('alias' => 'group')
+        );
     }
 
 }

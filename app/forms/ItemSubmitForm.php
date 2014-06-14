@@ -35,7 +35,7 @@ class ItemSubmitForm extends Form
     {
         $this->add(new Fields\Name());
         $this->add(new Fields\URI());
-        $this->add(new Fields\Comment());
+        $this->add(new Fields\Description());
         $this->add(new Fields\Tag());
         $this->add(new Fields\Button("Submit"));
     }

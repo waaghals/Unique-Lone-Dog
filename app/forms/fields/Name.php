@@ -3,7 +3,8 @@
 namespace UniqueLoneDog\Forms\Fields;
 
 use Phalcon\Forms\Element\Text;
-use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\PresenceOf,
+    Phalcon\Validation\Validator\StringLength;
 
 /**
  * A required email field
@@ -22,10 +23,18 @@ class Name extends Text
 
         $this->setLabel('Name');
 
-        $this->addValidators(array(
-            new PresenceOf(array(
-                'message' => 'The name is required'
-        ))));
+        $this->addValidator(
+                new PresenceOf(array(
+            'message' => 'The name is required'
+        )));
+
+        $this->addValidator(
+                new StringLength(array(
+            'max'            => 255,
+            'min'            => 2,
+            'messageMaximum' => 'We don\'t like really long names',
+            'messageMinimum' => 'Name needs to be longer than two characters'
+        )));
     }
 
 }

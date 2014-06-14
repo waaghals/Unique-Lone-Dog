@@ -1,11 +1,9 @@
 <?php
 
-namespace UniqueLoneDog\Routes;
-
 /*
  * The MIT License
  *
- * Copyright 2014 Tojba.
+ * Copyright 2014 Patrick.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,41 +24,41 @@ namespace UniqueLoneDog\Routes;
  * THE SOFTWARE.
  */
 
+namespace UniqueLoneDog\Models\Factories;
+
+use UniqueLoneDog\Validators\TagValidator,
+    UniqueLoneDog\Models\Filter;
+
 /**
- * Description of ItemRoutes
+ * Factory for quickly creating filters
  *
- * @author Tojba
+ * @author Patrick
  */
-class ItemRoutes extends \Phalcon\Mvc\Router\Group
+class FilterFactory
 {
 
-    public function initialize()
+    /**
+     * Create a filter from a string representation
+     *
+     * @param string $filter
+     * @return \UniqueLoneDog\Models\Tags\ValueTag
+     */
+    public function create($filter)
     {
-        $this->setPaths(array(
-            'controller' => 'item'
-        ));
+        $f  = new Filter();
+        $re = sprintf('/[%s]/',
+                      TagValidator::PREDICATE_DELIMITER . TagValidator::VALUE_DELIMITER);
+        @list($f->namespace, $f->predicate, $f->value) = preg_split($re, $filter);
 
-        $this->setPrefix('/item');
+        if (!isset($f->predicate)) {
+            $f->predicate = "";
+        }
 
-        $this->addGet("/add", array(
-            "action" => "add"
-        ))->setName("item-add");
+        if (!isset($f->value)) {
+            $f->value = "";
+        }
 
-        $this->addPost("/add", array(
-            "action" => "performAddItem"
-        ));
-
-        $this->addPost("/view/{id}/", array(
-            "action" => "performAddComment"
-        ))->setName("add-comment");
-
-        $this->addGet("/", array(
-            "action" => "overview"
-        ))->setName("item-overview");
-
-        $this->addGet("/view/{id}/", array(
-            "action" => "show"
-        ))->setName("item-show");
+        return $f;
     }
 
 }

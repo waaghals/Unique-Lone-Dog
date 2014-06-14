@@ -42,13 +42,13 @@ class User extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
+     * @var string
      */
     public $roleName;
 
     /**
      *
-     * @var integer
+     * @var string
      */
     public $statusName;
 
@@ -118,6 +118,7 @@ class User extends \Phalcon\Mvc\Model
                 'message' => 'Item cannot be deleted because it\'s used on a User'
             )
         ));
+
 
         $this->hasManyToMany(
                 "id", "UniqueLoneDog\Models\UserGroup", "userId", "groupId",

@@ -1,11 +1,9 @@
 <?php
 
-namespace UniqueLoneDog\Routes;
-
 /*
  * The MIT License
  *
- * Copyright 2014 Tojba.
+ * Copyright 2014 Patrick.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,41 +24,48 @@ namespace UniqueLoneDog\Routes;
  * THE SOFTWARE.
  */
 
+namespace UniqueLoneDog\Validators;
+
+use Phalcon\Validation\Validator,
+    Phalcon\Validation\ValidatorInterface,
+    Phalcon\Validation\Message;
+
 /**
- * Description of ItemRoutes
+ * Description of TagValidator
  *
- * @author Tojba
+ * @author Patrick
  */
-class ItemRoutes extends \Phalcon\Mvc\Router\Group
+class TagPartValidator extends Validator implements ValidatorInterface
 {
 
-    public function initialize()
+    const REGEX = "[-'.,&#@:?!()$\/\w]{2,50}$";
+
+    /**
+     * Executes the validation
+     *
+     * @param Phalcon\Validation $validator
+     * @param string $attribute
+     * @return boolean true if tag is valid
+     */
+    public function validate($validator, $attribute)
     {
-        $this->setPaths(array(
-            'controller' => 'item'
-        ));
+        $value = $validator->getValue($attribute);
 
-        $this->setPrefix('/item');
+        if (!preg_match("/" . self::REGEX . "/", $value)) {
 
-        $this->addGet("/add", array(
-            "action" => "add"
-        ))->setName("item-add");
+            //Anything not empty should match the pattern
+            $message = $this->getOption('message');
+            if (!$message) {
+                $message = 'This is not a valid tag part';
+            }
 
-        $this->addPost("/add", array(
-            "action" => "performAddItem"
-        ));
+            $validator->appendMessage(
+                    new Message($message, $attribute, 'Tag Part'));
 
-        $this->addPost("/view/{id}/", array(
-            "action" => "performAddComment"
-        ))->setName("add-comment");
+            return false;
+        }
 
-        $this->addGet("/", array(
-            "action" => "overview"
-        ))->setName("item-overview");
-
-        $this->addGet("/view/{id}/", array(
-            "action" => "show"
-        ))->setName("item-show");
+        return true;
     }
 
 }

@@ -1,6 +1,9 @@
 <?php
 
-namespace UniqueLoneDog\Routes;
+namespace UniqueLoneDog\Forms;
+
+use Phalcon\Forms\Form,
+    Phalcon\Forms\Element\Hidden;
 
 /*
  * The MIT License
@@ -26,41 +29,14 @@ namespace UniqueLoneDog\Routes;
  * THE SOFTWARE.
  */
 
-/**
- * Description of ItemRoutes
- *
- * @author Tojba
- */
-class ItemRoutes extends \Phalcon\Mvc\Router\Group
+class FilterForm extends Form
 {
 
     public function initialize()
     {
-        $this->setPaths(array(
-            'controller' => 'item'
-        ));
-
-        $this->setPrefix('/item');
-
-        $this->addGet("/add", array(
-            "action" => "add"
-        ))->setName("item-add");
-
-        $this->addPost("/add", array(
-            "action" => "performAddItem"
-        ));
-
-        $this->addPost("/view/{id}/", array(
-            "action" => "performAddComment"
-        ))->setName("add-comment");
-
-        $this->addGet("/", array(
-            "action" => "overview"
-        ))->setName("item-overview");
-
-        $this->addGet("/view/{id}/", array(
-            "action" => "show"
-        ))->setName("item-show");
+        $this->add(new Hidden("groupId"));
+        $this->add(new Fields\Filter());
+        $this->add(new Fields\Button("Add filter"));
     }
 
 }
