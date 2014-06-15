@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS `item` (
   `userId` int(11) NOT NULL,
   `name` varchar(25) NOT NULL,
   `URI` varchar(2048) NOT NULL,
-  `comment` text,
+  `description` text,
+  `type` varchar(25),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
 

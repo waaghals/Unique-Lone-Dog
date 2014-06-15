@@ -145,13 +145,12 @@ class GroupController extends AbstractController
             if (!$g->save()) {
                 $this->flash->error($g->getMessages());
             } else {
-                //Add reputation
+//Add reputation
                 $user = $this->identity->getUser();
                 $user->increaseReputation(Reputation::GROUP_ADD);
 
                 $this->flashSession->success("Hub created.");
                 $this->performSubscribeGroupAction($g->id);
-
                 return $this->response->redirect(array(
                             "for"  => "group-show",
                             "slug" => $g->slug
@@ -169,12 +168,11 @@ class GroupController extends AbstractController
         if (!$u->save()) {
             $this->flash->error($u->getMessages());
         } else {
-            //Add reputation
+//Add reputation
             $user = $this->identity->getUser();
             $user->increaseReputation(Reputation::GROUP_SUBSCRIBE);
 
             $this->flashSession->success("Subscription complete.");
-
             $group = Group::findFirst($groupId);
             return $this->response->redirect(array(
                         "for" => "group"
@@ -184,7 +182,7 @@ class GroupController extends AbstractController
 
     public function performUnsubscribeGroupAction($groupId)
     {
-        //Add reputation
+//Add reputation
         $user = $this->identity->getUser();
         $user->decreaseReputation(Reputation::GROUP_UNSUBSCRIBE);
 
@@ -199,9 +197,8 @@ class GroupController extends AbstractController
     {
         $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $group = Group::findFirstById($id);
-        if ($this->removeUsersFromGroup($id)) {
-            $this->flashSession->error("Error deleting hubs.");
-        }
+        $this->removeUsersFromGroup($id);
+        $this->removeTagFromGroup($id);
         if ($group != null) {
             if ($group->delete() == false) {
                 $this->flashSession->error("Error deleting hub.");
@@ -220,11 +217,16 @@ class GroupController extends AbstractController
     {
         $users = UserGroup::find("groupId=" . $id);
         foreach ($users as $user) {
-            if ($user->delete() == false) {
-                return false;
-            }
+            $user->delete();
         }
-        return true;
+    }
+
+    private function removeTagFromGroup($id)
+    {
+        $tags = Filter::find("groupId=" . $id);
+        foreach ($tags as $tag) {
+            $tag->delete();
+        }
     }
 
 }
