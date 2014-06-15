@@ -1,6 +1,6 @@
 <p>
     <a href="{{ url.get({"for": "group-show","slug": group.slug }) }}" >{{ group.name }}</a>
-    {% if identity.get('Administrator') == "Users" %}
+    {% if identity.get('role') == "Administrator" %}
     <br />
         {{ link_to(['for': 'group-delete', 'id': group.id], 'Delete hub.') }}
     {% endif %}
