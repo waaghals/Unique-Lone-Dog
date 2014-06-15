@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Title</title>
+        <title>undefined</title>
         {{ partial("partials/meta") }}
         {{ partial("partials/icons") }}
         {{ stylesheet_link("css/kraken.css") }}
         {{ stylesheet_link("css/astro.css") }}
         {{ assets.outputCss() }}
         {{ javascript_include("js/feature-test.js") }}
+        {{ javascript_include("js/cheet.js") }}
+        {{ javascript_include("js/navigation.js") }}
     </head>
 
     <body>
-
         <section class="container">
             {{ partial("partials/nav") }}
-
+            {% for bc in breadcrumbs %}
+            {% if not loop.first %}
+            <span class="text-muted text-small">&gg;</span>
+            {% endif %}
+                {{ link_to(['for': bc['link']], bc['text']) }}
+            {% endfor %}
             {{ flashSession.output() }}
-
             {{ content() }}
 
         </section>

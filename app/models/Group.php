@@ -58,34 +58,8 @@ class Group extends \Phalcon\Mvc\Model
         return !$this->validationHasFailed();
     }
 
-    public function latest()
-    {
-        return $this->getDI()->get('modelsManager')->createBuilder()
-                        ->from('UniqueLoneDog\Models\Item')
-                        ->join('UniqueLoneDog\Models\Tags\ValueTag')
-                        ->join('UniqueLoneDog\Models\Tags\PredicateTag')
-                        ->join('UniqueLoneDog\Models\Tags\NamespaceTag')
-                        ->inWhere('UniqueLoneDog\Models\Tags\NamespaceTag.part',
-                                  $this->namespaceFilters())
-                        ->inWhere('UniqueLoneDog\Models\Tags\PredicateTag.part',
-                                  $this->predicateFilters())
-                        ->inWhere('UniqueLoneDog\Models\Tags\ValueTag.part',
-                                  $this->valueFilters())
-                        ->groupBy('UniqueLoneDog\Models\Item.id')
-                        ->getQuery()
-                        ->execute();
-    }
-
     public function initialize()
     {
-        $this->hasMany('id', 'UniqueLoneDog\Models\User', 'groupId',
-                       array(
-            "alias"      => "groupUsers",
-            'foreignKey' => array(
-                'message' => 'Group cannot be deleted because it still has data in User table'
-            )
-        ));
-
         $this->hasManyToMany(
                 "id", "UniqueLoneDog\Models\UserGroup", "groupId", "userId",
                 "UniqueLoneDog\Models\User", "id", array("alias" => "users")
@@ -98,6 +72,12 @@ class Group extends \Phalcon\Mvc\Model
                 'message' => 'Group cannot be deleted because it still has data in the filter table'
             )
         ));
+
+        $this->hasManyToMany(
+                "id", "UniqueLoneDog\Models\Filter", "groupId", "tagId",
+                "UniqueLoneDog\Models\Tags\ValueTag", "id",
+                array("alias" => "tags")
+        );
     }
 
     public function beforeValidation()

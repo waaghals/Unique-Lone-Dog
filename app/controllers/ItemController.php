@@ -10,6 +10,7 @@ use UniqueLoneDog\Models\Comment;
 use UniqueLoneDog\Forms\AddCommentForm;
 use Phalcon\Mvc\View;
 use UniqueLoneDog\Models\Reputation;
+use UniqueLoneDog\Breadcrumbs\Breadcrumbs;
 
 /*
  * The MIT License
@@ -45,9 +46,13 @@ class ItemController extends AbstractController
     private $itemSubmitForm;
     private $itemFactory;
     private $addCommentForm;
+    private $breadcrumbs;
 
     public function initialize()
     {
+        $this->breadcrumbs    = new Breadcrumbs();
+        $this->breadcrumbs->add("item", "item-overview");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->itemSubmitForm = new ItemSubmitForm();
         $this->itemFactory    = new ItemFactory();
         $this->addCommentForm = new AddCommentForm();
@@ -63,10 +68,64 @@ class ItemController extends AbstractController
 
     public function addAction()
     {
+        $this->breadcrumbs->add("add", "item-add");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->assets->addJs('js/addTagInput.js');
 
         $this->view->pick('partials/genericForm');
         $this->view->form = $this->itemSubmitForm;
+    }
+
+    public function deleteCommentAction($commentId)
+    {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $comment = Comment::findFirstById($commentId);
+        $item    = $comment->item;
+        if ($comment != null) {
+            if ($comment->delete() == false) {
+                $this->flash->error("Error deleting comment.");
+
+                foreach ($comment->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+            } else {
+                $this->flashSession->success("Succesfully deleted comment.");
+            }
+        }
+        return $this->response->redirect('item/show/' . $item->id);
+    }
+
+    public function deleteItemAction($itemId)
+    {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $item = Item::findFirstById($itemId);
+        $this->deleteAllComments($item->comments);
+        if ($item != null) {
+            if ($item->delete() == false) {
+                $this->flash->error("Error deleting comment.");
+
+                foreach ($item->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+            } else {
+                $this->flashSession->success("Succesfully deleted item.");
+            }
+        }
+        return $this->response->redirect('item/overview');
+    }
+
+    private function deleteAllComments($comments)
+    {
+        if ($comments != null) {
+            foreach ($comments as $comment) {
+                if ($comment->delete() == false) {
+                    $this->flash->error("Error deleting comment.");
+                    foreach ($comment->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+                }
+            }
+        }
     }
 
     public function performAddItemAction()
@@ -94,6 +153,7 @@ class ItemController extends AbstractController
 
     public function overviewAction()
     {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->assets->addCss('css/itemOverview.css');
         $this->view->setVar("items", Item::find());
         $this->view->pick("Item/overview");
@@ -101,6 +161,7 @@ class ItemController extends AbstractController
 
     public function showAction($itemId)
     {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $user = $this->identity->getUser();
         $user->increaseReputation(Reputation::ITEM_VIEW);
 
@@ -108,6 +169,7 @@ class ItemController extends AbstractController
 
         $this->view->setTemplateAfter('Item');
         $this->view->setVar("item", $item);
+        $this->view->setVar("user", $user);
         $this->view->form = $this->addCommentForm;
 
         switch ($item->type) {

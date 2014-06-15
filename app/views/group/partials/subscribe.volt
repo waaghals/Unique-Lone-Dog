@@ -1,7 +1,6 @@
 {% set hasGroup = false %}
 {% for gr in identity.getUser().groups %}
-
-{% if gr == group %}
+{% if gr.id == group.id %}
 {% set hasGroup = true %}
 {% endif %}
 

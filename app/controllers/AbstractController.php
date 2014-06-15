@@ -30,4 +30,9 @@ abstract class AbstractController extends \Phalcon\Mvc\Controller
         }
     }
 
+    public function notFound()
+    {
+        
+    }
+
 }

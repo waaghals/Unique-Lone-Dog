@@ -10,21 +10,14 @@ use UniqueLoneDog\Validators\TagValidator;
  *
  * @author Patrick
  */
-class Filter extends Text
+class Filter extends Tag
 {
-
-    const NAME = "filter";
 
     public function __construct()
     {
-        parent::__construct(self::NAME,
-                            array(
-            'placeholder' => 'namespace:predicate=value'
-        ));
+        parent::__construct();
 
         $this->setLabel("Filter");
-
-        $this->addValidator(new TagValidator());
     }
 
 }

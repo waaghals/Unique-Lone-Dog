@@ -46,11 +46,13 @@ class ItemRoutes extends \Phalcon\Mvc\Router\Group
             "action" => "add"
         ))->setName("item-add");
 
-        $this->addPost("/add", array(
+        $this->addPost("/add",
+                array(
             "action" => "performAddItem"
         ));
 
-        $this->addPost("/view/{id}/", array(
+        $this->addPost("/show/{id}",
+                array(
             "action" => "performAddComment"
         ))->setName("add-comment");
 
@@ -58,9 +60,20 @@ class ItemRoutes extends \Phalcon\Mvc\Router\Group
             "action" => "overview"
         ))->setName("item-overview");
 
-        $this->addGet("/view/{id}/", array(
+        $this->addGet("/show/{id}",
+                array(
             "action" => "show"
         ))->setName("item-show");
+
+        $this->addPost("/deleteComment/{commentId}",
+                array(
+            "action" => "deleteComment"
+        ))->setName("delete-comment");
+
+        $this->addPost("/deleteItem/{itemId}",
+                array(
+            "action" => "deleteItem"
+        ))->setName("delete-item");
     }
 
 }

@@ -3,11 +3,12 @@
 namespace UniqueLoneDog\Controllers;
 
 use Phalcon\Mvc\Controller,
-    Phalcon\Mvc\Model\Resultset;
-use UniqueLoneDog\Models\Tags\NamespaceTag,
+    Phalcon\Mvc\Model\Resultset,
+    UniqueLoneDog\Models\Tags\NamespaceTag,
     UniqueLoneDog\Models\Tags\PredicateTag,
     UniqueLoneDog\Models\Tags\ValueTag,
-    UniqueLoneDog\Models\User;
+    UniqueLoneDog\Models\User,
+    UniqueLoneDog\Breadcrumbs\Breadcrumbs;
 
 /**
  * @property Phalcon\Mvc\Model\Manager $modelsManager Description
@@ -15,9 +16,16 @@ use UniqueLoneDog\Models\Tags\NamespaceTag,
 class IndexController extends Controller
 {
 
+    private $breadcrumbs;
+
+    public function initialize()
+    {
+        $this->breadcrumbs = new Breadcrumbs();
+    }
+
     public function indexAction()
     {
-
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
     }
 
     public function tagQueryTestAction()
@@ -33,6 +41,13 @@ class IndexController extends Controller
         foreach ($results as $result) {
             var_dump($result->namespace->predicates);
         }
+    }
+
+    public function commandsAction()
+    {
+        $this->breadcrumbs->add("Commands", "commands");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $this->view->pick("index/commands");
     }
 
     public function tagCreateTestAction()

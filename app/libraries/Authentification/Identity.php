@@ -128,7 +128,7 @@ class Identity extends Component
     public function get($name)
     {
         $user = $this->getUser();
-        if (!is_null($user)) {
+        if ($user) {
             switch ($name) {
                 case "reputation":
                     return $user->getHumanReputation();
@@ -137,10 +137,12 @@ class Identity extends Component
                 case "email":
                     return $user->email;
                 case "role":
-                    return $user->roleName;
+                    return $user->getRole();
                 case "status":
                     return $user->statusName;
             }
+        } elseif ($name == "role") {
+            return "Guest";
         }
         return "";
     }
