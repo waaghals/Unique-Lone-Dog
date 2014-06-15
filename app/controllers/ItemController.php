@@ -52,6 +52,7 @@ class ItemController extends AbstractController
     {
         $this->breadcrumbs    = new Breadcrumbs();
         $this->breadcrumbs->add("item", "item-overview");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->itemSubmitForm = new ItemSubmitForm();
         $this->itemFactory    = new ItemFactory();
         $this->addCommentForm = new AddCommentForm();

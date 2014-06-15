@@ -6,6 +6,7 @@
 <hr />
 
 {{ partial('group/partials/groupLoop') }}
+
 <p>
     <a href="{{ url.get({"for": "group"}) }}" >Return</a>
 </p>

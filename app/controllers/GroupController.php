@@ -151,6 +151,7 @@ class GroupController extends AbstractController
 
                 $this->flashSession->success("Hub created.");
                 $this->performSubscribeGroupAction($g->id);
+
                 return $this->response->redirect(array(
                             "for"  => "group-show",
                             "slug" => $g->slug
@@ -173,10 +174,10 @@ class GroupController extends AbstractController
             $user->increaseReputation(Reputation::GROUP_SUBSCRIBE);
 
             $this->flashSession->success("Subscription complete.");
+
             $group = Group::findFirst($groupId);
             return $this->response->redirect(array(
-                        "for"  => "group-show",
-                        "slug" => $group->slug
+                        "for" => "group"
             ));
         }
     }
@@ -190,8 +191,40 @@ class GroupController extends AbstractController
         $user->deleteGroup($groupId);
         $this->flashSession->success("Unsubscription complete.");
         return $this->response->redirect(array(
-                    "for" => "group-explore"
+                    "for" => "group"
         ));
+    }
+
+    public function performDeleteGroupAction($id)
+    {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $group = Group::findFirstById($id);
+        if ($this->removeUsersFromGroup($id)) {
+            $this->flashSession->error("Error deleting hubs.");
+        }
+        if ($group != null) {
+            if ($group->delete() == false) {
+                $this->flashSession->error("Error deleting hub.");
+
+                foreach ($group->getMessages() as $message) {
+                    $this->flashSession->error($message);
+                }
+            } else {
+                $this->flashSession->success("Succesfully deleted hub.");
+            }
+        }
+        return $this->response->redirect('hubs/mine');
+    }
+
+    private function removeUsersFromGroup($id)
+    {
+        $users = UserGroup::find("groupId=" . $id);
+        foreach ($users as $user) {
+            if ($user->delete() == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
