@@ -29,6 +29,9 @@ class AccountController extends AbstractController
 
     public function loginFormAction()
     {
+        if ($this->identity->exists()) {
+            return $this->response->redirect(array("for" => "home"));
+        }
         $this->breadcrumbs->add("Login", "account-login");
         $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         if ($this->remember->exists()) {
