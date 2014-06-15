@@ -12,15 +12,15 @@ if (path[1] == "uld") {
 var url = protocol + "//" + domain + path;
 var prefix = "n a v space ";
 
-addCheet('h o m e', "/home");
-addCheet('i t e m', "/item/");
-addCheet('a d d space i t e m', "/item/add");
-addCheet('h u b s', "/hubs/mine");
-addCheet('e x p l o r e space h u b s', "/hubs/explore");
-addCheet('a d d space h u b s', "/hubs/add");
-addCheet('l o g o u t', "/account/logout");
-addCheet('l o g i n', "/account/login");
-addCheet('s i g n u p', "/account/signup");
+addCheet('h', "/home");
+addCheet('i', "/item/");
+addCheet('a d d space i', "/item/add");
+addCheet('h', "/hubs/mine");
+addCheet('e x p l o r e space h', "/hubs/explore");
+addCheet('a d d space h', "/hubs/add");
+addCheet('l o g o', "/account/logout");
+addCheet('l o g i', "/account/login");
+addCheet('s', "/account/signup");
 
 function addCheet(code, path) {
     cheet(prefix + code, function() {
