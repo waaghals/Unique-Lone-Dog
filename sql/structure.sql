@@ -11,15 +11,6 @@ CREATE TABLE IF NOT EXISTS `comment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-DROP TABLE IF EXISTS `filter`;
-CREATE TABLE IF NOT EXISTS `filter` (
-  `groupId` int(10) unsigned NOT NULL,
-  `namespace` varchar(50) NOT NULL,
-  `predicate` varchar(50) DEFAULT NULL,
-  `value` varchar(50) DEFAULT NULL,
-  UNIQUE KEY `groupId` (`groupId`,`namespace`,`predicate`,`value`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE IF NOT EXISTS `group` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -29,7 +20,15 @@ CREATE TABLE IF NOT EXISTS `group` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `slug` (`slug`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+
+DROP TABLE IF EXISTS `group_tag`;
+CREATE TABLE IF NOT EXISTS `group_tag` (
+  `groupId` int(10) unsigned NOT NULL,
+  `tagId` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`groupId`,`tagId`),
+  KEY `tagId` (`tagId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `item`;
 CREATE TABLE IF NOT EXISTS `item` (
@@ -40,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `description` text,
   `type` varchar(25),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
 
 DROP TABLE IF EXISTS `item_tag`;
 CREATE TABLE IF NOT EXISTS `item_tag` (
@@ -55,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `namespace_tag` (
   `part` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `part` (`part`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
 
 DROP TABLE IF EXISTS `permission`;
 CREATE TABLE IF NOT EXISTS `permission` (
@@ -72,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `predicate_tag` (
   `part` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namespace_id` (`namespace_id`,`part`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 DROP TABLE IF EXISTS `remember_token`;
 CREATE TABLE IF NOT EXISTS `remember_token` (
@@ -136,11 +135,12 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `part` (`part`),
   KEY `predicate_id` (`predicate_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 
-ALTER TABLE `filter`
-  ADD CONSTRAINT `filter_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`);
+ALTER TABLE `group_tag`
+  ADD CONSTRAINT `group_tag_ibfk_2` FOREIGN KEY (`tagId`) REFERENCES `value_tag` (`id`),
+  ADD CONSTRAINT `group_tag_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`);
 
 ALTER TABLE `permission`
   ADD CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`);

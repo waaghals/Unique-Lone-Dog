@@ -5,6 +5,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 TRUNCATE TABLE `comment`;
+
 INSERT INTO `comment` (`id`, `itemId`, `userId`, `text`) VALUES
 (1, 1, 8, 'leuk!'),
 (2, 1, 9, 'repost!'),
@@ -61,6 +62,7 @@ INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Guest', 'index', 'index'),
 ('Guest', 'item', 'overview'),
 ('Guest', 'item', 'show'),
+('Users', 'group', 'mine')
 ('Users', 'group', 'addFilter'),
 ('Users', 'group', 'mine'),
 ('Users', 'group', 'addGroupForm'),

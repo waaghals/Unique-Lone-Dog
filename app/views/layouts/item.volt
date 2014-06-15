@@ -25,7 +25,5 @@
         </tr>
         {% endfor %}
     </table>
-    <br />
-        {{ partial('partials/commentForm') }}
-</p>
+    {{ partial('partials/commentForm') }}
 </div>
