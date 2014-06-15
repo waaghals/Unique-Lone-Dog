@@ -196,9 +196,8 @@ class GroupController extends AbstractController
     {
         $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $group = Group::findFirstById($id);
-        if ($this->removeUsersFromGroup($id)) {
-            $this->flashSession->error("Error deleting hubs.");
-        }
+        $this->removeUsersFromGroup($id);
+        $this->removeTagFromGroup($id);
         if ($group != null) {
             if ($group->delete() == false) {
                 $this->flashSession->error("Error deleting hub.");
@@ -219,9 +218,14 @@ class GroupController extends AbstractController
         foreach ($users as $user) {
             $user->delete();
         }
-        return $this->response->redirect(array(
-                    "for" => "group-explore"
-        ));
+    }
+
+    private function removeTagFromGroup($id)
+    {
+        $tags = Filter::find("groupId=" . $id);
+        foreach ($tags as $tag) {
+            $tag->delete();
+        }
     }
 
 }
