@@ -43,6 +43,13 @@ class IndexController extends Controller
         }
     }
 
+    public function commandsAction()
+    {
+        $this->breadcrumbs->add("Commands", "commands");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $this->view->pick("index/commands");
+    }
+
     public function tagCreateTestAction()
     {
         $contentNamespace = new NamespaceTag();

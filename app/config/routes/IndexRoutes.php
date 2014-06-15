@@ -19,6 +19,11 @@ class IndexRoutes extends \Phalcon\Mvc\Router\Group
         $this->add("/home", array(
             "action" => "index"
         ))->setName("home");
+
+        $this->add("/commands",
+                array(
+            "action" => "commands"
+        ))->setName("commands");
     }
 
 }

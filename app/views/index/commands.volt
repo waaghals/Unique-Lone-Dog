@@ -1,0 +1,1 @@
+<p>You can navigate through the website easily with simple commands.</p>
