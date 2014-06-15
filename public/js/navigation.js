@@ -20,6 +20,7 @@ addCheet('e x p l o r e space h u b s', "/hubs/explore");
 addCheet('a d d space h u b s', "/hubs/add");
 addCheet('l o g o u t', "/account/logout");
 addCheet('l o g i n', "/account/login");
+addCheet('l o g i n', "/account/signup");
 
 function addCheet(code, path) {
     cheet(prefix + code, function() {
