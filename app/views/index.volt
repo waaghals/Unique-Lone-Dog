@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Title</title>
+        <title>undefined</title>
         {{ partial("partials/meta") }}
         {{ partial("partials/icons") }}
         {{ stylesheet_link("css/kraken.css") }}
