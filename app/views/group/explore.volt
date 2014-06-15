@@ -5,15 +5,11 @@
 </p>
 
     {% if groups|length > 0 %}
-        {% for group in groups %}
-            {% if loop.first %}
 <ul>
-                    {% endif %}
-                            {{ partial('group/partials/listItem') }}
-                    {% if loop.last %}
-</ul>
-            {% endif %}
+        {% for group in groups %}
+            {{ partial('group/partials/listItem') }}
         {% endfor  %}
+</ul>
     {% else %}
 <p>No hubs exists</p>
     {% endif %}
