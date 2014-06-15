@@ -40,8 +40,10 @@ class GroupController extends AbstractController
 
     public function showAction($slug)
     {
-        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+
         $group = Group::findFirstBySlug($slug);
+        $this->breadcrumbs->add($group->name, "group-explore");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->view->setVar("group", $group);
         $this->view->pick("group/single");
     }
