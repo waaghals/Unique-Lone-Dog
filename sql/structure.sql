@@ -36,7 +36,7 @@ DROP TABLE IF EXISTS `item`;
 CREATE TABLE IF NOT EXISTS `item` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) unsigned NOT NULL,
-  `name` varchar(25) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `URI` varchar(2048) NOT NULL,
   `description` text,
   `type` varchar(25) DEFAULT NULL,
