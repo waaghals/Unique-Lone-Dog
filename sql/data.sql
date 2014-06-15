@@ -5,7 +5,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 TRUNCATE TABLE `comment`;
-TRUNCATE TABLE `filter`;
 TRUNCATE TABLE `group`;
 TRUNCATE TABLE `item`;
 TRUNCATE TABLE `item_tag`;
@@ -24,6 +23,7 @@ INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Guest', 'index', 'index'),
 ('Guest', 'item', 'overview'),
 ('Guest', 'item', 'show'),
+('Users', 'group', 'mine')
 ('Users', 'group', 'addFilter'),
 ('Users', 'group', 'addGroupForm'),
 ('Users', 'group', 'exploreGroup'),

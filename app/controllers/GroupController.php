@@ -32,7 +32,7 @@ class GroupController extends AbstractController
 
     public function mineAction()
     {
-        $this->breadcrumbs->add("Mine", "group");
+        $this->breadcrumbs->add("Subscribed", "group");
         $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->view->setVar("groups", $this->identity->getUser()->groups);
         $this->view->pick("group/mine");
@@ -40,8 +40,10 @@ class GroupController extends AbstractController
 
     public function showAction($slug)
     {
-        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+
         $group = Group::findFirstBySlug($slug);
+        $this->breadcrumbs->add($group->name, "group-explore");
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
         $this->view->setVar("group", $group);
         $this->view->pick("group/single");
     }
@@ -75,21 +77,31 @@ class GroupController extends AbstractController
     {
         $filter = new Filter();
         $form   = new FilterForm();
+        $group  = Group::findFirst($this->request->getPost('groupId'));
+        if (!isset($group->id)) {
+            throw new \Exception("Not a valid group");
+        }
+
         if (!$form->isValid($this->request->getPost())) {
             foreach ($form->getMessages() as $message) {
                 $this->flash->error($message);
             }
         } else {
-            $factory         = new FilterFactory();
-            $filter          = $factory->create($this->request->getPost('filter'));
-            $filter->groupId = $this->request->getPost('groupId');
-            if (!$filter->save()) {
-                $this->flash->error($filter->getMessages());
-                return $this->addFilterAction();
+            $filters = $this->request->getPost('tag');
+            foreach ($filters as $filter) {
+                if (!empty($filter)) {
+                    $tag = $this->tagFactory->create($filter);
+
+                    $filterObj        = new Filter();
+                    $filterObj->group = $group;
+                    $filterObj->tag   = $tag;
+
+                    $filterObj->save();
+                }
             }
         }
 
-        $group = Group::findFirst($this->request->getPost('groupId'));
+
         $this->flashSession->success("Filter(s) added.");
         return $this->response->redirect(array(
                     "for"  => "group-show",
@@ -101,6 +113,7 @@ class GroupController extends AbstractController
     {
         $this->breadcrumbs->add("Add", "group-add");
         $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $this->assets->addJs('js/addTagInput.js');
         $this->view->pick("group/add");
         $this->view->form = $this->addGroupForm;
     }
@@ -115,17 +128,33 @@ class GroupController extends AbstractController
             $g              = new Group();
             $g->name        = $this->request->getPost('name', 'striptags');
             $g->description = $this->request->getPost('description', 'striptags');
+            $filters        = $this->request->getPost('tag');
+
+            foreach ($filters as $filter) {
+                if (!empty($filter)) {
+                    $tag = $this->tagFactory->create($filter);
+
+                    $filterObj        = new Filter();
+                    $filterObj->group = $g;
+                    $filterObj->tag   = $tag;
+
+                    $filterObj->save();
+                }
+            }
+
             if (!$g->save()) {
                 $this->flash->error($g->getMessages());
             } else {
-
-                //Add reputation
+//Add reputation
                 $user = $this->identity->getUser();
                 $user->increaseReputation(Reputation::GROUP_ADD);
 
                 $this->flashSession->success("Hub created.");
                 $this->performSubscribeGroupAction($g->id);
-                return $this->response->redirect('/hubs/mine');
+                return $this->response->redirect(array(
+                            "for"  => "group-show",
+                            "slug" => $g->slug
+                ));
             }
         }
         return $this->addGroupFormAction();
@@ -139,18 +168,22 @@ class GroupController extends AbstractController
         if (!$u->save()) {
             $this->flash->error($u->getMessages());
         } else {
-            //Add reputation
+//Add reputation
             $user = $this->identity->getUser();
             $user->increaseReputation(Reputation::GROUP_SUBSCRIBE);
 
             $this->flashSession->success("Subscription complete.");
-            return $this->response->redirect('hubs/mine');
+            $group = Group::findFirst($groupId);
+            return $this->response->redirect(array(
+                        "for"  => "group-show",
+                        "slug" => $group->slug
+            ));
         }
     }
 
     public function performUnsubscribeGroupAction($groupId)
     {
-        //Add reputation
+//Add reputation
         $user = $this->identity->getUser();
         $user->decreaseReputation(Reputation::GROUP_UNSUBSCRIBE);
 
@@ -182,14 +215,13 @@ class GroupController extends AbstractController
 
     private function removeUsersFromGroup($id)
     {
-        $success = true;
-        $users   = UserGroup::find("groupId=" . $id);
+        $users = UserGroup::find("groupId=" . $id);
         foreach ($users as $user) {
-            if ($user->delete() == false) {
-                $sucess = false;
-            }
+            $user->delete();
         }
-        return $sucess;
+        return $this->response->redirect(array(
+                    "for" => "group-explore"
+        ));
     }
 
 }
