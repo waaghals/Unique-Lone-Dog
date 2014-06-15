@@ -66,11 +66,11 @@ class Group extends \Phalcon\Mvc\Model
                         ->join('UniqueLoneDog\Models\Tags\PredicateTag')
                         ->join('UniqueLoneDog\Models\Tags\NamespaceTag')
                         ->inWhere('UniqueLoneDog\Models\Tags\NamespaceTag.part',
-                                  $this->namespaceFilters())
+                                $this->namespaceFilters())
                         ->inWhere('UniqueLoneDog\Models\Tags\PredicateTag.part',
-                                  $this->predicateFilters())
+                                $this->predicateFilters())
                         ->inWhere('UniqueLoneDog\Models\Tags\ValueTag.part',
-                                  $this->valueFilters())
+                                $this->valueFilters())
                         ->groupBy('UniqueLoneDog\Models\Item.id')
                         ->getQuery()
                         ->execute();
@@ -78,21 +78,13 @@ class Group extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
-        $this->hasMany('id', 'UniqueLoneDog\Models\User', 'groupId',
-                       array(
-            "alias"      => "groupUsers",
-            'foreignKey' => array(
-                'message' => 'Group cannot be deleted because it still has data in User table'
-            )
-        ));
-
         $this->hasManyToMany(
                 "id", "UniqueLoneDog\Models\UserGroup", "groupId", "userId",
                 "UniqueLoneDog\Models\User", "id", array("alias" => "users")
         );
 
         $this->hasMany('id', 'UniqueLoneDog\Models\Filter', 'groupId',
-                       array(
+                array(
             "alias"      => "filters",
             'foreignKey' => array(
                 'message' => 'Group cannot be deleted because it still has data in the filter table'
