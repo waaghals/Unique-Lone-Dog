@@ -14,6 +14,7 @@ TRUNCATE TABLE `permission`;
 INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Administrator', 'item', 'deleteComment'),
 ('Administrator', 'item', 'deleteItem'),
+('Administrator', 'group', 'performDeleteGroup'),
 ('Guest', 'account', 'loginForm'),
 ('Guest', 'account', 'logout'),
 ('Guest', 'account', 'performLogin'),
