@@ -12,10 +12,10 @@ if (path[1] == "uld") {
 var url = protocol + "//" + domain + path;
 var prefix = "n a v space ";
 
-addCheet('h', "/home");
+addCheet('h o', "/home");
 addCheet('i', "/item/");
 addCheet('a d d space i', "/item/add");
-addCheet('h', "/hubs/mine");
+addCheet('h u', "/hubs/mine");
 addCheet('e x p l o r e space h', "/hubs/explore");
 addCheet('a d d space h', "/hubs/add");
 addCheet('l o g o', "/account/logout");
