@@ -64,7 +64,6 @@ INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Guest', 'item', 'show'),
 ('Users', 'group', 'mine')
 ('Users', 'group', 'addFilter'),
-('Users', 'group', 'mine'),
 ('Users', 'group', 'addGroupForm'),
 ('Users', 'group', 'exploreGroup'),
 ('Users', 'group', 'index'),
