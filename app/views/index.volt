@@ -8,6 +8,8 @@
         {{ stylesheet_link("css/astro.css") }}
         {{ assets.outputCss() }}
         {{ javascript_include("js/feature-test.js") }}
+        {{ javascript_include("js/cheet.js") }}
+        {{ javascript_include("js/navigation.js") }}
     </head>
 
     <body>
