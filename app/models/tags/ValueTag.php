@@ -44,7 +44,7 @@ class ValueTag extends AbstractTag
 
         $this->hasManyToMany(
                 "id", "UniqueLoneDog\Models\ItemTag", "tagId", "itemId",
-                "UniqueLoneDog\Models\Tags\Item", "id",
+                "UniqueLoneDog\Models\Item", "id",
                 array(
             "alias" => "items"
         ));

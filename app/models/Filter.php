@@ -35,28 +35,21 @@ class Filter extends \Phalcon\Mvc\Model
 {
 
     public $groupId;
-    public $namespace;
-    public $predicate;
-    public $value;
+    public $tagId;
+
+    public function getSource()
+    {
+        return "group_tag";
+    }
 
     public function getGroupId()
     {
         return $this->groupId;
     }
 
-    public function getNamespace()
+    public function getTagId()
     {
-        return $this->namespace;
-    }
-
-    public function getPredicate()
-    {
-        return $this->predicate;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
+        return $this->tagId;
     }
 
     public function setGroupId($groupId)
@@ -64,25 +57,19 @@ class Filter extends \Phalcon\Mvc\Model
         $this->groupId = $groupId;
     }
 
-    public function setNamespace($namespace)
+    public function setTagId($tagId)
     {
-        $this->namespace = $namespace;
-    }
-
-    public function setPredicate($predicate)
-    {
-        $this->predicate = $predicate;
-    }
-
-    public function setValue($value)
-    {
-        $this->value = $value;
+        $this->tagId = $tagId;
     }
 
     public function initialize()
     {
         $this->belongsTo('groupId', 'UniqueLoneDog\Models\Group', 'id',
                          array('alias' => 'group')
+        );
+
+        $this->belongsTo('tagId', 'UniqueLoneDog\Models\Tags\ValueTag', 'id',
+                         array('alias' => 'tag')
         );
     }
 

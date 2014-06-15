@@ -1,13 +1,9 @@
 {% if groups|length > 0 %}
-        {% for group in groups %}
-            {% if loop.first %}
 <ul>
-                    {% endif %}
-                            {{ partial('group/partials/listItem') }}
-                    {% if loop.last %}
+{% for group in groups %}
+    {{ partial('group/partials/listItem') }}
+{% endfor  %}
 </ul>
-            {% endif %}
-        {% endfor  %}
-    {% else %}
+{% else %}
 <p>No hubs</p>
-    {% endif %}
+{% endif %}
