@@ -1,5 +1,7 @@
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `comment`;
@@ -9,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `userId` int(11) NOT NULL,
   `text` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE IF NOT EXISTS `group` (
@@ -32,20 +34,22 @@ CREATE TABLE IF NOT EXISTS `group_tag` (
 
 DROP TABLE IF EXISTS `item`;
 CREATE TABLE IF NOT EXISTS `item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` int(11) NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userId` int(10) unsigned NOT NULL,
   `name` varchar(25) NOT NULL,
   `URI` varchar(2048) NOT NULL,
   `description` text,
-  `type` varchar(25),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
+  `type` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
 
 DROP TABLE IF EXISTS `item_tag`;
 CREATE TABLE IF NOT EXISTS `item_tag` (
   `itemId` int(10) unsigned NOT NULL,
   `tagId` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`itemId`,`tagId`)
+  PRIMARY KEY (`itemId`,`tagId`),
+  KEY `tagId` (`tagId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `namespace_tag`;
@@ -54,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `namespace_tag` (
   `part` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `part` (`part`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
 
 DROP TABLE IF EXISTS `permission`;
 CREATE TABLE IF NOT EXISTS `permission` (
@@ -71,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `predicate_tag` (
   `part` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namespace_id` (`namespace_id`,`part`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 DROP TABLE IF EXISTS `remember_token`;
 CREATE TABLE IF NOT EXISTS `remember_token` (
@@ -117,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `statusName` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `statusName` (`statusName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 DROP TABLE IF EXISTS `user_group`;
 CREATE TABLE IF NOT EXISTS `user_group` (
@@ -133,17 +137,27 @@ CREATE TABLE IF NOT EXISTS `value_tag` (
   `predicate_id` int(10) unsigned NOT NULL,
   `part` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `part` (`part`),
+  UNIQUE KEY `predicate_id_2` (`predicate_id`,`part`),
   KEY `predicate_id` (`predicate_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
 
 
 ALTER TABLE `group_tag`
-  ADD CONSTRAINT `group_tag_ibfk_2` FOREIGN KEY (`tagId`) REFERENCES `value_tag` (`id`),
-  ADD CONSTRAINT `group_tag_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`);
+  ADD CONSTRAINT `group_tag_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`),
+  ADD CONSTRAINT `group_tag_ibfk_2` FOREIGN KEY (`tagId`) REFERENCES `value_tag` (`id`);
+
+ALTER TABLE `item`
+  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+ALTER TABLE `item_tag`
+  ADD CONSTRAINT `item_tag_ibfk_2` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`),
+  ADD CONSTRAINT `item_tag_ibfk_1` FOREIGN KEY (`tagId`) REFERENCES `value_tag` (`id`);
 
 ALTER TABLE `permission`
   ADD CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`roleName`) REFERENCES `role` (`name`);
+
+ALTER TABLE `predicate_tag`
+  ADD CONSTRAINT `predicate_tag_ibfk_1` FOREIGN KEY (`namespace_id`) REFERENCES `namespace_tag` (`id`);
 
 ALTER TABLE `remember_token`
   ADD CONSTRAINT `remember_token_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
@@ -157,4 +171,8 @@ ALTER TABLE `user`
 ALTER TABLE `user_group`
   ADD CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `group` (`id`),
   ADD CONSTRAINT `user_group_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+ALTER TABLE `value_tag`
+  ADD CONSTRAINT `value_tag_ibfk_1` FOREIGN KEY (`predicate_id`) REFERENCES `predicate_tag` (`id`);
 SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
