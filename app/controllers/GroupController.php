@@ -175,8 +175,7 @@ class GroupController extends AbstractController
             $this->flashSession->success("Subscription complete.");
             $group = Group::findFirst($groupId);
             return $this->response->redirect(array(
-                        "for"  => "group-show",
-                        "slug" => $group->slug
+                        "for" => "group"
             ));
         }
     }
@@ -189,7 +188,9 @@ class GroupController extends AbstractController
 
         $user->deleteGroup($groupId);
         $this->flashSession->success("Unsubscription complete.");
-        return $this->response->redirect('hubs/mine');
+        return $this->response->redirect(array(
+                    "for" => "group"
+        ));
     }
 
     public function performDeleteGroupAction($id)
