@@ -4,9 +4,19 @@
 
 <div class="row">
     <div class="grid-two-thirds">
-        {% for groupItem in group.latest() %}
-        <h3>{{ groupItem.name }}</h3>
-        <p>{{ groupItem.description }}</p>
+        <h2>Latest items</h2>
+        {% if group.tags.count() == 0 %}
+        <p>
+            Hub has no filters assigned.
+            To show items in this hub you need to assign tags for filtering.
+            Why don't you <a href="{{ url.get({"for": "group-addFilter","slug": group.slug }) }}">add</a> a filter.
+        </p>
+        {% endif %}
+        {% for groupTag in group.tags %}
+            {% for item in groupTag.items %}
+        <h3>{{ item.name }}</h3>
+        <p>{{ item.description }}</p>
+            {% endfor %}
         {% endfor %}
     </div>
     <div class="grid-third">
@@ -17,12 +27,14 @@
         <hr />
         <h3>Filters</h3>
         {# TODO: Make sexy #}
-        {% for groupFilter in group.filters %}
+        {% for groupTag in group.tags %}
         {% if loop.first %}
         <ul>
         {% endif %}
             <li>
-                <span class="text-tall">{{groupFilter.namespace }}</span><span class="text-muted">:</span><span class="text-tall">{{groupFilter.predicate }}</span><span class="text-muted">=</span><span class="text-tall">{{groupFilter.value }}
+                {{groupTag.part}} <span class="text-muted text-small">{{ groupTag.id }}</span>
+                <!-- phalcon bug: can't show perdicate and namespace -->
+             {#   <span class="text-tall">{{groupTag.namespace }}</span><span class="text-muted">:</span><span class="text-tall">{{groupTag.predicate }}</span><span class="text-muted">=</span><span class="text-tall">{{groupTag.value }} #}
             </li>
 
         {% if loop.last %}
