@@ -21,6 +21,7 @@ addCheet('a d d space h', "/hubs/add");
 addCheet('l o g o', "/account/logout");
 addCheet('l o g i', "/account/login");
 addCheet('s', "/account/signup");
+addCheet('c', "/index/commands");
 
 function addCheet(code, path) {
     cheet(prefix + code, function() {

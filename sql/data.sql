@@ -104,6 +104,7 @@ INSERT INTO `permission` (`roleName`, `controller`, `action`) VALUES
 ('Guest', 'account', 'signUpForm'),
 ('Guest', 'group', 'show'),
 ('Guest', 'index', 'index'),
+('Guest', 'index', 'commands'),
 ('Guest', 'item', 'overview'),
 ('Guest', 'item', 'show'),
 ('Users', 'group', 'addFilter'),
