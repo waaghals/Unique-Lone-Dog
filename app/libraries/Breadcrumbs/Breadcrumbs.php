@@ -45,7 +45,7 @@ class Breadcrumbs
         $this->_elements[] = array(
             'active' => false,
             'link'   => $link,
-            'text'   => " > " . $caption,
+            'text'   => $caption,
         );
     }
 
