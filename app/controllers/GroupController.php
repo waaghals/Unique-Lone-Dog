@@ -159,4 +159,37 @@ class GroupController extends AbstractController
         return $this->response->redirect('hubs/mine');
     }
 
+    public function performDeleteGroupAction($id)
+    {
+        $this->view->setVar("breadcrumbs", $this->breadcrumbs->generate());
+        $group = Group::findFirstById($id);
+        if ($this->removeUsersFromGroup($id)) {
+            $this->flashSession->error("Error deleting hubs.");
+        }
+        if ($group != null) {
+            if ($group->delete() == false) {
+                $this->flashSession->error("Error deleting hub.");
+
+                foreach ($group->getMessages() as $message) {
+                    $this->flashSession->error($message);
+                }
+            } else {
+                $this->flashSession->success("Succesfully deleted hub.");
+            }
+        }
+        return $this->response->redirect('hubs/mine');
+    }
+
+    private function removeUsersFromGroup($id)
+    {
+        $success = true;
+        $users   = UserGroup::find("groupId=" . $id);
+        foreach ($users as $user) {
+            if ($user->delete() == false) {
+                $sucess = false;
+            }
+        }
+        return $sucess;
+    }
+
 }
