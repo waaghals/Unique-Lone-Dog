@@ -14,8 +14,7 @@
         {% endif %}
         {% for groupTag in group.tags %}
             {% for item in groupTag.items %}
-        <h3>{{ item.name }}</h3>
-        <p>{{ item.description }}</p>
+                {{ partial('item/partials/listItem') }}
             {% endfor %}
         {% endfor %}
     </div>
