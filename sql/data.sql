@@ -68,7 +68,7 @@ INSERT INTO `item` (`id`, `userId`, `name`, `URI`, `description`, `type`) VALUES
 (9, 9, 'buienradar', 'http://www.buienradar.nl', 'alles over het weer', 'Site'),
 (61, 8, 'AustraliÃ« overklast Nede', 'http://www.nu.nl/algemeen/3802950/australie-overklast-nederlandse-hockeyers-in-wk-finale.html', 'Ben best wel teleurgesteld. Gelukkig deden de dames het beter.', 'Site'),
 (62, 8, 'Hockeysters kampioen', 'http://www.nu.nl/sport/3800981/hockeysters-bereiken-finale-wk-simpele-zege-argentinie.html', 'Hockeysters bereiken finale WK na simpele zege op ArgentiniÃ«', 'Site'),
-(63, 8, 'Drain you', 'https://play.spotify.com/track/69rd4xBqWRjMpngW9tiwex?play=true&utm_source=open.spotify.com&utm_medium=open', 'Geweldig nummer van Nirvana', 'Image'),
+(63, 8, 'Drain you', 'https://play.spotify.com/track/69rd4xBqWRjMpngW9tiwex?play=true&utm_source=open.spotify.com&utm_medium=open', 'Geweldig nummer van Nirvana', 'Site'),
 (64, 8, 'Alive', 'http://open.spotify.com/track/620RU5uoEFpfDxAXlnlCW8', 'Goed nummer van Pearl Jam', 'Site');
 
 INSERT INTO `item_tag` (`itemId`, `tagId`) VALUES
